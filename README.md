@@ -1,6 +1,6 @@
 # Naija Job Ops
 
-AI-powered job search pipeline for Nigerian graduates and NYSC corps members — built on Claude Code.
+AI-powered job search pipeline for Nigerian graduates and NYSC corps members, built on Claude Code.
 
 ![Claude Code](https://img.shields.io/badge/Claude_Code-000?style=flat&logo=anthropic&logoColor=white)
 ![Node.js](https://img.shields.io/badge/Node.js-339933?style=flat&logo=node.js&logoColor=white)
@@ -12,10 +12,10 @@ AI-powered job search pipeline for Nigerian graduates and NYSC corps members —
 
 ## Built on career-ops
 
-This project is a full adaptation of **career-ops**, an open-source AI job search system created by **Santiago Ferreira (santifer)**. The core architecture — Claude Code skill modes, markdown data layer, PDF generation, batch processing, pipeline integrity, and Go dashboard — all originate from his work. Naija Job Ops would not exist without it.
+This project is a full adaptation of **career-ops**, an open-source AI job search system created by **Santiago Ferreira (santifer)**. The core architecture, Claude Code skill modes, markdown data layer, PDF generation, batch processing, pipeline integrity, and Go dashboard all originate from his work. Naija Job Ops would not exist without it.
 
 > **Original work by Santiago Ferreira**
-> career-ops — AI-powered job search system built on Claude Code. Built by someone who used it to evaluate 740+ job offers, generate 100+ tailored CVs, and land a Head of Applied AI role.
+> career-ops : AI-powered job search system built on Claude Code. Built by someone who used it to evaluate 740+ job offers, generate 100+ tailored CVs, and land a Head of Applied AI role.
 >
 > [github.com/santifer/career-ops](https://github.com/santifer/career-ops) · [santifer.io](https://santifer.io) · [Read the original case study](https://santifer.io/career-ops-system)
 
@@ -29,35 +29,35 @@ Naija Job Ops turns Claude Code into a full job search command center built for 
 
 | Feature | Description |
 |---|---|
-| **Auto-pipeline** | Paste a URL, job description, or just a role — it auto-detects and runs the full pipeline |
+| **Auto-pipeline** | Paste a URL, job description, or just a role, it auto-detects and runs the full pipeline |
 | **Smart scanning** | Scans 6 Nigerian job boards and specialised programme searches for new listings |
 | **8-dimension scoring** | Every listing scored against skill match, eligibility, deadline urgency, competition, location fit, and more |
-| **CV tools** | Build, edit, and tailor ATS-compatible CVs — from scratch, from a file, or from LinkedIn |
+| **CV tools** | Build, edit, and tailor ATS-compatible CVs , from scratch, from a file, or from LinkedIn |
 | **Rich metadata** | Extracts posted date, applicant count, deadline, salary range, and qualification requirements |
 | **Batch processing** | Evaluate 10+ listings in parallel with sub-agents |
 | **Pipeline dashboard** | Terminal UI to browse, filter, and sort your full application pipeline |
-| **Human-in-the-loop** | AI evaluates and recommends — you decide and act. Nothing is ever submitted without your review |
+| **Human-in-the-loop** | AI evaluates and recommends you decide and act. Nothing is ever submitted without your review |
 | **Pipeline integrity** | Automated merge, dedup, status normalisation, and health checks |
 
-> No CV? No problem. Start with just a role or skill — e.g. "mobile developer, Java and Kotlin" — and the system runs immediately. It will guide you through building a full profile afterward.
+> No CV? No problem. Start with just a role or skill e.g. "mobile developer, Java and Kotlin" — and the system runs immediately. It will guide you through building a full profile afterward.
 
 ---
 
 ## A heads up before you start
 
-> **The first evaluations won't be your best.** The system doesn't know you yet. The more context you give it — your skills, your experience, what you're good at, what you want to avoid — the sharper it gets. Think of it like onboarding a new recruiter: the first week they need to learn about you, then they become genuinely useful. Run `/naija-jobs onboard` to fast-track that.
+> **The first evaluations won't be your best.** The system doesn't know you yet. The more context you give it — your skills, your experience, what you're good at, what you want to avoid, the sharper it gets. Think of it like onboarding a new recruiter: the first week they need to learn about you, then they become genuinely useful. Run `/naija-jobs onboard` to fast-track that.
 
 ---
 
 ## Requirements
 
-Naija Job Ops runs inside Claude Code — Anthropic's AI agent for the terminal. You need:
+Naija Job Ops runs inside Claude Code, Anthropic's AI agent for the terminal. You need:
 
 - **Claude Code** — install guide at [docs.anthropic.com/claude-code](https://docs.anthropic.com/claude-code)
-- **An Anthropic API key** — get one at [console.anthropic.com](https://console.anthropic.com)
-- **Node.js 18+** — for PDF generation and pipeline utilities. Download at [nodejs.org](https://nodejs.org)
-- **Git** — to clone this repo
-- **Go 1.21+ (optional)** — only needed for the terminal dashboard
+- **An Anthropic API key** : get one at [console.anthropic.com](https://console.anthropic.com)
+- **Node.js 18+** : for PDF generation and pipeline utilities. Download at [nodejs.org](https://nodejs.org)
+- **Git**: to clone this repo
+- **Go 1.21+ (optional)** : only needed for the terminal dashboard
 
 ---
 
@@ -103,7 +103,7 @@ naija-job-ops doctor
   ✔  npm dependencies installed
   ✔  Playwright / Chromium ready
   ✔  Claude Code installed
-  ○  Go not found (optional — needed for dashboard only)
+  ○  Go not found (optional: needed for dashboard only)
 
  Project setup
 
@@ -158,7 +158,7 @@ You paste a URL, job description, or just a role/skill
 
 ## Two ways to start
 
-**Quick start** — type a role, paste a URL, or drop in a job description. The pipeline detects what you gave it and runs automatically.
+**Quick start**: type a role, paste a URL, or drop in a job description. The pipeline detects what you gave it and runs automatically.
 
 ```bash
 /naija-jobs android developer
@@ -168,7 +168,7 @@ You paste a URL, job description, or just a role/skill
 
 After your first results the system will recommend full onboarding for more accurate evaluations.
 
-**Full onboarding** — a guided conversation that builds your complete profile. Unlocks sharper scoring and better CV output. Takes about 5 minutes.
+**Full onboarding** : a guided conversation that builds your complete profile. Unlocks sharper scoring and better CV output. Takes about 5 minutes.
 
 ```bash
 /naija-jobs onboard
@@ -208,7 +208,7 @@ Once your CV is in the system you can improve and tailor it at any time:
 
 ## Usage
 
-Naija Job Ops is a single slash command with multiple modes. You can also paste a job URL or description directly — it auto-detects what you gave it and runs the full pipeline.
+Naija Job Ops is a single slash command with multiple modes. You can also paste a job URL or description directly, it auto-detects what you gave it and runs the full pipeline.
 
 | Command | What it does |
 |---|---|
@@ -254,7 +254,7 @@ Deloitte Nigeria · KPMG Nigeria · PwC Nigeria · EY Nigeria · McKinsey Africa
 **Pre-configured search queries**
 Graduate trainee · Management trainee · NYSC corps member · Entry level Nigeria · Fresh graduate · Internship Nigeria · IT industrial training · Junior developer Nigeria · Software engineer Lagos · Data analyst Nigeria · Product manager Nigeria · Business analyst Nigeria · Finance officer Nigeria · HR officer Nigeria · Marketing executive Nigeria
 
-> The system is designed to be customised by Claude itself. Ask it to add companies, change search keywords, or adjust filters for your target roles — it reads the same config files it uses, so it knows exactly what to edit.
+> The system is designed to be customised by Claude itself. Ask it to add companies, change search keywords, or adjust filters for your target roles, it reads the same config files it uses, so it knows exactly what to edit.
 
 ---
 
@@ -268,7 +268,7 @@ Every listing is scored out of 5 across 8 dimensions weighted for the Nigerian j
 | Qualification eligibility | OND / HND / BSc / MSc requirement vs your education level |
 | NYSC eligibility | Required or preferred NYSC status vs yours |
 | Deadline urgency | Closing soon scores higher — act fast |
-| Applicant competition | Fewer applicants means better odds — used as an opportunity signal |
+| Applicant competition | Fewer applicants means better odds, used as an opportunity signal |
 | Company legitimacy | Known, verified Nigerian employer vs unverified listing |
 | Location fit | Whether the role matches your preferred work location |
 | Growth potential | Structured graduate trainee programme vs a generic one-off hire |
