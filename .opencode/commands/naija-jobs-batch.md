@@ -2,7 +2,7 @@
 description: Batch processing with parallel workers
 ---
 
-Batch processing using career-ops batch mode.
+Batch processing using naija-job-ops batch mode.
 
 $ARGUMENTS
 

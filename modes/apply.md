@@ -1,107 +1,126 @@
-# Modo: apply — Asistente de Aplicación en Vivo
+# Mode: apply — Application Form Assistant
 
-Modo interactivo para cuando el candidato está rellenando un formulario de aplicación en Chrome. Lee lo que hay en pantalla, carga el contexto previo de la oferta, y genera respuestas personalizadas para cada pregunta del formulario.
-
-## Requisitos
-
-- **Mejor con Playwright visible**: En modo visible, el candidato ve el navegador y Claude puede interactuar con la página.
-- **Sin Playwright**: el candidato comparte un screenshot o pega las preguntas manualmente.
-
-## Workflow
-
-```
-1. DETECTAR    → Leer Chrome tab activa (screenshot/URL/título)
-2. IDENTIFICAR → Extraer empresa + rol de la página
-3. BUSCAR      → Match contra reports existentes en reports/
-4. CARGAR      → Leer report completo + Section G (si existe)
-5. COMPARAR    → ¿El rol en pantalla coincide con el evaluado? Si cambió → avisar
-6. ANALIZAR    → Identificar TODAS las preguntas del formulario visibles
-7. GENERAR     → Para cada pregunta, generar respuesta personalizada
-8. PRESENTAR   → Mostrar respuestas formateadas para copy-paste
-```
-
-## Paso 1 — Detectar la oferta
-
-**Con Playwright:** Tomar snapshot de la página activa. Leer título, URL, y contenido visible.
-
-**Sin Playwright:** Pedir al candidato que:
-- Comparta un screenshot del formulario (Read tool lee imágenes)
-- O pegue las preguntas del formulario como texto
-- O diga empresa + rol para que lo busquemos
-
-## Paso 2 — Identificar y buscar contexto
-
-1. Extraer nombre de empresa y título del rol de la página
-2. Buscar en `reports/` por nombre de empresa (Grep case-insensitive)
-3. Si hay match → cargar el report completo
-4. Si hay Section G → cargar los draft answers previos como base
-5. Si NO hay match → avisar y ofrecer ejecutar auto-pipeline rápido
-
-## Paso 3 — Detectar cambios en el rol
-
-Si el rol en pantalla difiere del evaluado:
-- **Avisar al candidato**: "El rol ha cambiado de [X] a [Y]. ¿Quieres que re-evalúe o adapto las respuestas al nuevo título?"
-- **Si adaptar**: Ajustar las respuestas al nuevo rol sin re-evaluar
-- **Si re-evaluar**: Ejecutar evaluación A-F completa, actualizar report, regenerar Section G
-- **Actualizar tracker**: Cambiar título del rol en applications.md si procede
-
-## Paso 4 — Analizar preguntas del formulario
-
-Identificar TODAS las preguntas visibles:
-- Campos de texto libre (cover letter, why this role, etc.)
-- Dropdowns (how did you hear, work authorization, etc.)
-- Yes/No (relocation, visa, etc.)
-- Campos de salario (range, expectation)
-- Upload fields (resume, cover letter PDF)
-
-Clasificar cada pregunta:
-- **Ya respondida en Section G** → adaptar la respuesta existente
-- **Nueva pregunta** → generar respuesta desde el report + cv.md
-
-## Paso 5 — Generar respuestas
-
-Para cada pregunta, generar la respuesta siguiendo:
-
-1. **Contexto del report**: Usar proof points del bloque B, historias STAR del bloque F
-2. **Section G previa**: Si existe una respuesta draft, usarla como base y refinar
-3. **Tono "I'm choosing you"**: Mismo framework del auto-pipeline
-4. **Especificidad**: Referenciar algo concreto del JD visible en pantalla
-5. **career-ops proof point**: Incluir en "Additional info" si hay campo para ello
-
-**Formato de output:**
-
-```
-## Respuestas para [Empresa] — [Rol]
-
-Basado en: Report #NNN | Score: X.X/5 | Arquetipo: [tipo]
+Help the user fill out an application form. They paste or show the form questions, and you draft answers tailored to the specific role. Always stop before submitting. The user makes the final call.
 
 ---
 
-### 1. [Pregunta exacta del formulario]
-> [Respuesta lista para copy-paste]
+## Step 1 — Identify the Listing
 
-### 2. [Siguiente pregunta]
-> [Respuesta]
+**With Playwright:** Take a snapshot of the active browser tab. Read title, URL, and company name.
+
+**Without Playwright:** Ask the user:
+- "Which company and role is this application for?"
+- Or: "Paste the form questions here and I'll draft answers."
+
+---
+
+## Step 2 — Load Context
+
+1. Check `reports/` for an existing evaluation report for this company and role (Grep by company name)
+2. If a report exists: load it — it contains profile match, eligibility analysis, and STAR story suggestions
+3. If no report exists: offer to evaluate the listing first: "I don't have a report for this role yet. Do you want me to evaluate it first? That will make the form answers much stronger. Paste the URL or JD to start."
+4. Read `profile-skills.md` and `cv.md` (if exists) for the user's background
+
+---
+
+## Step 3 — Detect the Questions
+
+If using Playwright: snapshot the form and identify all visible fields:
+- Text areas (cover letter, "why this role", "describe an achievement")
+- Short text inputs (years of experience, notice period, current salary)
+- Dropdowns (how did you hear about us, NYSC status, highest qualification)
+- Yes/No or radio buttons (willing to relocate, open to travel, right to work in Nigeria)
+- File upload prompts (resume, cover letter, transcript, NYSC certificate)
+
+If the user pasted questions: use those directly.
+
+---
+
+## Step 4 — Draft Answers
+
+For each question, draft a tailored answer. Follow these principles:
+
+**Tone:** Confident and specific. The user is a qualified candidate, not someone begging for an opportunity.
+
+**Framework by question type:**
+
+| Question type | Approach |
+|---------------|----------|
+| Why this role? | Map a specific thing in the JD to a specific thing in the user's background |
+| Why this company? | Name something concrete about the company — known programme, product, sector reputation |
+| Describe an achievement | Use the STAR structure. One quantified result. Be specific. |
+| Why should we hire you? | Name the top 2–3 things that make the user eligible and differentiated |
+| Current salary | State the number from profile.yml (if set) or suggest "I'd prefer to discuss this in the interview" |
+| Expected salary | Use the target from `config/profile.yml` |
+| NYSC status | State the user's exact status from `config/profile.yml`. If currently serving, state expected completion month/year |
+| Highest qualification | State exactly: degree type, discipline, institution, class — all from profile files |
+| Notice period | If not in profile: default to "Available immediately" for fresh graduates, or "4 weeks" for employed candidates |
+| How did you hear? | Honest: mention the job board or platform where the listing was found |
+| Willing to relocate? | Use preference from `config/profile.yml` |
+
+**Nigerian application specifics:**
+- Guarantee/surety questions: some older Nigerian employers ask for a guarantor. Acknowledge you can provide one — do not give contact details at this stage.
+- Character reference questions: acknowledge you can provide references when requested.
+- State of origin: answer from `config/profile.yml`. Never confuse with preferred work location.
+- Religion field (some forms still include): if present, answer from profile or leave for user to fill in personally — do not assume.
+
+---
+
+## Step 5 — Present Answers
+
+Format as a clear copy-paste block:
+
+```
+Application Answers — {Company} — {Role}
+Based on: {Report #NNN if available | profile-skills.md}
+
+────────────────────────────────────────
+
+1. {Exact question text}
+Answer:
+{Drafted answer}
+
+────────────────────────────────────────
+
+2. {Next question}
+Answer:
+{Drafted answer}
 
 ...
 
----
+────────────────────────────────────────
 
-Notas:
-- [Cualquier observación sobre el rol, cambios, etc.]
-- [Sugerencias de personalización que el candidato debería revisar]
+Notes:
+- {Any field that needs the user's personal decision (e.g., religion, guarantor contact)}
+- {Any answer that depends on information I don't have}
+- Review all answers before submitting. Do not submit until you are satisfied.
 ```
 
-## Paso 6 — Post-apply (opcional)
+---
 
-Si el candidato confirma que envió la aplicación:
-1. Actualizar estado en `applications.md` de "Evaluada" a "Aplicado"
-2. Actualizar Section G del report con las respuestas finales
-3. Sugerir siguiente paso: `/career-ops contacto` para LinkedIn outreach
+## Step 6 — STOP Before Submit
 
-## Scroll handling
+After presenting all answers:
 
-Si el formulario tiene más preguntas que las visibles:
-- Pedir al candidato que haga scroll y comparta otro screenshot
-- O que pegue las preguntas restantes
-- Procesar en iteraciones hasta cubrir todo el formulario
+> "Your answers are ready to review. Copy and paste them into the form. Check each one before you submit — I can't see the final form state.
+>
+> When you have submitted, let me know and I'll update your tracker status to Applied."
+
+**NEVER click Submit, Send, or any action button** on behalf of the user. This is a hard rule.
+
+---
+
+## Step 7 — Post-Submit Update (if user confirms)
+
+If the user confirms they submitted:
+1. Update the matching row in `data/applications.md`: status → `Applied`
+2. Add a note with today's date: "Applied {YYYY-MM-DD}"
+3. Suggest next step: "Want me to set a follow-up reminder for 7 days? I can flag it in the tracker."
+
+---
+
+## Scroll / Pagination
+
+If the form has more questions than visible in the current snapshot:
+- Ask the user to scroll and share the next section, or paste the remaining questions
+- Process in batches until all questions are covered

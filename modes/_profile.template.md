@@ -1,102 +1,155 @@
-# User Profile Context -- career-ops
+# User Profile Context — naija-job-ops
 
 <!-- ============================================================
      THIS FILE IS YOURS. It will NEVER be auto-updated.
      
-     Customize everything here: your archetypes, narrative,
-     proof points, negotiation scripts, location policy.
+     Customize everything here: your target archetypes, narrative,
+     proof points, negotiation scripts, and location preferences.
      
      The system reads _shared.md (updatable) first, then this
      file (your overrides). Your customizations always win.
+     
+     Instructions: copy this file to modes/_profile.md and fill
+     it in. Replace every section marked <!-- Replace --> with
+     your actual information.
      ============================================================ -->
 
 ## Your Target Roles
 
-<!-- Replace these with YOUR target roles. Examples:
-     - Senior Backend Engineer / Staff Platform Engineer
-     - AI Product Manager / Technical PM
-     - Data Engineer / ML Engineer
-     - DevOps / SRE / Platform
-     Whatever you're optimizing for. -->
+<!-- Replace these with YOUR target archetypes.
+     Delete the rows that don't apply to you.
+     Add rows for roles you want that aren't listed. -->
 
-| Archetype | Thematic axes | What they buy |
-|-----------|---------------|---------------|
-| **AI Platform / LLMOps Engineer** | Evaluation, observability, reliability, pipelines | Someone who puts AI in production with metrics |
-| **Agentic Workflows / Automation** | HITL, tooling, orchestration, multi-agent | Someone who builds reliable agent systems |
-| **Technical AI Product Manager** | GenAI/Agents, PRDs, discovery, delivery | Someone who translates business to AI product |
-| **AI Solutions Architect** | Hyperautomation, enterprise, integrations | Someone who designs end-to-end AI architectures |
-| **AI Forward Deployed Engineer** | Client-facing, fast delivery, prototyping | Someone who delivers AI solutions to clients fast |
-| **AI Transformation Lead** | Change management, adoption, org enablement | Someone who leads AI transformation in an org |
+| Archetype | What the role is about | What they're buying |
+|-----------|------------------------|---------------------|
+| **Software Engineer (Backend)** | APIs, databases, server-side logic, system design | Someone who ships reliable backend systems |
+| **Software Engineer (Mobile)** | Android or iOS development, cross-platform | Someone who builds polished mobile products |
+| **Data Analyst** | SQL, dashboards, business insights, reporting | Someone who turns data into decisions |
+| **Product Manager** | Discovery, PRDs, metrics, stakeholder alignment | Someone who owns the roadmap and delivery |
+| **Business Analyst** | Requirements gathering, process mapping, documentation | Someone who bridges business and technical teams |
+| **Finance Officer / Analyst** | Financial reporting, budgeting, controls, reconciliation | Someone who manages money with accuracy |
+| **Graduate Trainee** | Rotational programme, broad exposure, high-growth potential | A candidate who is trainable, driven, and high-potential |
+| **Management Trainee** | Leadership track, operations, cross-functional exposure | Someone who can lead teams and manage programmes |
 
 ## Your Adaptive Framing
 
-<!-- Map YOUR projects to each archetype. Example:
-     | Platform / LLMOps | My monitoring dashboard project | article-digest.md |
-     | Agentic | My chatbot with HITL escalation | cv.md section 3 | -->
+<!-- For each archetype above, map your strongest angle.
+     Replace the examples with YOUR actual projects and experience.
+     Proof point sources: profile-skills.md, cv.md, or a specific project. -->
 
-| If the role is... | Emphasize about you... | Proof point sources |
-|-------------------|------------------------|---------------------|
-| Platform / LLMOps | Production systems builder, observability, evals | article-digest.md + cv.md |
-| Agentic / Automation | Multi-agent orchestration, HITL, reliability | article-digest.md + cv.md |
-| Technical AI PM | Product discovery, PRDs, metrics | cv.md + article-digest.md |
-| Solutions Architect | System design, integrations, enterprise-ready | article-digest.md + cv.md |
-| Forward Deployed Engineer | Fast delivery, client-facing, prototype to prod | cv.md + article-digest.md |
-| AI Transformation Lead | Change management, team enablement, adoption | cv.md + article-digest.md |
+| If the role is... | Lead with... | Best proof point |
+|-------------------|--------------|------------------|
+| Backend Engineer | [Your strongest backend project, e.g. built REST API serving 10K daily users] | cv.md / profile-skills.md |
+| Mobile Engineer | [Your Android/iOS project, e.g. published Play Store app with X installs] | cv.md / profile-skills.md |
+| Data Analyst | [Your analysis project, e.g. built dashboard tracking KPIs for NYSC CDS group] | cv.md / profile-skills.md |
+| Product Manager | [Your PM experience, e.g. led feature from discovery to launch] | cv.md |
+| Business Analyst | [Your BA experience, e.g. mapped procurement process saving 20% time] | cv.md |
+| Finance Analyst | [Your finance experience, e.g. reconciled ₦50M monthly ledger with zero errors] | cv.md |
+| Graduate Trainee | Academic achievement (class of degree) + NYSC + early initiative | profile-skills.md |
+| Management Trainee | Leadership during NYSC, CDS coordinator role, team project | profile-skills.md |
 
-## Your Exit Narrative
+## Your Narrative
 
-<!-- Replace with YOUR story. This frames everything. -->
+<!-- Replace this with YOUR story. This frames your entire application.
+     Answer: Where did you come from → what did you build/prove → where are you going?
+     
+     Example:
+     "BSc Computer Science (Second Class Upper, UNILAG). Built 3 production web
+     applications during undergrad. Completed NYSC in Osun State where I led a
+     free coding bootcamp for 40 corps members as CDS coordinator. Now targeting
+     software engineering roles in Lagos fintech companies where I can ship
+     production-grade systems and grow into a senior engineer within 3 years." -->
 
-Use the candidate's exit story from `config/profile.yml` to frame ALL content:
-- **In PDF Summaries:** Bridge from past to future
-- **In STAR stories:** Reference proof points from article-digest.md
-- **In Draft Answers:** The transition narrative appears in the first response
+[Write your 2–4 sentence narrative here]
 
-## Your Cross-cutting Advantage
+## Your NYSC Differentiator
 
-<!-- What's your "signature move"? What do you do that others can't? -->
+<!-- NYSC is often more than an eligibility checkbox — it can be a proof point.
+     Did you do anything notable? CDS leadership, community project, skill gained?
+     
+     Examples:
+     - CDS: Coding bootcamp coordinator, 40 participants, 12 completed projects
+     - Community project: Built school management system for primary school
+     - Placement: IT department of a fintech, gained hands-on Django experience
+     
+     Leave blank if your NYSC was standard — don't force a story that isn't there. -->
 
-Frame profile as **"Technical builder with real-world proof"** that adapts framing to the role.
+[Describe any notable NYSC experience here, or leave blank]
 
-## Your Portfolio / Demo
+## Your Strongest Proof Points
 
-<!-- If you have a live demo, dashboard, or public project:
-     url: https://yoursite.dev/demo
-     password: demo-2026
-     when_to_share: "LLMOps, AI Platform roles" -->
+<!-- List your 3–5 most convincing achievements. Be specific: numbers, outcomes.
+     These get pulled into cover letters, CV summaries, and STAR stories.
+     
+     Examples:
+     - Built a REST API in Django serving 10,000 daily requests with 99.5% uptime
+     - Led a 6-person CDS team that delivered a voter education app before the 2023 elections
+     - Maintained ₦45M monthly petty cash ledger with zero reconciliation errors for 8 months
+     - Graduated Second Class Upper (3.68 GPA) from a university with JAMB > 280 -->
 
-If you have a live demo/dashboard (check profile.yml), offer access in applications for relevant roles.
+- [Proof point 1 — quantified if possible]
+- [Proof point 2 — quantified if possible]
+- [Proof point 3 — quantified if possible]
 
 ## Your Comp Targets
 
-<!-- Research comp ranges for YOUR target roles -->
+<!-- Set your salary expectations in naira. Research current ranges at:
+     - Glassdoor Nigeria
+     - jobberman.com salary insights
+     - LinkedIn salary data for Nigeria
+     - Ask peers in your target companies
+     
+     Format: minimum you will accept / target you will negotiate for / your stretch goal
+     Update this whenever market data changes. -->
 
-**General guidance:**
-- Use WebSearch for current market data (Glassdoor, Levels.fyi, Blind)
-- Frame by role title, not by skills
-- Contractor rates are typically 30-50% higher than employee base
+**Entry-level (0–2 years):**
+- Minimum acceptable: ₦[X]
+- Target: ₦[Y]
+- Stretch: ₦[Z]
+
+**For internships / IT / industrial training:**
+- Monthly stipend minimum: ₦[X]
 
 ## Your Negotiation Scripts
 
-<!-- Adapt to YOUR situation, currency, location -->
+<!-- Adapt these to your situation. Practice saying them out loud. -->
 
-**Salary expectations:**
-> "Based on market data for this role, I'm targeting [RANGE from profile.yml]. I'm flexible on structure -- what matters is the total package and the opportunity."
+**When asked salary expectations:**
+> "Based on current market rates for [role title] in Lagos, I'm targeting [₦RANGE from above]. I'm open to discussing the full package including benefits."
 
-**Geographic discount pushback:**
-> "The roles I'm competitive for are output-based, not location-based. My track record doesn't change based on postal code."
+**When an offer comes in below target:**
+> "Thank you for the offer. I'm genuinely excited about [company] because of [specific reason]. The offer is at ₦[X] and I was targeting ₦[Y] based on market research. Is there flexibility to get closer to [₦Y]?"
 
-**When offered below target:**
-> "I'm comparing with opportunities in the [higher range]. I'm drawn to [company] because of [reason]. Can we explore [target]?"
+**When asked about NYSC status (if currently serving):**
+> "I'm currently in my NYSC service year, completing in [month/year]. I'm available to start immediately and have [N] months remaining."
+
+**When asked about relocation (if you're willing):**
+> "I'm based in [city] currently and open to relocating to [Lagos/Abuja/Port Harcourt] for the right role. I can be in [city] within [N] weeks."
 
 ## Your Location Policy
 
-<!-- Adapt to YOUR situation -->
+<!-- Adapt to your actual situation. -->
 
-**In forms:**
-- Follow your actual availability from profile.yml
-- Specify timezone overlap in free-text fields
+**In application forms:**
+- State of origin: [your state] — answer honestly, this is a legal document
+- Current location: [your city, state]
+- Willing to relocate: [Yes/No/Yes to specific cities]
 
-**In evaluations (scoring):**
-- Remote dimension for hybrid outside your country: score **3.0** (not 1.0)
-- Only score 1.0 if JD says "must be on-site 4-5 days/week, no exceptions"
+**In scoring:**
+- A role in your preferred city or remote: score full location points
+- A role requiring relocation to a city you'd accept: score 3/5 on location
+- A role in a city you'd refuse: score 1/5 on location — flag it clearly
+
+## What to Avoid
+
+<!-- Roles, companies, or conditions that are deal-breakers for you.
+     The system will flag these with ⚠ even if the score is otherwise high.
+     
+     Examples:
+     - Companies that charge application fees (automatic scam flag)
+     - Roles requiring >2 years experience when you have 0
+     - Night shift or rotating shift work
+     - Any role where NYSC completion is a hard requirement and you haven't completed yet -->
+
+- Application fees — always flag as Suspicious
+- [Add your own deal-breakers here]

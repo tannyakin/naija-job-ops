@@ -1,7 +1,7 @@
 {
-  "name": "career-ops",
+  "name": "naija-job-ops",
   "version": "1.0.0",
-  "description": "AI-powered job search pipeline built on Claude Code",
+  "description": "AI-powered job search pipeline for Nigeria, built on Claude Code",
   "scripts": {
     "doctor": "node doctor.mjs",
     "verify": "node verify-pipeline.mjs",
@@ -21,13 +21,16 @@
     "job-search",
     "claude-code",
     "career",
-    "automation"
+    "automation",
+    "nigeria",
+    "nysc",
+    "graduate-trainee"
   ],
-  "author": "Santiago Fernández de Valderrama <hi@santifer.io> (https://santifer.io)",
-  "homepage": "https://santifer.io",
+  "author": "buddingdevT",
+  "homepage": "https://github.com/buddingdevT/naija-job-ops",
   "repository": {
     "type": "git",
-    "url": "https://github.com/santifer/career-ops"
+    "url": "https://github.com/buddingdevT/naija-job-ops"
   },
   "license": "MIT",
   "dependencies": {

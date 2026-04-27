@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * followup-cadence.mjs — Follow-up Cadence Tracker for career-ops
+ * followup-cadence.mjs — Follow-up Cadence Tracker for naija-job-ops
  *
  * Parses applications.md + follow-ups.md, calculates follow-up cadence
  * for active applications, extracts contacts, and flags overdue entries.
@@ -47,11 +47,10 @@ const ALIASES = {
   'applied': 'applied', 'sent': 'applied',
   'respondido': 'responded',
   'entrevista': 'interview',
-  'oferta': 'offer',
-  'rechazado': 'rejected', 'rechazada': 'rejected',
-  'descartado': 'discarded', 'descartada': 'discarded',
-  'cerrada': 'discarded', 'cancelada': 'discarded',
-  'no aplicar': 'skip', 'no_aplicar': 'skip', 'monitor': 'skip', 'geo blocker': 'skip',
+  'offer': 'offer',
+  'rejected': 'rejected',
+  'discarded': 'discarded',
+  'skip': 'skip',
 };
 
 const ACTIONABLE_STATUSES = ['applied', 'responded', 'interview'];

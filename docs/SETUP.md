@@ -11,8 +11,8 @@
 ### 1. Clone and install
 
 ```bash
-git clone https://github.com/santifer/career-ops.git
-cd career-ops
+git clone https://github.com/tannyakin/naija-job-ops.git
+cd naija-job-ops
 npm install
 npx playwright install chromium   # Required for PDF generation
 ```
@@ -23,13 +23,13 @@ npx playwright install chromium   # Required for PDF generation
 cp config/profile.example.yml config/profile.yml
 ```
 
-Edit `config/profile.yml` with your personal details: name, email, target roles, narrative, proof points.
+Edit `config/profile.yml` with your personal details: name, email, target roles, location, NYSC status, salary target.
 
-### 3. Add your CV
+### 3. Add your skills profile
 
-Create `cv.md` in the project root with your full CV in markdown format. This is the source of truth for all evaluations and PDFs.
+Create `profile-skills.md` in the project root with your skills, education, and experience summary. This is the primary source of truth for all evaluations. If you have a CV, you can also create `cv.md` — but `profile-skills.md` alone is enough to start.
 
-(Optional) Create `article-digest.md` with proof points from your portfolio projects/articles.
+Run `/naija-jobs onboard` to have the system guide you through creating both files.
 
 ### 4. Configure portals
 
@@ -39,7 +39,7 @@ cp templates/portals.example.yml portals.yml
 
 Edit `portals.yml`:
 - Update `title_filter.positive` with keywords matching your target roles
-- Add companies you want to track in `tracked_companies`
+- Add Nigerian companies you want to track in `tracked_companies`
 - Customize `search_queries` for your preferred job boards
 
 ### 5. Start using
@@ -50,31 +50,35 @@ Open Claude Code in this directory:
 claude
 ```
 
-Then paste a job offer URL or description. Career-ops will automatically evaluate it, generate a report, create a tailored PDF, and track it.
+Then paste a job listing URL or description. naija-job-ops will automatically evaluate it, generate a report, create a tailored PDF, and track it.
 
 ## Available Commands
 
 | Action | How |
 |--------|-----|
-| Evaluate an offer | Paste a URL or JD text |
-| Search for offers | `/career-ops scan` |
-| Process pending URLs | `/career-ops pipeline` |
-| Generate a PDF | `/career-ops pdf` |
-| Batch evaluate | `/career-ops batch` |
-| Check tracker status | `/career-ops tracker` |
-| Fill application form | `/career-ops apply` |
+| Evaluate a listing | Paste a URL or JD text |
+| Full onboarding | `/naija-jobs onboard` |
+| Scan Nigerian portals | `/naija-jobs scan` |
+| Process pending URLs | `/naija-jobs pipeline` |
+| Generate a PDF | `/naija-jobs pdf` |
+| Batch evaluate | `/naija-jobs batch` |
+| Check tracker status | `/naija-jobs tracker` |
+| Fill application form | `/naija-jobs apply` |
+| Compare listings | `/naija-jobs compare` |
+| LinkedIn outreach | `/naija-jobs outreach` |
+| Company research | `/naija-jobs deep` |
 
 ## Verify Setup
 
 ```bash
-node cv-sync-check.mjs      # Check configuration
-node verify-pipeline.mjs     # Check pipeline integrity
+npm run doctor              # Full health check (recommended)
+node verify-pipeline.mjs    # Check pipeline integrity
 ```
 
 ## Build Dashboard (Optional)
 
 ```bash
 cd dashboard
-go build -o career-dashboard .
-./career-dashboard --path ..  # Opens TUI pipeline viewer
+go build -o naija-dashboard .
+./naija-dashboard --path ..  # Opens TUI pipeline viewer
 ```

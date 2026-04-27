@@ -1,71 +1,85 @@
-# Career-Ops Profile Configuration
+# naija-job-ops Profile Configuration
 # Copy this file to config/profile.yml and fill in your details.
 # This is the single source of truth for your personal data across all modes.
 
 candidate:
-  full_name: "Jane Smith"
-  email: "jane@example.com"
-  phone: "+1-555-0123"
-  location: "San Francisco, CA"
-  linkedin: "linkedin.com/in/janesmith"
-  portfolio_url: "https://janesmith.dev"
-  github: "github.com/janesmith"
-  twitter: "https://x.com/janesmith"
-  # (Optional) Canva resume design ID for visual CV generation via /career-ops pdf.
-  # Find it in your Canva design URL: https://www.canva.com/design/DAxxxxxxx/...
-  # The ID starts with "D" and is 11 characters long.
-  # canva_resume_design_id: "DAxxxxxxxxx"
+  full_name: "Chukwuemeka Okafor"
+  email: "emeka.okafor@email.com"
+  phone: "+234 801 234 5678"
+  location_state: "Lagos"
+  location_city: "Ikeja"
+  linkedin: "linkedin.com/in/emekaokafor"
+  github: "github.com/emekaokafor"      # optional
+  portfolio_url: ""                      # optional — link to portfolio, GitHub Pages, etc.
+
+education:
+  level: "BSc"                           # OND | HND | BSc | MSc | PhD
+  discipline: "Computer Science"
+  institution: "University of Lagos"
+  class_of_degree: "Second Class Upper"  # First Class | Second Class Upper | Second Class Lower | Pass | HND Upper | HND Lower
+  graduation_year: 2024
+
+nysc_status: "completed"                 # yet-to-serve | currently-serving | completed | exempted
+# If currently-serving, uncomment the line below:
+# nysc_expected_completion: "October 2026"
+# nysc_state_of_service: "Rivers"
 
 target_roles:
-  # Your North Star roles — what you're optimizing for
+  # List the roles you are actively targeting
   primary:
-    - "Senior AI Engineer"
-    - "Staff ML Engineer"
-  # Archetypes help the evaluation system score fit
+    - "Software Engineer (Backend)"
+    - "Junior Software Developer"
+    - "Graduate Trainee — Technology"
+  # Archetypes from _shared.md that best describe you
   archetypes:
-    - name: "AI/ML Engineer"
-      level: "Senior/Staff"
-      fit: "primary"        # primary = dream role, secondary = good fit, adjacent = stretch
-    - name: "AI Product Manager"
-      level: "Senior"
+    - name: "Tech — Software Engineering"
+      fit: "primary"     # primary = ideal, secondary = good fit, adjacent = stretch
+    - name: "Graduate/Management Trainee"
       fit: "secondary"
-    - name: "Solutions Architect"
-      level: "Mid-Senior"
+    - name: "Tech — Data and Analytics"
       fit: "adjacent"
 
-narrative:
-  # Your professional headline (1 line)
-  headline: "ML Engineer turned AI product builder"
-  # Your exit story — what makes you unique
-  exit_story: "Built and sold my SaaS after 5 years. Now focused on applied AI at scale."
-  # Your top 3-5 superpowers
-  superpowers:
-    - "End-to-end ML pipelines"
-    - "Fast prototyping (idea to prod in 2 weeks)"
-    - "Cross-functional communication"
-  # Proof points — projects, articles, case studies with measurable impact
-  proof_points:
-    - name: "Project Alpha"
-      url: "https://janesmith.dev/project-alpha"
-      hero_metric: "Reduced inference latency 40%"
-    - name: "Open Source Tool"
-      url: "https://github.com/janesmith/tool"
-      hero_metric: "2K+ GitHub stars"
-  # Optional: dashboard/demo URL with credentials
-  # dashboard:
-  #   url: "https://janesmith.dev/demo"
-  #   password: "demo-2026"
+preferred_locations:
+  # List Nigerian cities or states you are open to working in
+  # Use "Remote" for remote-only preference
+  - "Lagos"
+  - "Abuja"
+  - "Remote"
+
+work_mode_preference: "any"              # remote | hybrid | onsite | any
 
 compensation:
-  target_range: "$150K-200K"     # Your target total comp
-  currency: "USD"
-  minimum: "$120K"               # Walk-away number
-  location_flexibility: "Remote preferred, 1 week/month on-site possible"
+  salary_expectation_ngn_monthly: 250000   # your target monthly gross salary in Naira
+  currency: "NGN"
+  minimum_ngn_monthly: 150000             # walk-away number
+  open_to_negotiation: true
 
-location:
-  country: "United States"
-  city: "San Francisco"
-  timezone: "PST"
-  visa_status: "No sponsorship needed"
-  # For remote roles outside your country:
-  # onsite_availability: "1 week/month in any city"
+narrative:
+  # Your professional headline — how you would describe yourself in one line
+  headline: "Backend developer with 2 years of Python and Django experience, seeking first full-time role"
+  # Your top 3–5 strengths or differentiators
+  superpowers:
+    - "Python (Django, FastAPI) — 2 years hands-on"
+    - "Built a campus event app used by 300+ students during NYSC"
+    - "Strong SQL and database design skills"
+  # Any notable projects, articles, or achievements worth referencing
+  proof_points:
+    - name: "Campus Event Management System"
+      description: "Built during NYSC CDS — a web app used by 300+ students at my PPA institution"
+      url: ""           # link if publicly available
+    - name: "Open source contribution"
+      description: "Contributed bug fixes to a Django authentication library"
+      url: ""
+
+# Language setting
+# Uncomment and set if you are targeting non-English markets
+# language:
+#   modes_dir: "modes"     # default — change to modes/de, modes/fr etc. for other markets
+
+# Additional context for the evaluation system
+# Add any information that helps the system make better recommendations
+notes: >
+  I completed my NYSC primary assignment at a secondary school in Osun State,
+  where I ran a coding club for students. I am particularly interested in fintech
+  and FMCG companies with structured graduate programmes. I prefer companies with
+  clear promotion timelines. I am not interested in sales or customer-facing roles.

@@ -8,10 +8,10 @@ These files contain your personal data, customizations, and work product. Update
 
 | File | Purpose |
 |------|---------|
-| `cv.md` | Your CV in markdown |
-| `config/profile.yml` | Your identity, targets, comp range |
-| `modes/_profile.md` | Your archetypes, narrative, negotiation scripts |
-| `article-digest.md` | Your proof points from portfolio |
+| `cv.md` | Your CV in markdown (optional — system works without it) |
+| `profile-skills.md` | Your skills profile (primary source of truth when no CV) |
+| `modes/_profile.md` | Your archetypes, narrative, negotiation scripts, deal-breakers |
+| `config/profile.yml` | Your identity, targets, salary range, NYSC status |
 | `interview-prep/story-bank.md` | Your accumulated STAR+R stories |
 | `portals.yml` | Your customized company list |
 | `data/applications.md` | Your application tracker |
@@ -29,22 +29,22 @@ These files contain system logic, scripts, templates, and instructions that impr
 | File | Purpose |
 |------|---------|
 | `modes/_shared.md` | Scoring system, global rules, tools |
-| `modes/oferta.md` | Evaluation mode instructions |
+| `modes/eval.md` | Evaluation mode instructions |
 | `modes/pdf.md` | PDF generation instructions |
 | `modes/scan.md` | Portal scanner instructions |
 | `modes/batch.md` | Batch processing instructions |
 | `modes/apply.md` | Application assistant instructions |
 | `modes/auto-pipeline.md` | Auto-pipeline instructions |
-| `modes/contacto.md` | LinkedIn outreach instructions |
+| `modes/outreach.md` | LinkedIn outreach instructions |
 | `modes/deep.md` | Research prompt instructions |
-| `modes/ofertas.md` | Comparison instructions |
+| `modes/compare.md` | Comparison instructions |
 | `modes/pipeline.md` | Pipeline processing instructions |
 | `modes/project.md` | Project evaluation instructions |
 | `modes/tracker.md` | Tracker instructions |
 | `modes/training.md` | Training evaluation instructions |
 | `modes/patterns.md` | Pattern analysis instructions |
 | `modes/followup.md` | Follow-up cadence instructions |
-| `modes/de/*` | German language modes |
+| `modes/onboard.md` | Onboarding mode instructions |
 | `CLAUDE.md` | Agent instructions |
 | `AGENTS.md` | Codex instructions |
 | `*.mjs` | Utility scripts |

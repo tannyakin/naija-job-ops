@@ -7,8 +7,8 @@ When the user asks to prep for an interview at a specific company+role, or when 
 1. **Company name** and **role title** (required)
 2. **Evaluation report** in `reports/` (if exists) — read for archetype, gaps, matched proof points
 3. **Story bank** at `interview-prep/story-bank.md` — read for existing prepared stories
-4. **CV** at `cv.md` + `article-digest.md` — read for proof points
-5. **Profile** at `config/profile.yml` + `modes/_profile.md` — read for candidate context
+4. **CV** at `cv.md` or `profile-skills.md` — read for proof points
+5. **Profile** at `modes/_profile.md` + `config/profile.yml` — read for candidate context, narrative, and archetypes
 
 ## Step 1 — Research
 
@@ -74,7 +74,7 @@ Questions tied to the specific job description (archetype-aware).
 For each: the question, why they're likely asking it (what JD requirement it maps to), and the candidate's best angle.
 
 ### Background Red Flags
-Questions the interviewer will probably ask about gaps, transitions, or unusual elements in the candidate's background. Read `_profile.md` and `cv.md` to identify what might raise questions.
+Questions the interviewer will probably ask about gaps, transitions, or unusual elements in the candidate's background. Read `modes/_profile.md` and `cv.md` (or `profile-skills.md`) to identify what might raise questions.
 For each: the likely question, why it comes up, and a recommended framing (honest, specific, forward-looking — never defensive).
 
 ## Step 5 — Story Bank Mapping

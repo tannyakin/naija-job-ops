@@ -1,272 +1,368 @@
-# Career-Ops
+# Naija Job Ops
 
-[English](README.md) | [Español](README.es.md) | [Português (Brasil)](README.pt-BR.md) | [한국어](README.ko-KR.md) | [日本語](README.ja.md) | [Русский](README.ru.md)
-
-<p align="center">
-  <a href="https://x.com/santifer"><img src="docs/hero-banner.jpg" alt="Career-Ops — Multi-Agent Job Search System" width="800"></a>
-</p>
-
-<p align="center">
-  <em>I spent months applying to jobs the hard way. So I engineered the system I wish I had.</em><br>
-  Companies use AI to filter candidates. <strong>I gave candidates AI to <em>choose</em> companies.</strong><br>
-  <em>Now it's open source.</em>
-</p>
-
-<p align="center">
-  <img src="https://img.shields.io/badge/Claude_Code-000?style=flat&logo=anthropic&logoColor=white" alt="Claude Code">
-  <img src="https://img.shields.io/badge/OpenCode-111827?style=flat&logo=terminal&logoColor=white" alt="OpenCode">
-  <img src="https://img.shields.io/badge/Codex_(soon)-6B7280?style=flat&logo=openai&logoColor=white" alt="Codex">
-  <img src="https://img.shields.io/badge/Node.js-339933?style=flat&logo=node.js&logoColor=white" alt="Node.js">
-  <img src="https://img.shields.io/badge/Go-00ADD8?style=flat&logo=go&logoColor=white" alt="Go">
-  <img src="https://img.shields.io/badge/Playwright-2EAD33?style=flat&logo=playwright&logoColor=white" alt="Playwright">
-  <img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="MIT">
-  <a href="https://discord.gg/8pRpHETxa4"><img src="https://img.shields.io/badge/Discord-5865F2?style=flat&logo=discord&logoColor=white" alt="Discord"></a>
-  <br>
-  <img src="https://img.shields.io/badge/EN-blue?style=flat" alt="EN">
-  <img src="https://img.shields.io/badge/ES-red?style=flat" alt="ES">
-  <img src="https://img.shields.io/badge/DE-grey?style=flat" alt="DE">
-  <img src="https://img.shields.io/badge/FR-blue?style=flat" alt="FR">
-  <img src="https://img.shields.io/badge/PT--BR-green?style=flat" alt="PT-BR">
-  <img src="https://img.shields.io/badge/KO-white?style=flat" alt="KO">
-  <img src="https://img.shields.io/badge/JA-red?style=flat" alt="JA">
-</p>
-
----
-
-<p align="center">
-  <img src="docs/demo.gif" alt="Career-Ops Demo" width="800">
-</p>
-
-<p align="center"><strong>740+ job listings evaluated · 100+ personalized CVs · 1 dream role landed</strong></p>
-
-<p align="center"><a href="https://discord.gg/8pRpHETxa4"><img src="https://img.shields.io/badge/Join_the_community-Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white" alt="Discord"></a></p>
-
-## What Is This
-
-Career-Ops turns any AI coding CLI into a full job search command center. Instead of manually tracking applications in a spreadsheet, you get an AI-powered pipeline that:
-
-- **Evaluates offers** with a structured A-F scoring system (10 weighted dimensions)
-- **Generates tailored PDFs** -- ATS-optimized CVs customized per job description
-- **Scans portals** automatically (Greenhouse, Ashby, Lever, company pages)
-- **Processes in batch** -- evaluate 10+ offers in parallel with sub-agents
-- **Tracks everything** in a single source of truth with integrity checks
-
-> **Important: This is NOT a spray-and-pray tool.** Career-ops is a filter -- it helps you find the few offers worth your time out of hundreds. The system strongly recommends against applying to anything scoring below 4.0/5. Your time is valuable, and so is the recruiter's. Always review before submitting.
-
-Career-ops is agentic: Claude Code navigates career pages with Playwright, evaluates fit by reasoning about your CV vs the job description (not keyword matching), and adapts your resume per listing.
-
-> **Heads up: the first evaluations won't be great.** The system doesn't know you yet. Feed it context -- your CV, your career story, your proof points, your preferences, what you're good at, what you want to avoid. The more you nurture it, the better it gets. Think of it as onboarding a new recruiter: the first week they need to learn about you, then they become invaluable.
-
-Built by someone who used it to evaluate 740+ job offers, generate 100+ tailored CVs, and land a Head of Applied AI role. [Read the full case study](https://santifer.io/career-ops-system).
-
-## Features
-
-| Feature | Description |
-|---------|-------------|
-| **Auto-Pipeline** | Paste a URL, get a full evaluation + PDF + tracker entry |
-| **6-Block Evaluation** | Role summary, CV match, level strategy, comp research, personalization, interview prep (STAR+R) |
-| **Interview Story Bank** | Accumulates STAR+Reflection stories across evaluations -- 5-10 master stories that answer any behavioral question |
-| **Negotiation Scripts** | Salary negotiation frameworks, geographic discount pushback, competing offer leverage |
-| **ATS PDF Generation** | Keyword-injected CVs with Space Grotesk + DM Sans design |
-| **Portal Scanner** | 45+ companies pre-configured (Anthropic, OpenAI, ElevenLabs, Retool, n8n...) + custom queries across Ashby, Greenhouse, Lever, Wellfound |
-| **Batch Processing** | Parallel evaluation with `claude -p` workers |
-| **Dashboard TUI** | Terminal UI to browse, filter, and sort your pipeline |
-| **Human-in-the-Loop** | AI evaluates and recommends, you decide and act. The system never submits an application -- you always have the final call |
-| **Pipeline Integrity** | Automated merge, dedup, status normalization, health checks |
-
-## Quick Start
-
-```bash
-# 1. Clone and install
-git clone https://github.com/santifer/career-ops.git
-cd career-ops && npm install
-npx playwright install chromium   # Required for PDF generation
-
-# 2. Check setup
-npm run doctor                     # Validates all prerequisites
-
-# 3. Configure
-cp config/profile.example.yml config/profile.yml  # Edit with your details
-cp templates/portals.example.yml portals.yml       # Customize companies
-
-# 4. Add your CV
-# Create cv.md in the project root with your CV in markdown
-
-# 5. Personalize with Claude
-claude   # Open Claude Code in this directory
-
-# Then ask Claude to adapt the system to you:
-# "Change the archetypes to backend engineering roles"
-# "Translate the modes to English"
-# "Add these 5 companies to portals.yml"
-# "Update my profile with this CV I'm pasting"
-
-# 6. Start using
-# Paste a job URL or run /career-ops
-```
-
-> **The system is designed to be customized by Claude itself.** Modes, archetypes, scoring weights, negotiation scripts -- just ask Claude to change them. It reads the same files it uses, so it knows exactly what to edit.
-
-See [docs/SETUP.md](docs/SETUP.md) for the full setup guide.
-
-## Usage
-
-Career-ops is a single slash command with multiple modes:
-
-```
-/career-ops                → Show all available commands
-/career-ops {paste a JD}   → Full auto-pipeline (evaluate + PDF + tracker)
-/career-ops scan           → Scan portals for new offers
-/career-ops pdf            → Generate ATS-optimized CV
-/career-ops batch          → Batch evaluate multiple offers
-/career-ops tracker        → View application status
-/career-ops apply          → Fill application forms with AI
-/career-ops pipeline       → Process pending URLs
-/career-ops contacto       → LinkedIn outreach message
-/career-ops deep           → Deep company research
-/career-ops training       → Evaluate a course/cert
-/career-ops project        → Evaluate a portfolio project
-```
-
-Or just paste a job URL or description directly -- career-ops auto-detects it and runs the full pipeline.
-
-## How It Works
-
-```
-You paste a job URL or description
-        │
-        ▼
-┌──────────────────┐
-│  Archetype       │  Classifies: LLMOps / Agentic / PM / SA / FDE / Transformation
-│  Detection       │
-└────────┬─────────┘
-         │
-┌────────▼─────────┐
-│  A-F Evaluation  │  Match, gaps, comp research, STAR stories
-│  (reads cv.md)   │
-└────────┬─────────┘
-         │
-    ┌────┼────┐
-    ▼    ▼    ▼
- Report  PDF  Tracker
-  .md   .pdf   .tsv
-```
-
-## Pre-configured Portals
-
-The scanner comes with **45+ companies** ready to scan and **19 search queries** across major job boards. Copy `templates/portals.example.yml` to `portals.yml` and add your own:
-
-**AI Labs:** Anthropic, OpenAI, Mistral, Cohere, LangChain, Pinecone
-**Voice AI:** ElevenLabs, PolyAI, Parloa, Hume AI, Deepgram, Vapi, Bland AI
-**AI Platforms:** Retool, Airtable, Vercel, Temporal, Glean, Arize AI
-**Contact Center:** Ada, LivePerson, Sierra, Decagon, Talkdesk, Genesys
-**Enterprise:** Salesforce, Twilio, Gong, Dialpad
-**LLMOps:** Langfuse, Weights & Biases, Lindy, Cognigy, Speechmatics
-**Automation:** n8n, Zapier, Make.com
-**European:** Factorial, Attio, Tinybird, Clarity AI, Travelperk
-
-**Job boards searched:** Ashby, Greenhouse, Lever, Wellfound, Workable, RemoteFront
-
-## Dashboard TUI
-
-The built-in terminal dashboard lets you browse your pipeline visually:
-
-```bash
-cd dashboard
-go build -o career-dashboard .
-./career-dashboard --path ..
-```
-
-Features: 6 filter tabs, 4 sort modes, grouped/flat view, lazy-loaded previews, inline status changes.
-
-## Project Structure
-
-```
-career-ops/
-├── CLAUDE.md                    # Agent instructions
-├── cv.md                        # Your CV (create this)
-├── article-digest.md            # Your proof points (optional)
-├── config/
-│   └── profile.example.yml      # Template for your profile
-├── modes/                       # 14 skill modes
-│   ├── _shared.md               # Shared context (customize this)
-│   ├── oferta.md                # Single evaluation
-│   ├── pdf.md                   # PDF generation
-│   ├── scan.md                  # Portal scanner
-│   ├── batch.md                 # Batch processing
-│   └── ...
-├── templates/
-│   ├── cv-template.html         # ATS-optimized CV template
-│   ├── portals.example.yml      # Scanner config template
-│   └── states.yml               # Canonical statuses
-├── batch/
-│   ├── batch-prompt.md          # Self-contained worker prompt
-│   └── batch-runner.sh          # Orchestrator script
-├── dashboard/                   # Go TUI pipeline viewer
-├── data/                        # Your tracking data (gitignored)
-├── reports/                     # Evaluation reports (gitignored)
-├── output/                      # Generated PDFs (gitignored)
-├── fonts/                       # Space Grotesk + DM Sans
-├── docs/                        # Setup, customization, architecture
-└── examples/                    # Sample CV, report, proof points
-```
-
-## Tech Stack
+AI-powered job search pipeline for Nigerian graduates and NYSC corps members — built on Claude Code.
 
 ![Claude Code](https://img.shields.io/badge/Claude_Code-000?style=flat&logo=anthropic&logoColor=white)
 ![Node.js](https://img.shields.io/badge/Node.js-339933?style=flat&logo=node.js&logoColor=white)
 ![Playwright](https://img.shields.io/badge/Playwright-2EAD33?style=flat&logo=playwright&logoColor=white)
 ![Go](https://img.shields.io/badge/Go-00ADD8?style=flat&logo=go&logoColor=white)
-![Bubble Tea](https://img.shields.io/badge/Bubble_Tea-FF75B5?style=flat&logo=go&logoColor=white)
+![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)
 
-- **Agent**: Claude Code with custom skills and modes
-- **PDF**: Playwright/Puppeteer + HTML template
-- **Scanner**: Playwright + Greenhouse API + WebSearch
-- **Dashboard**: Go + Bubble Tea + Lipgloss (Catppuccin Mocha theme)
-- **Data**: Markdown tables + YAML config + TSV batch files
+---
 
-## Also Open Source
+## Built on career-ops
 
-- **[cv-santiago](https://github.com/santifer/cv-santiago)** -- The portfolio website (santifer.io) with AI chatbot, LLMOps dashboard, and case studies. If you need a portfolio to showcase alongside your job search, fork it and make it yours.
+This project is a full adaptation of **career-ops**, an open-source AI job search system created by **Santiago Ferreira (santifer)**. The core architecture — Claude Code skill modes, markdown data layer, PDF generation, batch processing, pipeline integrity, and Go dashboard — all originate from his work. Naija Job Ops would not exist without it.
 
-## About the Author
+> **Original work by Santiago Ferreira**
+> career-ops — AI-powered job search system built on Claude Code. Built by someone who used it to evaluate 740+ job offers, generate 100+ tailored CVs, and land a Head of Applied AI role.
+>
+> [github.com/santifer/career-ops](https://github.com/santifer/career-ops) · [santifer.io](https://santifer.io) · [Read the original case study](https://santifer.io/career-ops-system)
 
-I'm Santiago -- Head of Applied AI, former founder (built and sold a business that still runs with my name on it). I built career-ops to manage my own job search. It worked: I used it to land my current role.
+Naija Job Ops adapts the full architecture for the Nigerian job market — Nigerian portals, NYSC and graduate trainee context, local company research, ATS CV building, and a skill-first onboarding path. If you find this useful, consider starring the original repo too.
 
-My portfolio and other open source projects → [santifer.io](https://santifer.io)
+---
 
-☕ [Buy me a coffee](https://buymeacoffee.com/santifer) if career-ops helped your job search.
+## What is this
 
-## Star History
+Naija Job Ops turns Claude Code into a full job search command center built for Nigeria. Instead of manually checking job boards and tracking everything in a spreadsheet, you get an AI pipeline that:
 
-<a href="https://www.star-history.com/?repos=santifer%2Fcareer-ops&type=timeline&legend=top-left">
- <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=santifer/career-ops&type=timeline&theme=dark&legend=top-left" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=santifer/career-ops&type=timeline&legend=top-left" />
-   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=santifer/career-ops&type=timeline&legend=top-left" />
- </picture>
-</a>
+| Feature | Description |
+|---|---|
+| **Auto-pipeline** | Paste a URL, job description, or just a role — it auto-detects and runs the full pipeline |
+| **Smart scanning** | Scans 6 Nigerian job boards and specialised programme searches for new listings |
+| **8-dimension scoring** | Every listing scored against skill match, eligibility, deadline urgency, competition, location fit, and more |
+| **CV tools** | Build, edit, and tailor ATS-compatible CVs — from scratch, from a file, or from LinkedIn |
+| **Rich metadata** | Extracts posted date, applicant count, deadline, salary range, and qualification requirements |
+| **Batch processing** | Evaluate 10+ listings in parallel with sub-agents |
+| **Pipeline dashboard** | Terminal UI to browse, filter, and sort your full application pipeline |
+| **Human-in-the-loop** | AI evaluates and recommends — you decide and act. Nothing is ever submitted without your review |
+| **Pipeline integrity** | Automated merge, dedup, status normalisation, and health checks |
 
-## Disclaimer
+> No CV? No problem. Start with just a role or skill — e.g. "mobile developer, Java and Kotlin" — and the system runs immediately. It will guide you through building a full profile afterward.
 
-**career-ops is a local, open-source tool — NOT a hosted service.** By using this software, you acknowledge:
+---
 
-1. **You control your data.** Your CV, contact info, and personal data stay on your machine and are sent directly to the AI provider you choose (Anthropic, OpenAI, etc.). We do not collect, store, or have access to any of your data.
-2. **You control the AI.** The default prompts instruct the AI not to auto-submit applications, but AI models can behave unpredictably. If you modify the prompts or use different models, you do so at your own risk. **Always review AI-generated content for accuracy before submitting.**
-3. **You comply with third-party ToS.** You must use this tool in accordance with the Terms of Service of the career portals you interact with (Greenhouse, Lever, Workday, LinkedIn, etc.). Do not use this tool to spam employers or overwhelm ATS systems.
-4. **No guarantees.** Evaluations are recommendations, not truth. AI models may hallucinate skills or experience. The authors are not liable for employment outcomes, rejected applications, account restrictions, or any other consequences.
+## A heads up before you start
 
-See [LEGAL_DISCLAIMER.md](LEGAL_DISCLAIMER.md) for full details. This software is provided under the [MIT License](LICENSE) "as is", without warranty of any kind.
+> **The first evaluations won't be your best.** The system doesn't know you yet. The more context you give it — your skills, your experience, what you're good at, what you want to avoid — the sharper it gets. Think of it like onboarding a new recruiter: the first week they need to learn about you, then they become genuinely useful. Run `/naija-jobs onboard` to fast-track that.
+
+---
+
+## Requirements
+
+Naija Job Ops runs inside Claude Code — Anthropic's AI agent for the terminal. You need:
+
+- **Claude Code** — install guide at [docs.anthropic.com/claude-code](https://docs.anthropic.com/claude-code)
+- **An Anthropic API key** — get one at [console.anthropic.com](https://console.anthropic.com)
+- **Node.js 18+** — for PDF generation and pipeline utilities. Download at [nodejs.org](https://nodejs.org)
+- **Git** — to clone this repo
+- **Go 1.21+ (optional)** — only needed for the terminal dashboard
+
+---
+
+## Quick start
+
+```bash
+# 1. Clone and install
+git clone https://github.com/tannyakin/naija-job-ops.git
+cd naija-job-ops && npm install
+npx playwright install chromium
+
+# 2. Verify your setup
+npm run doctor
+
+# 3. Open Claude Code in the project folder
+claude
+
+# 4. Start immediately — no setup needed
+/naija-jobs mobile developer kotlin
+
+# Or run full onboarding for better results
+/naija-jobs onboard
+```
+
+---
+
+## Verify your setup
+
+Run this after cloning to check that everything is properly installed and configured:
+
+```bash
+npm run doctor
+```
+
+Example output:
+
+```
+naija-job-ops doctor
+─────────────────────────────────────────
+ Environment
+
+  ✔  Node.js v20.11.0
+  ✔  npm dependencies installed
+  ✔  Playwright / Chromium ready
+  ✔  Claude Code installed
+  ○  Go not found (optional — needed for dashboard only)
+
+ Project setup
+
+  ✔  config/profile.yml
+  ✔  portals.yml
+  ✔  profile-skills.md
+  ○  cv.md not found
+     → Run /naija-jobs cv edit to build your CV
+  ✔  data/applications.md
+
+ Pipeline integrity
+
+  ✔  No unmerged tracker additions
+  ✔  All statuses canonical
+
+─────────────────────────────────────────
+  1 warning · 0 errors
+
+  You are ready. Open Claude Code with: claude
+```
+
+`✔` passing · `○` warning (non-blocking) · `✗` error (fix before running)
+
+---
+
+## How it works
+
+```
+You paste a URL, job description, or just a role/skill
+                    │
+                    ▼
+        ┌─────────────────────┐
+        │   Auto-detection    │  URL → scrape JD
+        │                     │  Text → parse JD
+        │                     │  Role/skill → scan portals
+        └──────────┬──────────┘
+                   │
+        ┌──────────▼──────────┐
+        │  Profile matching   │  Reads profile-skills.md
+        │                     │  or cv.md if available
+        └──────────┬──────────┘
+                   │
+        ┌──────────▼──────────┐
+        │  8-point evaluation │  Score, eligibility,
+        │                     │  competition, deadline
+        └────┬──────┬─────────┘
+             │      │      │
+          Report   PDF   Tracker
+```
+
+---
+
+## Two ways to start
+
+**Quick start** — type a role, paste a URL, or drop in a job description. The pipeline detects what you gave it and runs automatically.
+
+```bash
+/naija-jobs android developer
+/naija-jobs https://jobberman.com/listings/some-role
+/naija-jobs {paste a job description here}
+```
+
+After your first results the system will recommend full onboarding for more accurate evaluations.
+
+**Full onboarding** — a guided conversation that builds your complete profile. Unlocks sharper scoring and better CV output. Takes about 5 minutes.
+
+```bash
+/naija-jobs onboard
+```
+
+Covers skills, education level, NYSC status, preferred locations, salary expectations, and CV build or import.
+
+---
+
+## Your CV — any format, any starting point
+
+You never need to prepare a file in any specific format. Share whatever you have and the system handles the rest.
+
+**1. You have a CV as a PDF or Word document**
+Upload the file directly into Claude Code. It reads the content, extracts everything, and converts it automatically. No manual work needed.
+
+**2. You have a CV in Google Docs or as plain text**
+Copy and paste it into the chat. Any format works — the system parses and structures it properly.
+
+**3. Your experience is on LinkedIn**
+Share your LinkedIn profile URL. The system visits it and extracts your experience, education, and skills automatically.
+
+**4. You have no CV at all**
+Run `/naija-jobs onboard` and answer a few questions. The system builds a clean, ATS-ready CV for you from scratch following current best practices.
+
+Once your CV is in the system you can improve and tailor it at any time:
+
+| Command | What it does |
+|---|---|
+| `/naija-jobs cv edit` | Improve structure, language, and impact across any section |
+| `/naija-jobs cv tailor` | Rewrite your CV to match a specific job description |
+| `/naija-jobs pdf` | Generate a role-tailored CV and cover letter as a downloadable PDF |
+
+> All CV output follows current ATS best practices — clean single-column layout, strong action verbs, quantified impact where possible, no tables or graphics that break automated parsers. The system will flag anything that could hurt your application before generating the final document.
+
+---
+
+## Usage
+
+Naija Job Ops is a single slash command with multiple modes. You can also paste a job URL or description directly — it auto-detects what you gave it and runs the full pipeline.
+
+| Command | What it does |
+|---|---|
+| `/naija-jobs` | Show all commands and current pipeline status |
+| `/naija-jobs onboard` | Full guided setup — skills, education, location, CV build or import |
+| `/naija-jobs {role or skill}` | Quick-start search and evaluation from just a description |
+| `/naija-jobs {URL or JD}` | Full auto-pipeline — evaluate, generate report, update tracker |
+| `/naija-jobs scan` | Scan all Nigerian portals for new listings matching your profile |
+| `/naija-jobs eval` | Evaluate a single listing in detail |
+| `/naija-jobs batch` | Evaluate multiple listings in parallel |
+| `/naija-jobs pdf` | Generate a tailored CV and cover letter for a specific role |
+| `/naija-jobs cv edit` | Review and improve your CV interactively |
+| `/naija-jobs cv tailor` | Tailor your CV to a specific job description |
+| `/naija-jobs tracker` | View your full application pipeline and statuses |
+| `/naija-jobs pipeline` | Process all pending URLs saved in your pipeline |
+| `/naija-jobs deep` | Deep research on a Nigerian company before applying |
+| `/naija-jobs apply` | Get help filling out an application form |
+
+---
+
+## Pre-configured portals
+
+The scanner comes pre-configured with Nigerian job boards, major employers across key industries, and targeted search queries. Copy `templates/portals.example.yml` to `portals.yml` and add your own companies or search terms.
+
+**Job boards**
+Jobberman · MyJobMag · NGCareers · HotNigerianJobs · Indeed Nigeria · LinkedIn Nigeria
+
+**Banking & Finance**
+GTBank · Zenith Bank · Access Bank · First Bank · UBA · Stanbic IBTC · PiggyVest · Flutterwave
+
+**Tech & Startups**
+Interswitch · Andela · Paystack · Kuda Bank · Moniepoint · Opay · Cowrywise · Teamapt
+
+**Telecoms & Energy**
+MTN Nigeria · Airtel Nigeria · Glo · 9mobile · Shell Nigeria · TotalEnergies · Chevron Nigeria · NNPC
+
+**FMCG & Consumer**
+Unilever Nigeria · Nestlé Nigeria · Nigerian Breweries · Dangote Group · PZ Cussons · Guinness Nigeria · Procter & Gamble Nigeria
+
+**Professional Services**
+Deloitte Nigeria · KPMG Nigeria · PwC Nigeria · EY Nigeria · McKinsey Africa · BCG Nigeria · Accenture Nigeria
+
+**Pre-configured search queries**
+Graduate trainee · Management trainee · NYSC corps member · Entry level Nigeria · Fresh graduate · Internship Nigeria · IT industrial training · Junior developer Nigeria · Software engineer Lagos · Data analyst Nigeria · Product manager Nigeria · Business analyst Nigeria · Finance officer Nigeria · HR officer Nigeria · Marketing executive Nigeria
+
+> The system is designed to be customised by Claude itself. Ask it to add companies, change search keywords, or adjust filters for your target roles — it reads the same config files it uses, so it knows exactly what to edit.
+
+---
+
+## Scoring system
+
+Every listing is scored out of 5 across 8 dimensions weighted for the Nigerian job market. Anything 3.5 and above is worth applying to.
+
+| Dimension | What it measures |
+|---|---|
+| Role-skill match | How well the JD aligns with your stated skills and experience |
+| Qualification eligibility | OND / HND / BSc / MSc requirement vs your education level |
+| NYSC eligibility | Required or preferred NYSC status vs yours |
+| Deadline urgency | Closing soon scores higher — act fast |
+| Applicant competition | Fewer applicants means better odds — used as an opportunity signal |
+| Company legitimacy | Known, verified Nigerian employer vs unverified listing |
+| Location fit | Whether the role matches your preferred work location |
+| Growth potential | Structured graduate trainee programme vs a generic one-off hire |
+
+- **3.5 – 5.0** — Apply. Strong fit.
+- **3.0 – 3.4** — Review carefully before applying.
+- **Below 3.0** — Low fit. Skip unless you have a specific reason.
+
+---
+
+## What gets extracted per listing
+
+**Always extracted**
+- Job title and company name
+- Location — state, city, and work mode
+- Required qualification level
+- NYSC status requirement
+- Direct application URL
+- Date the listing was posted
+
+**Extracted when available**
+- Application deadline
+- Number of applicants so far
+- Salary range or band
+- Years of experience required
+- Application method — form, email, or portal
+
+---
+
+## Project structure
+
+```
+naija-job-ops/
+├── CLAUDE.md                   # Agent instructions — the brain of the system
+├── profile-skills.md           # Your skills profile (created during onboarding)
+├── cv.md                       # Your CV — auto-generated from whatever you provide
+├── doctor.mjs                  # Setup health check script
+├── config/
+│   └── profile.yml             # Name, location, salary, preferences
+├── modes/                      # All skill modes
+│   ├── _shared.md              # Scoring weights, archetypes, shared context
+│   ├── onboard.md              # Guided setup and CV build flow
+│   ├── eval.md                 # Single listing evaluation
+│   ├── scan.md                 # Nigerian portal scanner
+│   ├── pdf.md                  # Tailored CV and cover letter generation
+│   ├── cv.md                   # CV editing and tailoring
+│   ├── batch.md                # Parallel batch evaluation
+│   ├── tracker.md              # Pipeline view
+│   ├── apply.md                # Application form assistance
+│   ├── deep.md                 # Company research
+│   └── pipeline.md             # Pending URL processing
+├── templates/
+│   ├── cv-template.html        # ATS-optimized document template
+│   └── states.yml              # Canonical application statuses
+├── data/                       # Your personal data — gitignored
+│   ├── applications.md         # Application tracker
+│   └── pipeline.md             # Pending URLs inbox
+├── reports/                    # Evaluation reports — gitignored
+├── output/                     # Generated PDFs — gitignored
+└── dashboard/                  # Go TUI pipeline viewer
+```
+
+> Everything in `data/`, `reports/`, and `output/` is gitignored. Your CV, application tracker, and generated documents stay on your machine and are never pushed to GitHub.
+
+---
+
+## Available scripts
+
+```bash
+npm run doctor      # Check your full setup — run this first
+npm run verify      # Check pipeline data integrity
+npm run merge       # Merge pending tracker additions into applications.md
+npm run dedup       # Remove duplicate entries from the tracker
+npm run normalize   # Fix any non-canonical status values
+```
+
+---
+
+## Ethical use
+
+> This system is a quality filter, not a volume tool. The goal is to find roles that genuinely fit — not to send generic applications to every open listing. The system never submits anything on your behalf. You review everything first. You always have the final call.
+
+---
+
+## Contributing
+
+This is an early version built specifically for the Nigerian job market. Contributions are welcome — especially around portal coverage, company list expansion, scoring calibration for local context, and CV template improvements. Open an issue or pull request on GitHub.
+
+---
 
 ## License
 
-MIT
+MIT — same as the original career-ops. Fork it, adapt it for your market, improve it.
 
-## Let's Connect
+---
 
-[![Website](https://img.shields.io/badge/santifer.io-000?style=for-the-badge&logo=safari&logoColor=white)](https://santifer.io)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/santifer)
-[![X](https://img.shields.io/badge/X-000?style=for-the-badge&logo=x&logoColor=white)](https://x.com/santifer)
-[![Discord](https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/8pRpHETxa4)
-[![Email](https://img.shields.io/badge/Email-EA4335?style=for-the-badge&logo=gmail&logoColor=white)](mailto:hi@santifer.io)
-[![Buy Me a Coffee](https://img.shields.io/badge/Buy_Me_a_Coffee-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/santifer)
+Built by [tannyakin](https://github.com/tannyakin) · Based on [career-ops](https://github.com/santifer/career-ops) by [Santiago Ferreira](https://santifer.io) · [Star the original repo](https://github.com/santifer/career-ops)

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * analyze-patterns.mjs — Rejection Pattern Detector for career-ops
+ * analyze-patterns.mjs — Rejection Pattern Detector for naija-job-ops
  *
  * Parses applications.md + all linked reports, extracts dimensions
  * (archetype, seniority, remote, gaps, scores), classifies outcomes,
@@ -37,11 +37,10 @@ const ALIASES = {
   'applied': 'applied', 'sent': 'applied',
   'respondido': 'responded',
   'entrevista': 'interview',
-  'oferta': 'offer',
-  'rechazado': 'rejected', 'rechazada': 'rejected',
-  'descartado': 'discarded', 'descartada': 'discarded',
-  'cerrada': 'discarded', 'cancelada': 'discarded',
-  'no aplicar': 'skip', 'no_aplicar': 'skip', 'monitor': 'skip', 'geo blocker': 'skip',
+  'offer': 'offer',
+  'rejected': 'rejected',
+  'discarded': 'discarded',
+  'skip': 'skip',
 };
 
 function normalizeStatus(raw) {

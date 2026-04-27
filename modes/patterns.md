@@ -10,6 +10,7 @@ Analyze all tracked applications to find patterns in outcomes and surface action
 - `reports/` — Individual evaluation reports
 - `config/profile.yml` — User profile (for recommendation context)
 - `modes/_profile.md` — User archetypes and framing
+- `config/profile.yml` — Structured candidate data (NYSC, education, location)
 - `portals.yml` — Portal config (for filter update recommendations)
 
 ## Minimum Threshold
@@ -132,7 +133,7 @@ Ask the user if they want to act on any recommendations:
 
 > "Want me to apply any of these recommendations? I can:
 > - Update `portals.yml` to filter out geo-restricted roles
-> - Set a score threshold in `_profile.md` for PDF generation
+> - Set a score threshold in `modes/_profile.md` for PDF generation
 > - Adjust archetype targeting based on what's converting
 >
 > Just say which ones, or 'all' to apply everything."
@@ -150,5 +151,5 @@ For reference, outcomes are classified as:
 |--------|---------|
 | Interview, Offer, Responded, Applied | **Positive** (invested effort or got traction) |
 | Rejected, Discarded | **Negative** (company said no or offer closed) |
-| SKIP, NO APLICAR | **Self-filtered** (user decided not to apply) |
+| SKIP | **Self-filtered** (user decided not to apply) |
 | Evaluated | **Pending** (no action taken yet) |

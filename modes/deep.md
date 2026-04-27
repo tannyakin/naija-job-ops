@@ -1,47 +1,97 @@
-# Modo: deep — Deep Research Prompt
+# Mode: deep — Deep Company Research
 
-Genera un prompt estructurado para Perplexity/Claude/ChatGPT con 6 ejes:
+Produce a thorough research brief on a Nigerian company. Use WebSearch and Playwright. Deliver actionable intelligence for interview preparation or to inform whether to apply.
 
-```
-## Deep Research: [Empresa] — [Rol]
+---
 
-Contexto: Estoy evaluando una candidatura para [rol] en [empresa]. Necesito información accionable para la entrevista.
+## Inputs
 
-### 1. Estrategia AI
-- ¿Qué productos/features usan AI/ML?
-- ¿Cuál es su stack de AI? (modelos, infra, tools)
-- ¿Tienen blog de engineering? ¿Qué publican?
-- ¿Qué papers o talks han dado sobre AI?
+Ask the user: "Which company would you like me to research? And is there a specific role you are targeting there, or is this general interest?"
 
-### 2. Movimientos recientes (últimos 6 meses)
-- ¿Contrataciones relevantes en AI/ML/product?
-- ¿Acquisitions o partnerships?
-- ¿Product launches o pivots?
-- ¿Rondas de funding o cambios de liderazgo?
+Load any existing evaluation report for this company from `reports/` if one exists.
 
-### 3. Cultura de engineering
-- ¿Cómo shipean? (cadencia de deploy, CI/CD)
-- ¿Mono-repo o multi-repo?
-- ¿Qué lenguajes/frameworks usan?
-- ¿Remote-first o office-first?
-- ¿Glassdoor/Blind reviews sobre eng culture?
+---
 
-### 4. Retos probables
-- ¿Qué problemas de scaling tienen?
-- ¿Reliability, cost, latency challenges?
-- ¿Están migrando algo? (infra, models, platforms)
-- ¿Qué pain points menciona la gente en reviews?
+## Research Output
 
-### 5. Competidores y diferenciación
-- ¿Quiénes son sus main competitors?
-- ¿Cuál es su moat/diferenciador?
-- ¿Cómo se posicionan vs competencia?
+Deliver a structured brief covering 6 areas:
 
-### 6. Ángulo del candidato
-Dado mi perfil (read from cv.md and profile.yml for specific experience):
-- ¿Qué valor único aporto a este equipo?
-- ¿Qué proyectos míos son más relevantes?
-- ¿Qué historia debería contar en la entrevista?
-```
+---
 
-Personalizar cada sección con el contexto específico de la oferta evaluada.
+### 1. Company Overview
+
+- What the company does and which sector it operates in
+- Year founded, approximate size (employees, revenue if available)
+- Presence in Nigeria: HQ location, other Nigerian offices
+- Parent company or group affiliation (e.g., "part of the Dangote Group", "subsidiary of Standard Bank South Africa")
+- Core products or services relevant to the user's target role
+- Major clients or markets served
+
+---
+
+### 2. Employer Reputation in Nigeria
+
+Use WebSearch: `"{company}" employer reviews Nigeria` and `"{company}" Glassdoor` and `"{company}" Jobberman`
+
+- Overall reputation as an employer
+- Known strengths (e.g., "excellent graduate training programme", "strong pension scheme", "promotes from within")
+- Known weaknesses or red flags (e.g., "salaries are negotiated from a low base", "high attrition in first 2 years")
+- Typical salary bands for entry-level and mid-level (from available sources — cite the source)
+- Culture signals: work-life balance, management style, diversity
+
+---
+
+### 3. Graduate and Entry-Level Programme History
+
+This is critical information for the target user base.
+
+- Does the company run a named graduate trainee or management trainee programme?
+- Programme name, intake frequency (annual, biannual), and typical cohort size
+- Duration of the programme (e.g., 12 months, 18 months)
+- Known departments or rotations
+- Historical application deadline windows (e.g., "typically opens in January–March")
+- NYSC placement: do they accept corps members for IT or industrial training placements?
+- Absorption rate: what percentage of trainees convert to full-time employment?
+
+---
+
+### 4. Hiring Process
+
+Use WebSearch: `"{company}" recruitment process Nigeria` and `"{company}" interview questions`
+
+- Typical stages (online test, assessment centre, panel interview, medical)
+- Known assessment formats (aptitude test provider, group exercise, technical test)
+- Approximate time from application to offer (from public reports)
+- Any known tips from past candidates
+
+---
+
+### 5. Recent News and Company Health
+
+Use WebSearch for the last 12 months: `"{company}" news 2025 2026` and `"{company}" expansion hiring Nigeria`
+
+- Any significant expansion, new products, or new markets that affect hiring
+- Any layoffs, restructuring, regulatory issues, or leadership changes — note the date and scope
+- If there are concerning signs: put them plainly. Do not soften financial distress signals.
+
+---
+
+### 6. Candidate Angle
+
+Read `profile-skills.md` and `cv.md` (if available). Based on the user's specific background:
+
+- What makes the user a plausible candidate for this company?
+- Which of their skills or experiences would this company value most?
+- Any gaps to acknowledge or address?
+- What should the user know walking into an interview here that would signal genuine interest?
+- One or two specific questions the user should ask that would demonstrate they researched the company
+
+---
+
+## Format
+
+Deliver as a structured markdown document. Offer to save it:
+
+> "Want me to save this research to `reports/deep-{company-slug}-{YYYY-MM-DD}.md` for future reference?"
+
+If yes, save it. This file is informational — it does not follow the evaluation report numbering system and does not get logged in the applications tracker.

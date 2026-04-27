@@ -1,44 +1,68 @@
 #!/usr/bin/env node
 
 /**
- * doctor.mjs — Setup validation for career-ops
- * Checks all prerequisites and prints a pass/fail checklist.
+ * doctor.mjs — Setup validation for naija-job-ops
+ *
+ * Checks all prerequisites and prints a pass/fail/warn checklist.
+ * Run with: npm run doctor
+ *
+ * Exit codes:
+ *   0 — all checks pass (warnings are OK)
+ *   1 — one or more errors found
  */
 
 import { existsSync, mkdirSync, readdirSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
+import { execSync } from 'child_process';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const projectRoot = __dirname;
+const root = __dirname;
 
-// ANSI colors (only on TTY)
+// ── ANSI colours (TTY-only) ───────────────────────────────────────────────────
 const isTTY = process.stdout.isTTY;
-const green = (s) => isTTY ? `\x1b[32m${s}\x1b[0m` : s;
-const red = (s) => isTTY ? `\x1b[31m${s}\x1b[0m` : s;
-const dim = (s) => isTTY ? `\x1b[2m${s}\x1b[0m` : s;
+const green  = (s) => isTTY ? `\x1b[32m${s}\x1b[0m` : s;
+const red    = (s) => isTTY ? `\x1b[31m${s}\x1b[0m` : s;
+const yellow = (s) => isTTY ? `\x1b[33m${s}\x1b[0m` : s;
+const dim    = (s) => isTTY ? `\x1b[2m${s}\x1b[0m`  : s;
+const bold   = (s) => isTTY ? `\x1b[1m${s}\x1b[0m`  : s;
+
+const PASS  = green('✔');
+const FAIL  = red('✗');
+const WARN  = yellow('○');
+
+// ── Result helpers ─────────────────────────────────────────────────────────────
+function pass(label)              { return { level: 'pass',  label }; }
+function fail(label, ...fixes)    { return { level: 'fail',  label, fixes }; }
+function warn(label, ...hints)    { return { level: 'warn',  label, hints }; }
+
+// ── Checks ─────────────────────────────────────────────────────────────────────
 
 function checkNodeVersion() {
-  const major = parseInt(process.versions.node.split('.')[0]);
+  const major = parseInt(process.versions.node.split('.')[0], 10);
   if (major >= 18) {
-    return { pass: true, label: `Node.js >= 18 (v${process.versions.node})` };
+    return pass(`Node.js ${process.versions.node} (>= 18 required)`);
   }
-  return {
-    pass: false,
-    label: `Node.js >= 18 (found v${process.versions.node})`,
-    fix: 'Install Node.js 18 or later from https://nodejs.org',
-  };
+  return fail(
+    `Node.js ${process.versions.node} — version 18 or later required`,
+    'Download Node.js 18+ from https://nodejs.org'
+  );
 }
 
 function checkDependencies() {
-  if (existsSync(join(projectRoot, 'node_modules'))) {
-    return { pass: true, label: 'Dependencies installed' };
+  const nm = join(root, 'node_modules');
+  if (existsSync(nm)) {
+    try {
+      const entries = readdirSync(nm);
+      if (entries.length > 0) {
+        return pass('npm dependencies installed');
+      }
+    } catch { /* fall through */ }
   }
-  return {
-    pass: false,
-    label: 'Dependencies not installed',
-    fix: 'Run: npm install',
-  };
+  return fail(
+    'npm dependencies not installed',
+    'Run: npm install'
+  );
 }
 
 async function checkPlaywright() {
@@ -46,154 +70,238 @@ async function checkPlaywright() {
     const { chromium } = await import('playwright');
     const execPath = chromium.executablePath();
     if (existsSync(execPath)) {
-      return { pass: true, label: 'Playwright chromium installed' };
+      return pass('Playwright Chromium installed');
     }
-    return {
-      pass: false,
-      label: 'Playwright chromium not installed',
-      fix: 'Run: npx playwright install chromium',
-    };
+    return fail(
+      'Playwright Chromium binary not found',
+      'Run: npx playwright install chromium'
+    );
   } catch {
-    return {
-      pass: false,
-      label: 'Playwright chromium not installed',
-      fix: 'Run: npx playwright install chromium',
-    };
+    return fail(
+      'Playwright not installed (required for URL verification and scanning)',
+      'Run: npm install',
+      'Then: npx playwright install chromium'
+    );
   }
 }
 
-function checkCv() {
-  if (existsSync(join(projectRoot, 'cv.md'))) {
-    return { pass: true, label: 'cv.md found' };
+function checkClaudeCode() {
+  try {
+    execSync('claude --version', { stdio: 'pipe' });
+    return pass('Claude Code (claude) found on PATH');
+  } catch {
+    return fail(
+      'Claude Code (claude) not found on PATH',
+      'Install from: https://claude.ai/code',
+      'Or follow the setup guide in README.md'
+    );
   }
-  return {
-    pass: false,
-    label: 'cv.md not found',
-    fix: [
-      'Create cv.md in the project root with your CV in markdown',
-      'See examples/ for reference CVs',
-    ],
-  };
 }
 
-function checkProfile() {
-  if (existsSync(join(projectRoot, 'config', 'profile.yml'))) {
-    return { pass: true, label: 'config/profile.yml found' };
+function checkGo() {
+  try {
+    execSync('go version', { stdio: 'pipe' });
+    return pass('Go found on PATH');
+  } catch {
+    return warn(
+      'Go not found on PATH (optional — not required for core features)',
+      'Install from https://golang.org if you need Go-based tooling'
+    );
   }
-  return {
-    pass: false,
-    label: 'config/profile.yml not found',
-    fix: [
-      'Run: cp config/profile.example.yml config/profile.yml',
-      'Then edit it with your details',
-    ],
-  };
 }
 
-function checkPortals() {
-  if (existsSync(join(projectRoot, 'portals.yml'))) {
-    return { pass: true, label: 'portals.yml found' };
+// ── Project setup checks ──────────────────────────────────────────────────────
+
+function checkProfileYml() {
+  if (existsSync(join(root, 'config', 'profile.yml'))) {
+    return pass('config/profile.yml found');
   }
-  return {
-    pass: false,
-    label: 'portals.yml not found',
-    fix: [
-      'Run: cp templates/portals.example.yml portals.yml',
-      'Then customize with your target companies',
-    ],
-  };
+  return fail(
+    'config/profile.yml not found (required)',
+    'Run: cp config/profile.example.yml config/profile.yml',
+    'Then fill in your name, education, NYSC status, and target roles'
+  );
+}
+
+function checkPortalsYml() {
+  if (existsSync(join(root, 'portals.yml'))) {
+    return pass('portals.yml found');
+  }
+  return fail(
+    'portals.yml not found (required for scanning)',
+    'Run: cp templates/portals.example.yml portals.yml',
+    'Then customise the search keywords for your target roles'
+  );
+}
+
+function checkProfileSkills() {
+  if (existsSync(join(root, 'profile-skills.md'))) {
+    return pass('profile-skills.md found');
+  }
+  return fail(
+    'profile-skills.md not found (required — used when no CV exists)',
+    'Run: /naija-jobs onboard in Claude Code to create it',
+    'Or copy profile-skills.example.md to profile-skills.md and edit it'
+  );
+}
+
+function checkCvMd() {
+  if (existsSync(join(root, 'cv.md'))) {
+    return pass('cv.md found');
+  }
+  return warn(
+    'cv.md not found (optional but recommended — improves evaluation accuracy)',
+    'Run: /naija-jobs cv edit to create or import your CV'
+  );
+}
+
+function checkApplicationsTracker() {
+  if (existsSync(join(root, 'data', 'applications.md'))) {
+    return pass('data/applications.md found');
+  }
+  return warn(
+    'data/applications.md not found (will be created automatically)',
+    'Run: /naija-jobs onboard to complete setup and create the tracker'
+  );
 }
 
 function checkFonts() {
-  const fontsDir = join(projectRoot, 'fonts');
+  const fontsDir = join(root, 'fonts');
   if (!existsSync(fontsDir)) {
-    return {
-      pass: false,
-      label: 'fonts/ directory not found',
-      fix: 'The fonts/ directory is required for PDF generation',
-    };
+    return fail(
+      'fonts/ directory not found (required for PDF generation)',
+      'The fonts/ directory should have been included in the repository — check your clone'
+    );
   }
   try {
     const files = readdirSync(fontsDir);
     if (files.length === 0) {
-      return {
-        pass: false,
-        label: 'fonts/ directory is empty',
-        fix: 'The fonts/ directory must contain font files for PDF generation',
-      };
+      return fail(
+        'fonts/ directory is empty (required for PDF generation)',
+        'Check your repository clone — font files should be present'
+      );
     }
+    return pass(`fonts/ directory ready (${files.length} file${files.length === 1 ? '' : 's'})`);
   } catch {
-    return {
-      pass: false,
-      label: 'fonts/ directory not readable',
-      fix: 'Check permissions on the fonts/ directory',
-    };
+    return fail(
+      'fonts/ directory not readable',
+      'Check permissions: ls -la fonts/'
+    );
   }
-  return { pass: true, label: 'Fonts directory ready' };
 }
 
-function checkAutoDir(name) {
-  const dirPath = join(projectRoot, name);
-  if (existsSync(dirPath)) {
-    return { pass: true, label: `${name}/ directory ready` };
+// ── Pipeline integrity checks ─────────────────────────────────────────────────
+
+function checkUnmergedTsvFiles() {
+  const trackerDir = join(root, 'batch', 'tracker-additions');
+  if (!existsSync(trackerDir)) {
+    return pass('batch/tracker-additions/ — no unmerged additions');
   }
   try {
-    mkdirSync(dirPath, { recursive: true });
-    return { pass: true, label: `${name}/ directory ready (auto-created)` };
+    const files = readdirSync(trackerDir).filter(f => f.endsWith('.tsv'));
+    if (files.length === 0) {
+      return pass('batch/tracker-additions/ — no unmerged additions');
+    }
+    return warn(
+      `${files.length} unmerged TSV file${files.length === 1 ? '' : 's'} in batch/tracker-additions/`,
+      'Run: node merge-tracker.mjs  (or: npm run merge)',
+      `Files: ${files.slice(0, 5).join(', ')}${files.length > 5 ? ` ... and ${files.length - 5} more` : ''}`
+    );
   } catch {
-    return {
-      pass: false,
-      label: `${name}/ directory could not be created`,
-      fix: `Run: mkdir ${name}`,
-    };
+    return warn(
+      'Could not read batch/tracker-additions/ — check permissions'
+    );
   }
 }
 
-async function main() {
-  console.log('\ncareer-ops doctor');
-  console.log('================\n');
+function ensureDir(name) {
+  const dirPath = join(root, name);
+  if (existsSync(dirPath)) return null;
+  try {
+    mkdirSync(dirPath, { recursive: true });
+    return null; // silently created
+  } catch {
+    return fail(`${name}/ directory could not be created`, `Run: mkdir -p ${name}`);
+  }
+}
 
-  const checks = [
-    checkNodeVersion(),
-    checkDependencies(),
-    await checkPlaywright(),
-    checkCv(),
-    checkProfile(),
-    checkPortals(),
-    checkFonts(),
-    checkAutoDir('data'),
-    checkAutoDir('output'),
-    checkAutoDir('reports'),
+// ── Main ──────────────────────────────────────────────────────────────────────
+
+async function main() {
+  console.log('');
+  console.log(bold('naija-job-ops doctor'));
+  console.log('════════════════════\n');
+
+  // Ensure required directories exist silently
+  ensureDir('data');
+  ensureDir('output');
+  ensureDir('reports');
+  ensureDir('batch/tracker-additions');
+
+  const results = [
+    // Environment
+    { section: 'Environment', result: checkNodeVersion() },
+    { section: null,          result: checkDependencies() },
+    { section: null,          result: await checkPlaywright() },
+    { section: null,          result: checkClaudeCode() },
+    { section: null,          result: checkGo() },
+
+    // Project setup
+    { section: 'Project Setup', result: checkProfileYml() },
+    { section: null,             result: checkPortalsYml() },
+    { section: null,             result: checkProfileSkills() },
+    { section: null,             result: checkCvMd() },
+    { section: null,             result: checkApplicationsTracker() },
+    { section: null,             result: checkFonts() },
+
+    // Pipeline integrity
+    { section: 'Pipeline Integrity', result: checkUnmergedTsvFiles() },
   ];
 
-  let failures = 0;
+  let errors   = 0;
+  let warnings = 0;
+  let currentSection = null;
 
-  for (const result of checks) {
-    if (result.pass) {
-      console.log(`${green('✓')} ${result.label}`);
-    } else {
-      failures++;
-      console.log(`${red('✗')} ${result.label}`);
-      const fixes = Array.isArray(result.fix) ? result.fix : [result.fix];
-      for (const hint of fixes) {
-        console.log(`  ${dim('→ ' + hint)}`);
+  for (const { section, result } of results) {
+    if (section && section !== currentSection) {
+      if (currentSection !== null) console.log('');
+      console.log(dim(section));
+      currentSection = section;
+    }
+
+    if (result.level === 'pass') {
+      console.log(`  ${PASS} ${result.label}`);
+    } else if (result.level === 'fail') {
+      errors++;
+      console.log(`  ${FAIL} ${red(result.label)}`);
+      for (const fix of (result.fixes || [])) {
+        console.log(`     ${dim('→ ' + fix)}`);
+      }
+    } else if (result.level === 'warn') {
+      warnings++;
+      console.log(`  ${WARN} ${yellow(result.label)}`);
+      for (const hint of (result.hints || [])) {
+        console.log(`     ${dim('→ ' + hint)}`);
       }
     }
   }
 
   console.log('');
-  if (failures > 0) {
-    console.log(`Result: ${failures} issue${failures === 1 ? '' : 's'} found. Fix them and run \`npm run doctor\` again.`);
+  console.log('─'.repeat(40));
+
+  if (errors > 0) {
+    console.log(red(`${errors} error${errors === 1 ? '' : 's'} found. Fix the issues above before running Claude Code.`));
     process.exit(1);
+  } else if (warnings > 0) {
+    console.log(yellow(`Ready with ${warnings} warning${warnings === 1 ? '' : 's'}. Run: ${bold('claude')}`));
+    process.exit(0);
   } else {
-    console.log('Result: All checks passed. You\'re ready to go! Run `claude` to start.');
-    console.log('');
-    console.log('Join the community: https://discord.gg/8pRpHETxa4');
+    console.log(green(`You are ready. Open Claude Code with: ${bold('claude')}`));
     process.exit(0);
   }
 }
 
 main().catch((err) => {
-  console.error('doctor.mjs failed:', err.message);
+  console.error(red('doctor.mjs failed unexpectedly:'), err.message);
   process.exit(1);
 });

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# career-ops batch runner — standalone orchestrator for claude -p workers
+# naija-job-ops batch runner — standalone orchestrator for claude -p workers
 # Reads batch-input.tsv, delegates each offer to a claude -p worker,
 # tracks state in batch-state.tsv for resumability.
 
@@ -30,7 +30,7 @@ MAX_RETRIES=2
 
 usage() {
   cat <<'USAGE'
-career-ops batch runner — process job offers in batch via claude -p workers
+naija-job-ops batch runner — process job listings in batch via claude -p workers
 Uses your default Claude model (Claude Max subscription).
 
 Usage: batch-runner.sh [OPTIONS]
@@ -319,7 +319,7 @@ process_offer() {
 
   # Build the prompt with placeholders replaced
   local prompt
-  prompt="Procesa esta oferta de empleo. Ejecuta el pipeline completo: evaluación A-F + report .md + PDF + tracker line."
+  prompt="Process this job listing. Run the full pipeline: 8-dimension evaluation + report .md + PDF (if score >= 3.5) + tracker line."
   prompt="$prompt URL: $url"
   prompt="$prompt JD file: $jd_file"
   prompt="$prompt Report number: $report_num"

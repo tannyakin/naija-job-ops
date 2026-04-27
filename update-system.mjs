@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 
 /**
- * update-system.mjs — Safe auto-updater for career-ops
+ * update-system.mjs — Safe auto-updater for naija-job-ops
  *
  * Updates ONLY system layer files (modes, scripts, dashboard, templates).
- * NEVER touches user data (cv.md, profile.yml, _profile.md, data/, reports/).
+ * NEVER touches user data (cv.md, profile-skills.md, profile.yml, data/, reports/).
  *
  * Usage:
  *   node update-system.mjs check      # Check if update available
@@ -23,28 +23,32 @@ import { fileURLToPath } from 'url';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = __dirname;
 
-const CANONICAL_REPO = 'https://github.com/santifer/career-ops.git';
-const RAW_VERSION_URL = 'https://raw.githubusercontent.com/santifer/career-ops/main/VERSION';
-const RELEASES_API = 'https://api.github.com/repos/santifer/career-ops/releases/latest';
+const CANONICAL_REPO = 'https://github.com/tannyakin/naija-job-ops.git';
+const RAW_VERSION_URL = 'https://raw.githubusercontent.com/tannyakin/naija-job-ops/main/VERSION';
+const RELEASES_API = 'https://api.github.com/repos/tannyakin/naija-job-ops/releases/latest';
 
 // System layer paths — ONLY these files get updated
 const SYSTEM_PATHS = [
   'modes/_shared.md',
   'modes/_profile.template.md',
-  'modes/oferta.md',
+  'modes/eval.md',
   'modes/pdf.md',
   'modes/scan.md',
   'modes/batch.md',
   'modes/apply.md',
   'modes/auto-pipeline.md',
-  'modes/contacto.md',
+  'modes/outreach.md',
   'modes/deep.md',
-  'modes/ofertas.md',
+  'modes/compare.md',
   'modes/pipeline.md',
   'modes/project.md',
   'modes/tracker.md',
   'modes/training.md',
-  'modes/de/',
+  'modes/onboard.md',
+  'modes/cv.md',
+  'modes/followup.md',
+  'modes/patterns.md',
+  'modes/interview-prep.md',
   'CLAUDE.md',
   'AGENTS.md',
   'generate-pdf.mjs',
@@ -74,10 +78,10 @@ const SYSTEM_PATHS = [
 // User layer paths — NEVER touch these (safety check)
 const USER_PATHS = [
   'cv.md',
-  'config/profile.yml',
+  'profile-skills.md',
   'modes/_profile.md',
+  'config/profile.yml',
   'portals.yml',
-  'article-digest.md',
   'interview-prep/story-bank.md',
   'data/',
   'reports/',

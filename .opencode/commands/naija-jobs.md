@@ -1,8 +1,8 @@
 ---
-description: AI job search command center -- show menu or evaluate job description
+description: AI job search command center for Nigeria -- show menu or evaluate job description
 ---
 
-Career-ops router. Arguments provided: "$ARGUMENTS"
+naija-job-ops router. Arguments provided: "$ARGUMENTS"
 
 If arguments contain a job description or URL (keywords like "responsibilities", "requirements", "qualifications", "about the role", "http", "https"), the skill will execute auto-pipeline mode.
 

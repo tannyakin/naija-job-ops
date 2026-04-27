@@ -1,161 +1,211 @@
-# System Context -- career-ops
+# System Context — naija-job-ops
 
 <!-- ============================================================
      THIS FILE IS AUTO-UPDATABLE. Don't put personal data here.
-     
-     Your customizations go in modes/_profile.md (never auto-updated).
-     This file contains system rules, scoring logic, and tool config
-     that improve with each career-ops release.
+
+     Your customisations go in config/profile.yml and
+     profile-skills.md (never auto-updated).
+     This file contains system rules, scoring logic, and
+     Nigerian market context that improve with each release.
      ============================================================ -->
 
 ## Sources of Truth
 
 | File | Path | When |
 |------|------|------|
-| cv.md | `cv.md` (project root) | ALWAYS |
-| article-digest.md | `article-digest.md` (if exists) | ALWAYS (detailed proof points) |
-| profile.yml | `config/profile.yml` | ALWAYS (candidate identity and targets) |
-| _profile.md | `modes/_profile.md` | ALWAYS (user archetypes, narrative, negotiation) |
+| profile-skills.md | `profile-skills.md` (project root) | ALWAYS — primary source when no CV |
+| cv.md | `cv.md` (project root) | When it exists — richer source, takes precedence |
+| profile.yml | `config/profile.yml` | ALWAYS — candidate identity, NYSC status, location prefs |
 
-**RULE: NEVER hardcode metrics from proof points.** Read them from cv.md + article-digest.md at evaluation time.
-**RULE: For article/project metrics, article-digest.md takes precedence over cv.md.**
-**RULE: Read _profile.md AFTER this file. User customizations in _profile.md override defaults here.**
+**RULE: Always read `profile-skills.md` first.** If `cv.md` exists, read it too and treat it as the richer source.
+**RULE: NEVER hardcode user details in any mode file.** Re-read these files fresh on every evaluation.
+**RULE: If cv.md conflicts with profile-skills.md on a fact, trust cv.md.** It is more detailed.
 
 ---
 
 ## Scoring System
 
-The evaluation uses 6 blocks (A-F) with a global score of 1-5:
+Every evaluation produces a score from 1.0 to 5.0 across 8 dimensions:
 
-| Dimension | What it measures |
-|-----------|-----------------|
-| Match con CV | Skills, experience, proof points alignment |
-| North Star alignment | How well the role fits the user's target archetypes (from _profile.md) |
-| Comp | Salary vs market (5=top quartile, 1=well below) |
-| Cultural signals | Company culture, growth, stability, remote policy |
-| Red flags | Blockers, warnings (negative adjustments) |
-| **Global** | Weighted average of above |
+| Dimension | Weight | What it measures |
+|-----------|--------|-----------------|
+| Role-skill match | 25% | How well the JD maps to the user's skills and experience |
+| Qualification eligibility | 20% | OND/HND/BSc/MSc requirement vs user's actual level — hard blocker if mismatched |
+| NYSC eligibility | 15% | Required/preferred NYSC status vs user's current status |
+| Deadline urgency | 10% | Closing soon scores higher for prioritisation |
+| Applicant competition | 10% | Fewer applicants = better opportunity signal |
+| Company legitimacy | 10% | Known Nigerian employer vs unverified listing |
+| Location fit | 5% | Role location vs user's preferred locations |
+| Growth potential | 5% | Structured graduate/management trainee programme vs generic one-off hire |
 
 **Score interpretation:**
-- 4.5+ → Strong match, recommend applying immediately
-- 4.0-4.4 → Good match, worth applying
-- 3.5-3.9 → Decent but not ideal, apply only if specific reason
-- Below 3.5 → Recommend against applying (see Ethical Use in CLAUDE.md)
+- 4.5+ → Strong match. Recommend applying immediately.
+- 4.0–4.4 → Good match. Worth applying.
+- 3.5–3.9 → Decent match. Apply only if you have a specific reason.
+- 3.0–3.4 → Marginal. Flag for review. Only apply if user overrides with reason.
+- Below 3.0 → Recommend skipping. Explain clearly why.
 
-## Posting Legitimacy (Block G)
+**Hard blockers (disqualifying regardless of overall score):**
+- Qualification level required is higher than the user's actual level and the JD makes no exception
+- NYSC completion required and user has not completed NYSC (unless exemption applies)
+- Role requires a professional licence the user does not hold (e.g., COREN registration, ICAN membership)
 
-Block G assesses whether a posting is likely a real, active opening. It does NOT affect the 1-5 global score -- it is a separate qualitative assessment.
+---
 
-**Three tiers:**
-- **High Confidence** -- Real, active opening (most signals positive)
-- **Proceed with Caution** -- Mixed signals, worth noting (some concerns)
-- **Suspicious** -- Multiple ghost indicators, user should investigate first
+## Nigerian Job Market Archetypes
 
-**Key signals (weighted by reliability):**
-
-| Signal | Source | Reliability | Notes |
-|--------|--------|-------------|-------|
-| Posting age | Page snapshot | High | Under 30d=good, 30-60d=mixed, 60d+=concerning (adjusted for role type) |
-| Apply button active | Page snapshot | High | Direct observable fact |
-| Tech specificity in JD | JD text | Medium | Generic JDs correlate with ghost postings but also with poor writing |
-| Requirements realism | JD text | Medium | Contradictions are a strong signal, vagueness is weaker |
-| Recent layoff news | WebSearch | Medium | Must consider department, timing, and company size |
-| Reposting pattern | scan-history.tsv | Medium | Same role reposted 2+ times in 90 days is concerning |
-| Salary transparency | JD text | Low | Jurisdiction-dependent, many legitimate reasons to omit |
-| Role-company fit | Qualitative | Low | Subjective, use only as supporting signal |
-
-**Ethical framing (MANDATORY):**
-- This helps users prioritize time on real opportunities
-- NEVER present findings as accusations of dishonesty
-- Present signals and let the user decide
-- Always note legitimate explanations for concerning signals
-
-## Archetype Detection
-
-Classify every offer into one of these types (or hybrid of 2):
+Classify every listing into one of these archetypes (or a hybrid of two):
 
 | Archetype | Key signals in JD |
 |-----------|-------------------|
-| AI Platform / LLMOps | "observability", "evals", "pipelines", "monitoring", "reliability" |
-| Agentic / Automation | "agent", "HITL", "orchestration", "workflow", "multi-agent" |
-| Technical AI PM | "PRD", "roadmap", "discovery", "stakeholder", "product manager" |
-| AI Solutions Architect | "architecture", "enterprise", "integration", "design", "systems" |
-| AI Forward Deployed | "client-facing", "deploy", "prototype", "fast delivery", "field" |
-| AI Transformation | "change management", "adoption", "enablement", "transformation" |
+| Tech — Software Engineering | "backend", "frontend", "mobile", "fullstack", "API", "React", "Node.js", "Java", "Kotlin", "Python", "Django", "Spring Boot" |
+| Tech — Data and Analytics | "SQL", "Excel", "Power BI", "data analyst", "data engineer", "Python", "ETL", "dashboard", "reporting" |
+| Tech — Product and Design | "product manager", "UX", "UI", "figma", "product design", "user research", "roadmap", "agile" |
+| Finance and Banking | "financial analyst", "credit", "risk", "treasury", "investment", "audit", "ACCA", "ICAN", "compliance" |
+| FMCG and Consumer Goods | "sales", "territory", "brand", "trade marketing", "supply chain", "logistics", "distribution" |
+| Telecoms | "network", "RF", "OSS/BSS", "telecom", "fiber", "last mile", "MTN", "Airtel" |
+| Oil and Gas | "petroleum", "upstream", "downstream", "HSE", "pipeline", "subsea", "NNPC", "Shell", "Chevron" |
+| Professional Services | "Big 4", "consulting", "advisory", "audit", "assurance", "management consulting", "strategy" |
+| Graduate/Management Trainee | "graduate trainee", "management trainee", "NYSC", "fresh graduate", "scheme", "cohort" |
 
-After detecting archetype, read `modes/_profile.md` for the user's specific framing and proof points for that archetype.
+After detecting archetype, adapt framing in the evaluation to emphasise what matters for that sector.
+
+---
+
+## Nigerian Market Context — MANDATORY KNOWLEDGE
+
+Every mode must apply this context when evaluating listings or generating content.
+
+### NYSC (National Youth Service Corps)
+- Mandatory one-year national service for Nigerian graduates under 30
+- Statuses: `yet-to-serve` | `currently-serving` | `completed` | `exempted`
+- Many employers require NYSC completion or exemption as a hard eligibility criterion
+- NYSC corps members currently serving are eligible for IT/industrial training postings
+- Always check user's NYSC status from `config/profile.yml` before scoring eligibility
+
+### Qualification Levels (in order)
+OND (Ordinary National Diploma) → HND (Higher National Diploma) → BSc/BA → MSc/MBA/LLM/PhD
+
+- HND holders sometimes face bias vs BSc at some employers — flag this when relevant
+- "Minimum of a Second Class Upper (2:1)" is a common filter — note if user's class of degree is not stated
+- Professional qualifications: ICAN (accounting), NSE/COREN (engineering), CIPM (HR), ACCA, CFA
+
+### Location Signals
+- "Lagos" typically means Lagos Island/Victoria Island/Lekki axis for corporate roles
+- "Abuja" is the FCT — federal government and headquarters-heavy
+- "Port Harcourt" is the oil and gas hub
+- Remote work is still uncommon among traditional Nigerian employers — flag remote-open roles as high value
+- "Open to relocation" is often expected for graduate trainee programmes with national deployment
+- State of origin ≠ preferred work location — never conflate them
+
+### Salary and Compensation
+- Entry-level: ₦80,000–₦200,000/month (2026 context)
+- Mid-level: ₦200,000–₦600,000/month
+- Senior/specialist: ₦600,000–₦2,000,000+/month
+- Oil and gas and Big 4 often pay above band; FMCG and telecoms are mid-range
+- Many job postings in Nigeria omit salary — flag this but don't penalise heavily
+- Annual salary is sometimes quoted as a total figure (e.g., ₦3.6M/year = ₦300K/month)
+
+### Applicant Count Signals
+- <100 applicants: good opportunity window
+- 100–500: competitive but viable
+- 500–1,000: crowded; need strong differentiation
+- 1,000+: very high competition; apply only if match is strong
+- LinkedIn applicant counts are live signals — extract from page snapshot
+
+### Deadline Urgency
+- Closing in ≤7 days: high urgency, recommend acting today
+- Closing in 8–21 days: moderate urgency
+- Closing in 22+ days or no deadline: lower urgency
+- If no deadline is stated, treat as moderate urgency
+
+---
+
+## Posting Legitimacy Assessment
+
+Assess every listing for signs of whether it is real and active. This does NOT affect the 1–5 score — it is a separate signal.
+
+**Three tiers:**
+- **High Confidence** — Real, active opening
+- **Proceed with Caution** — Mixed signals
+- **Suspicious** — Multiple ghost indicators, investigate first
+
+**Nigerian-specific legitimacy signals:**
+
+| Signal | Reliability | Notes |
+|--------|-------------|-------|
+| Apply button active on Playwright snapshot | High | Direct observable fact |
+| Listing has specific job description (not generic) | High | Generic JDs are more common for scam listings |
+| Company is a known Nigerian employer | High | GTBank, Nestlé Nigeria, MTN etc. = high confidence |
+| Posting age | Medium | Under 30 days = good; 30–60 days = mixed; 60+ = concerning |
+| Application via company's own domain (not Gmail/Yahoo) | Medium | Gmail/Yahoo application address is a red flag in Nigeria |
+| Grammar and formatting quality | Medium | Scam listings often have poor grammar in Nigeria |
+| Salary range stated | Low | Many legitimate Nigerian employers omit salary |
+| Application fee requested | Hard blocker | NEVER legitimate. Immediately flag as suspicious. |
+
+**Ethical framing:** Present signals and let the user decide. Never accuse. Always note legitimate explanations.
+
+---
 
 ## Global Rules
 
 ### NEVER
-
-1. Invent experience or metrics
-2. Modify cv.md or portfolio files
-3. Submit applications on behalf of the candidate
-4. Share phone number in generated messages
-5. Recommend comp below market rate
-6. Generate a PDF without reading the JD first
-7. Use corporate-speak
-8. Ignore the tracker (every evaluated offer gets registered)
+1. Invent experience, skills, or qualifications the user does not have
+2. Modify `cv.md` or `profile-skills.md` without explicit user approval
+3. Submit, send, or click any form action on behalf of the user
+4. Ask for or reveal application fees — flag these immediately as scam signals
+5. Recommend roles below 3.0/5 without clear user override
+6. Assume the user's NYSC status without reading `config/profile.yml`
+7. Assume the user's qualification level — always read from profile files
+8. Ignore the tracker — every evaluated listing gets registered
 
 ### ALWAYS
-
-0. **Cover letter:** If the form allows it, ALWAYS include one. Same visual design as CV. JD quotes mapped to proof points. 1 page max.
-1. Read cv.md, _profile.md, and article-digest.md (if exists) before evaluating
-1b. **First evaluation of each session:** Run `node cv-sync-check.mjs`. If warnings, notify user.
-2. Detect the role archetype and adapt framing per _profile.md
-3. Cite exact lines from CV when matching
-4. Use WebSearch for comp and company data
-5. Register in tracker after evaluating
-6. Generate content in the language of the JD (EN default)
-7. Be direct and actionable -- no fluff
-8. Native tech English for generated text. Short sentences, action verbs, no passive voice.
-8b. Case study URLs in PDF Professional Summary (recruiter may only read this).
-9. **Tracker additions as TSV** -- NEVER edit applications.md directly. Write TSV in `batch/tracker-additions/`.
-10. **Include `**URL:**` in every report header.**
+1. Read `profile-skills.md` first. If `cv.md` exists, read it too.
+2. Read `config/profile.yml` for NYSC status, qualification level, location, and salary targets.
+3. Check NYSC eligibility and qualification eligibility as hard blockers before scoring.
+4. Extract all available metadata from the listing: company, role, location, work mode, posted date, deadline, applicant count, salary, qualification required, NYSC requirement, application URL.
+5. Register the listing in the tracker after every evaluation.
+6. Write tracker additions as TSV in `batch/tracker-additions/` — NEVER edit `data/applications.md` to add rows.
+7. Include `**URL:**` in every report header.
+8. Stop before any submit action. The user always makes the final call.
+9. Be direct and honest — if a listing is a bad fit, say so clearly with the reason.
+10. Flag any listing that requests an application fee as immediately suspicious.
 
 ### Tools
 
 | Tool | Use |
 |------|-----|
-| WebSearch | Comp research, trends, company culture, LinkedIn contacts, fallback for JDs |
-| WebFetch | Fallback for extracting JDs from static pages |
-| Playwright | Verify offers (browser_navigate + browser_snapshot). **NEVER 2+ agents with Playwright in parallel.** |
-| Read | cv.md, _profile.md, article-digest.md, cv-template.html |
-| Write | Temporary HTML for PDF, applications.md, reports .md |
-| Edit | Update tracker |
-| Canva MCP | Optional visual CV generation. Duplicate base design, edit text, export PDF. Requires `canva_resume_design_id` in profile.yml. |
-| Bash | `node generate-pdf.mjs` |
-
-### Time-to-offer priority
-- Working demo + metrics > perfection
-- Apply sooner > learn more
-- 80/20 approach, timebox everything
+| Playwright | Verify listings (browser_navigate + browser_snapshot). Primary tool. NEVER run 2+ Playwright sessions in parallel. |
+| WebFetch | Fallback for static pages or when Playwright unavailable |
+| WebSearch | Company research, salary signals, news — secondary to Playwright |
+| Read | profile-skills.md, cv.md, config/profile.yml, cv-template.html |
+| Write | Reports, temporary HTML for PDF, batch additions |
+| Edit | Update existing tracker entries |
+| Bash | `node generate-pdf.mjs`, `node merge-tracker.mjs`, `node verify-pipeline.mjs` |
 
 ---
 
-## Professional Writing & ATS Compatibility
+## Professional Writing Rules
 
-These rules apply to ALL generated text that ends up in candidate-facing documents: PDF summaries, bullets, cover letters, form answers, LinkedIn messages. They do NOT apply to internal evaluation reports.
+These apply to ALL user-facing generated text: CV sections, cover letters, form answers. Not to internal evaluation reports.
 
-### Avoid cliché phrases
-- "passionate about" / "results-oriented" / "proven track record"
-- "leveraged" (use "used" or name the tool)
-- "spearheaded" (use "led" or "ran")
-- "facilitated" (use "ran" or "set up")
-- "synergies" / "robust" / "seamless" / "cutting-edge" / "innovative"
-- "in today's fast-paced world"
-- "demonstrated ability to" / "best practices" (name the practice)
+### Avoid
+- "Passionate about" / "results-oriented" / "hardworking team player"
+- "Leveraged" (use "used")
+- "Facilitated" (use "ran" or "set up")
+- "Dynamic" / "innovative" / "robust" / "seamless"
+- "I am writing to express my interest in..." (outdated opener)
+- "To whom it may concern"
 
-### Unicode normalization for ATS
-`generate-pdf.mjs` automatically normalizes em-dashes, smart quotes, and zero-width characters to ASCII equivalents for maximum ATS compatibility. But avoid generating them in the first place.
+### Prefer
+- Short sentences with strong action verbs: Built, Led, Reduced, Increased, Delivered
+- Quantified impact where available: "Reduced processing time by 40%" beats "improved efficiency"
+- Specific tools and technologies: "Python (pandas, NumPy)" beats "data tools"
+- Role-relevant vocabulary drawn directly from the JD
 
-### Vary sentence structure
-- Don't start every bullet with the same verb
-- Mix sentence lengths (short. Then longer with context. Short again.)
-- Don't always use "X, Y, and Z" — sometimes two items, sometimes four
-
-### Prefer specifics over abstractions
-- "Cut p95 latency from 2.1s to 380ms" beats "improved performance"
-- "Postgres + pgvector for retrieval over 12k docs" beats "designed scalable RAG architecture"
-- Name tools, projects, and customers when allowed
+### ATS Compatibility
+- Single-column layout — no sidebars or parallel columns
+- Standard section headers — no creative names that ATS cannot parse
+- No tables, text boxes, or graphics containing key information
+- Plain UTF-8 text, fully selectable
+- Keywords from JD distributed naturally across Summary, Experience bullets, and Skills section

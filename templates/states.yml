@@ -1,56 +1,57 @@
-# Career-Ops — Canonical States
-# Source of truth for career-ops (writer) and dashboard (reader).
-# Both systems MUST use these exact states.
+# naija-job-ops — Canonical Application States
+# Source of truth for naija-job-ops (writer) and dashboard (reader).
+# Both systems MUST use these exact state labels.
 #
-# Rule: The status field in applications.md must contain EXACTLY
-# one of these values (case-insensitive). No markdown bold (**),
-# no dates, no extra text. Dates go in the date column.
+# Rule: The Status field in data/applications.md must contain EXACTLY
+# one of these values (case-sensitive). No markdown bold (**),
+# no dates, no extra text. Dates go in the Date Found column.
+# Notes go in the Notes column.
 
 states:
   - id: evaluated
     label: Evaluated
-    aliases: [evaluada]
-    description: Offer evaluated with report, pending decision
+    aliases: [evaluated]
+    description: Report completed, pending decision on whether to apply
     dashboard_group: evaluated
 
   - id: applied
     label: Applied
-    aliases: [aplicado, enviada, aplicada, sent]
-    description: Application submitted
+    aliases: [sent, submitted]
+    description: Application submitted by the candidate
     dashboard_group: applied
 
   - id: responded
     label: Responded
-    aliases: [respondido]
-    description: Company has responded (not yet interview)
+    aliases: [contacted]
+    description: Company has responded (not yet an interview stage)
     dashboard_group: responded
 
   - id: interview
     label: Interview
-    aliases: [entrevista]
-    description: Active interview process
+    aliases: [interviewing]
+    description: Active interview process underway
     dashboard_group: interview
 
   - id: offer
     label: Offer
-    aliases: [oferta]
-    description: Offer received
+    aliases: [offer received]
+    description: Offer received from the company
     dashboard_group: offer
 
   - id: rejected
     label: Rejected
-    aliases: [rechazado, rechazada]
-    description: Rejected by company
+    aliases: [declined by company]
+    description: Rejected by the company
     dashboard_group: rejected
 
   - id: discarded
     label: Discarded
-    aliases: [descartado, descartada, cerrada, cancelada]
-    description: Discarded by candidate or offer closed
+    aliases: [cancelled, closed, withdrawn]
+    description: Discarded by the candidate or listing is closed
     dashboard_group: discarded
 
   - id: skip
     label: SKIP
-    aliases: [no_aplicar, no aplicar, skip, monitor]
-    description: Doesn't fit, don't apply
+    aliases: [skip, not applying, monitor]
+    description: Does not fit — decided not to apply
     dashboard_group: skip

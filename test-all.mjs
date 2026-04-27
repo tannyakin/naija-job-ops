@@ -39,7 +39,7 @@ function run(cmd, opts = {}) {
 function fileExists(path) { return existsSync(join(ROOT, path)); }
 function readFile(path) { return readFileSync(join(ROOT, path), 'utf-8'); }
 
-console.log('\n🧪 career-ops test suite\n');
+console.log('\n🧪 naija-job-ops test suite\n');
 
 // ── 1. SYNTAX CHECKS ────────────────────────────────────────────
 
@@ -136,8 +136,8 @@ console.log('\n5. Data contract validation');
 // Check system files exist
 const systemFiles = [
   'CLAUDE.md', 'VERSION', 'DATA_CONTRACT.md',
-  'modes/_shared.md', 'modes/_profile.template.md',
-  'modes/oferta.md', 'modes/pdf.md', 'modes/scan.md',
+  'modes/_shared.md',
+  'modes/eval.md', 'modes/pdf.md', 'modes/scan.md',
   'templates/states.yml', 'templates/cv-template.html',
   '.claude/skills/career-ops/SKILL.md',
 ];
@@ -152,7 +152,7 @@ for (const f of systemFiles) {
 
 // Check user files are NOT tracked (gitignored)
 const userFiles = [
-  'config/profile.yml', 'modes/_profile.md', 'portals.yml',
+  'config/profile.yml', 'profile-skills.md', 'portals.yml',
 ];
 for (const f of userFiles) {
   const tracked = run(`git ls-files ${f}`);
@@ -218,9 +218,10 @@ if (!absPathResult) {
 console.log('\n8. Mode file integrity');
 
 const expectedModes = [
-  '_shared.md', '_profile.template.md', 'oferta.md', 'pdf.md', 'scan.md',
-  'batch.md', 'apply.md', 'auto-pipeline.md', 'contacto.md', 'deep.md',
-  'ofertas.md', 'pipeline.md', 'project.md', 'tracker.md', 'training.md',
+  '_shared.md', 'eval.md', 'pdf.md', 'scan.md',
+  'batch.md', 'apply.md', 'auto-pipeline.md', 'outreach.md', 'deep.md',
+  'compare.md', 'pipeline.md', 'project.md', 'tracker.md', 'training.md',
+  'onboard.md', 'cv.md', 'followup.md', 'patterns.md',
 ];
 
 for (const mode of expectedModes) {
@@ -231,12 +232,12 @@ for (const mode of expectedModes) {
   }
 }
 
-// Check _shared.md references _profile.md
+// Check _shared.md references profile-skills.md
 const shared = readFile('modes/_shared.md');
-if (shared.includes('_profile.md')) {
-  pass('_shared.md references _profile.md');
+if (shared.includes('profile-skills.md')) {
+  pass('_shared.md references profile-skills.md');
 } else {
-  fail('_shared.md does NOT reference _profile.md');
+  fail('_shared.md does NOT reference profile-skills.md');
 }
 
 // ── 9. CLAUDE.md INTEGRITY ──────────────────────────────────────
