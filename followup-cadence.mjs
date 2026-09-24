@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * followup-cadence.mjs — Follow-up Cadence Tracker for naija-job-ops
+ * followup-cadence.mjs: Follow-up Cadence Tracker for naija-job-ops
  *
  * Parses applications.md + follow-ups.md, calculates follow-up cadence
  * for active applications, extracts contacts, and flags overdue entries.
@@ -276,7 +276,7 @@ function printSummary(result) {
   const { metadata, entries } = result;
 
   console.log(`\n${'='.repeat(70)}`);
-  console.log(`  Follow-up Cadence Dashboard — ${metadata.analysisDate}`);
+  console.log(`  Follow-up Cadence Dashboard: ${metadata.analysisDate}`);
   console.log(`  ${metadata.totalTracked} total applications, ${metadata.actionable} actionable`);
   console.log(`${'='.repeat(70)}\n`);
 

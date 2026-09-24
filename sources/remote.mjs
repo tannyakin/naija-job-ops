@@ -1,16 +1,16 @@
 /**
- * sources/remote.mjs — Remote job boards with public APIs/feeds
+ * sources/remote.mjs: Remote job boards with public APIs/feeds
  *
  * Remotive, RemoteOK, Himalayas, Jobicy and We Work Remotely all publish
  * free feeds. Every result is tagged with `eligibility` (can someone living
  * in Nigeria actually be hired?) using the posting's location restrictions:
- *   yes     — worldwide / Africa / EMEA / Nigeria
- *   likely  — no explicit restriction, wording suggests open
- *   unclear — ask or check the JD
- *   no      — US-only, EU-only, etc. (dropped unless --include-restricted)
+ *   yes: worldwide / Africa / EMEA / Nigeria
+ *   likely: no explicit restriction, wording suggests open
+ *   unclear: ask or check the JD
+ *   no: US-only, EU-only, etc. (dropped unless --include-restricted)
  *
  * Terms: RemoteOK and Remotive ask that listings link back to them as the
- * source — we always keep the original URL and show the source name.
+ * source. We always keep the original URL and show the source name.
  */
 
 import { fetchJson, fetchText, oneLine, cleanText, ageFromDate, remoteEligibility } from './util.mjs';

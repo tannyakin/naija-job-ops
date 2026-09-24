@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * test-all.mjs — Comprehensive test suite for naija-job-ops
+ * test-all.mjs: Comprehensive test suite for naija-job-ops
  *
  * Run before merging any PR or pushing changes.
  * Tests: syntax, scripts, dashboard, data contract, personal data, paths.
@@ -140,7 +140,7 @@ console.log('\n4b. Job source scrapers (offline fixtures)');
   const out = run('node tests/test-sources.mjs');
   const summary = out ? out.trim().split('\n').pop() : '';
   if (out !== null && /\b0 failed/.test(summary)) pass(`Source tests: ${summary}`);
-  else fail(`Source tests failed — run: node tests/test-sources.mjs${summary ? ` (${summary})` : ''}`);
+  else fail(`Source tests failed. Run: node tests/test-sources.mjs${summary ? ` (${summary})` : ''}`);
 }
 
 // ── 5. DATA CONTRACT ────────────────────────────────────────────
@@ -298,12 +298,12 @@ console.log('\n' + '='.repeat(50));
 console.log(`📊 Results: ${passed} passed, ${failed} failed, ${warnings} warnings`);
 
 if (failed > 0) {
-  console.log('🔴 TESTS FAILED — do NOT push/merge until fixed\n');
+  console.log('🔴 TESTS FAILED. Do NOT push/merge until fixed\n');
   process.exit(1);
 } else if (warnings > 0) {
-  console.log('🟡 Tests passed with warnings — review before pushing\n');
+  console.log('🟡 Tests passed with warnings. Review before pushing\n');
   process.exit(0);
 } else {
-  console.log('🟢 All tests passed — safe to push/merge\n');
+  console.log('🟢 All tests passed. Safe to push/merge\n');
   process.exit(0);
 }

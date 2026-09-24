@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * generate-pdf.mjs — HTML → PDF via Playwright
+ * generate-pdf.mjs: HTML → PDF via Playwright
  *
  * Usage:
  *   node career-ops/generate-pdf.mjs <input.html> <output.pdf> [--format=letter|a4]
@@ -24,7 +24,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
  * zero-width characters, and non-breaking spaces. These cause mojibake,
  * parsing errors, or display issues. See issue #1.
  *
- * Only touches body text — preserves CSS, JS, tag attributes, and URLs.
+ * Only touches body text: preserves CSS, JS, tag attributes, and URLs.
  * Returns { html, replacements } so the caller can log what was changed.
  */
 function normalizeTextForATS(html) {

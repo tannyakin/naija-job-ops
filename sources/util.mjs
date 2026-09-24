@@ -1,5 +1,5 @@
 /**
- * sources/util.mjs — Shared helpers for all job sources
+ * sources/util.mjs: Shared helpers for all job sources
  *
  * Fetching (polite, with retries), HTML cleanup, posting-age and
  * applicant-count parsing, freshness/competition scoring, and
@@ -12,8 +12,8 @@ export const USER_AGENT =
 export const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 /**
- * Random delay between min and max ms — keeps request cadence human-like.
- * NAIJA_NO_DELAY=1 disables it (tests only — never for real scans).
+ * Random delay between min and max ms, to keep request cadence human-like.
+ * NAIJA_NO_DELAY=1 disables it (tests only, never for real scans).
  */
 export const jitter = (min, max) => (process.env.NAIJA_NO_DELAY ? Promise.resolve() : sleep(min + Math.random() * (max - min)));
 
@@ -82,7 +82,7 @@ export async function pool(items, limit, fn) {
 
 // ── HTML helpers ────────────────────────────────────────────────────
 
-const ENTITIES = { amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", nbsp: ' ', ndash: '–', mdash: '—', rsquo: '’', lsquo: '‘', ldquo: '“', rdquo: '”', hellip: '…', naira: '₦' };
+const ENTITIES = { amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", nbsp: ' ', ndash: '–', mdash: '\u2014', rsquo: '’', lsquo: '‘', ldquo: '“', rdquo: '”', hellip: '…', naira: '₦' };
 
 export function decodeEntities(s = '') {
   return s

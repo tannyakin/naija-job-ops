@@ -1,15 +1,15 @@
-# naija-job-ops — Portal Scanner Configuration
+# naija-job-ops: Portal Scanner Configuration
 # Used by /naija-jobs scan (and `node scan.mjs`) to discover new job listings.
 #
 # HOW TO USE:
 #   1. Copy this file to portals.yml in the project root (onboarding does this for you)
-#   2. Set search.keywords to YOUR target roles — any field works
+#   2. Set search.keywords to YOUR target roles (any field works)
 #   3. Adjust title_filter, add/remove companies, enable/disable boards
 #
 # SOURCES (all additive, deduplicated, ranked by freshness + competition + fit):
-#   linkedin        Logged-out LinkedIn search — newest first, applicant counts. No account needed.
-#   boards          Nigerian job boards — Jobberman, MyJobMag, HotNigerianJobs, NgCareers, Jobgurus, Indeed NG
-#   remote          Remote boards filtered to roles open to Nigeria — Remotive, RemoteOK, Himalayas, Jobicy, WWR
+#   linkedin        Logged-out LinkedIn search, newest first, with applicant counts. No account needed.
+#   boards          Nigerian job boards (Jobberman, MyJobMag, HotNigerianJobs, NgCareers, Jobgurus, Indeed NG)
+#   remote          Remote boards filtered to roles open to Nigeria (Remotive, RemoteOK, Himalayas, Jobicy, WWR)
 #   ats             tracked_companies on Greenhouse/Lever/Ashby/Workable/SmartRecruiters (API)
 #   browser         Anything that blocks scripts (Indeed, custom career sites) → Playwright via /naija-jobs scan
 #
@@ -26,7 +26,7 @@ search:
     - "data analyst"
     - "graduate trainee"
   location: "Nigeria"        # or "Lagos, Nigeria", "Abuja, Nigeria"
-  since: "24h"               # 1h | 6h | 24h | 3d | 1w — how recent postings must be
+  since: "24h"               # 1h | 6h | 24h | 3d | 1w: how recent postings must be
   experience: []             # LinkedIn levels: internship, entry, associate, mid, director
   sources: [linkedin, boards, remote, ats]
   max_per_source: 40
@@ -34,9 +34,9 @@ search:
   min_fit: 40                # ...and with quick profile fit ≥ this
 
 # ── LinkedIn (logged-out, public job search) ─────────────────────────────────
-# Uses LinkedIn's public guest job pages — no login, no cookies, your account is never involved.
+# Uses LinkedIn's public guest job pages. No login, no cookies, and your account is never involved.
 # Requests are sequential with 1.5–3.5s delays. If rate-limited, wait 15–30 minutes.
-# Personal use only — respect LinkedIn's terms; don't run it in tight loops.
+# Personal use only. Respect LinkedIn's terms; don't run it in tight loops.
 linkedin:
   enabled: true
   details: 15                # fetch applicant count + description for the N freshest results
@@ -64,7 +64,7 @@ job_boards:
 remote_boards:
   enabled: true
   sources: [remotive, remoteok, himalayas, jobicy, weworkremotely]
-  since: "7d"                # remote boards post less often — a wider window works better
+  since: "7d"                # remote boards post less often, so a wider window works better
   include_restricted: false  # true = also show US/EU-only roles (you usually can't take them)
 
 # ── Title filter ──────────────────────────────────────────────────────────────
@@ -144,7 +144,7 @@ title_filter:
 
 # ── Extra WebSearch queries (used by /naija-jobs scan in Claude, not by scan.mjs) ─
 # Good for sources no scraper covers: government portals, graduate schemes, niche boards.
-# Results may be stale — they are verified with Playwright before joining the pipeline.
+# Results may be stale, so they are verified with Playwright before joining the pipeline.
 
 search_queries:
   - query: "Graduate Trainee 2026 site:jobberman.com"
@@ -174,7 +174,7 @@ search_queries:
 
 # ── Tracked companies ──────────────────────────────────────────────────────────
 # careers_url on Greenhouse, Lever, Ashby, Workable (apply.workable.com/…) or
-# SmartRecruiters (careers.smartrecruiters.com/…) is read by scan.mjs via API — fast and free.
+# SmartRecruiters (careers.smartrecruiters.com/…) is read by scan.mjs via API, which is fast and free.
 # Custom career sites are checked with Playwright by /naija-jobs scan.
 
 tracked_companies:
@@ -259,7 +259,7 @@ tracked_companies:
   - name: "TeamApt (Moniepoint Group)"
     sector: "fintech"
     careers_url: "https://moniepoint.com/careers"
-    enabled: false   # same URL as Moniepoint — enable only if they split
+    enabled: false   # same URL as Moniepoint; enable only if they split
 
   # ── Telecoms ─────────────────────────────────────────────────────────────────
   - name: "MTN Nigeria"

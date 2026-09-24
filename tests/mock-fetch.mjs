@@ -1,5 +1,5 @@
 /**
- * tests/mock-fetch.mjs — preload for end-to-end scan tests.
+ * tests/mock-fetch.mjs: preload for end-to-end scan tests.
  * Usage: node --import ./tests/mock-fetch.mjs scan.mjs   (with NAIJA_FIXTURES set)
  * Routes every fetch() to a local fixture; nothing leaves the machine.
  */

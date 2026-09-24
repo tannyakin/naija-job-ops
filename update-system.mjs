@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * update-system.mjs — Safe auto-updater for naija-job-ops
+ * update-system.mjs: Safe auto-updater for naija-job-ops
  *
  * Updates ONLY system layer files (modes, scripts, dashboard, templates).
  * NEVER touches user data (cv.md, profile-skills.md, profile.yml, data/, reports/).
@@ -27,7 +27,7 @@ const CANONICAL_REPO = 'https://github.com/tannyakin/naija-job-ops.git';
 const RAW_VERSION_URL = 'https://raw.githubusercontent.com/tannyakin/naija-job-ops/main/VERSION';
 const RELEASES_API = 'https://api.github.com/repos/tannyakin/naija-job-ops/releases/latest';
 
-// System layer paths — ONLY these files get updated
+// System layer paths: ONLY these files get updated
 const SYSTEM_PATHS = [
   'modes/_shared.md',
   'modes/_profile.template.md',
@@ -91,7 +91,7 @@ const SYSTEM_PATHS = [
   'package.json',
 ];
 
-// User layer paths — NEVER touch these (safety check)
+// User layer paths: NEVER touch these (safety check)
 const USER_PATHS = [
   'cv.md',
   'profile-skills.md',

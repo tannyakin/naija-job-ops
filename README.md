@@ -19,7 +19,7 @@ This project is a full adaptation of **career-ops**, an open-source AI job searc
 >
 > [github.com/santifer/career-ops](https://github.com/santifer/career-ops) · [santifer.io](https://santifer.io) · [Read the original case study](https://santifer.io/career-ops-system)
 
-Naija Job Ops adapts the full architecture for the Nigerian job market — Nigerian portals, NYSC and graduate trainee context, local company research, ATS CV building, and a skill-first onboarding path. If you find this useful, consider starring the original repo too.
+Naija Job Ops adapts the full architecture for the Nigerian job market: Nigerian portals, NYSC and graduate trainee context, local company research, ATS CV building, and a skill-first onboarding path. If you find this useful, consider starring the original repo too.
 
 ---
 
@@ -43,13 +43,13 @@ Naija Job Ops turns Claude Code into a full job search command center built for 
 | **Tracking** | Tracker, follow-up reminders, pattern analysis, terminal dashboard |
 | **Human-in-the-loop** | Nothing is ever submitted without your review |
 
-> No CV? No problem. Start with just a role or skill e.g. "mobile developer, Java and Kotlin" — and the system runs immediately. It will guide you through building a full profile afterward.
+> No CV? No problem. Start with just a role or skill (e.g. "mobile developer, Java and Kotlin") and the system runs immediately. It will guide you through building a full profile afterward.
 
 ---
 
 ## A heads up before you start
 
-> **The first evaluations won't be your best.** The system doesn't know you yet. The more context you give it — your skills, your experience, what you're good at, what you want to avoid, the sharper it gets. Think of it like onboarding a new recruiter: the first week they need to learn about you, then they become genuinely useful. Run `/naija-jobs onboard` to fast-track that.
+> **The first evaluations won't be your best.** The system doesn't know you yet. The more context you give it (your skills, your experience, what you're good at, what you want to avoid), the sharper it gets. Think of it like onboarding a new recruiter: the first week they need to learn about you, then they become genuinely useful. Run `/naija-jobs onboard` to fast-track that.
 
 ---
 
@@ -57,7 +57,7 @@ Naija Job Ops turns Claude Code into a full job search command center built for 
 
 Naija Job Ops runs inside Claude Code, Anthropic's AI agent for the terminal. You need:
 
-- **Claude Code** — install guide at [docs.anthropic.com/claude-code](https://docs.anthropic.com/claude-code)
+- **Claude Code**: install guide at [docs.anthropic.com/claude-code](https://docs.anthropic.com/claude-code)
 - **An Anthropic API key** : get one at [console.anthropic.com](https://console.anthropic.com)
 - **Node.js 18+** : for PDF generation and pipeline utilities. Download at [nodejs.org](https://nodejs.org)
 - **Git**: to clone this repo
@@ -79,7 +79,7 @@ npm run doctor
 # 3. Open Claude Code in the project folder
 claude
 
-# 4. Start immediately — no setup needed
+# 4. Start immediately: no setup needed
 /naija-jobs mobile developer kotlin
 
 # Or run full onboarding for better results
@@ -196,7 +196,7 @@ Covers skills, education level, NYSC status, preferred locations, salary expecta
 
 ---
 
-## Your CV — any format, any starting point
+## Your CV: any format, any starting point
 
 You never need to prepare a file in any specific format. Share whatever you have and the system handles the rest.
 
@@ -204,7 +204,7 @@ You never need to prepare a file in any specific format. Share whatever you have
 Upload the file directly into Claude Code. It reads the content, extracts everything, and converts it automatically. No manual work needed.
 
 **2. You have a CV in Google Docs or as plain text**
-Copy and paste it into the chat. Any format works — the system parses and structures it properly.
+Copy and paste it into the chat. Any format works: the system parses and structures it properly.
 
 **3. Your experience is on LinkedIn**
 Share your LinkedIn profile URL. The system visits it and extracts your experience, education, and skills automatically.
@@ -222,7 +222,7 @@ Once your CV is in the system you can improve and tailor it at any time:
 | `/naija-jobs pdf` | Generate a role-tailored CV and cover letter as downloadable PDFs |
 | `/naija-jobs cover-letter` | Just the cover letter, as a PDF, a paste-in answer, or an email |
 
-> All CV output follows current ATS best practices — clean single-column layout, strong action verbs, quantified impact where possible, no tables or graphics that break automated parsers. The system will flag anything that could hurt your application before generating the final document.
+> All CV output follows current ATS best practices: clean single-column layout, strong action verbs, quantified impact where possible, no tables or graphics that break automated parsers. The system will flag anything that could hurt your application before generating the final document.
 
 ---
 
@@ -328,9 +328,9 @@ Every listing is scored out of 5 across 8 dimensions weighted for the Nigerian j
 | Location / remote fit | 5% | Your preferred locations; remote roles open to Nigeria |
 | Growth potential | 5% | Structured programme vs a generic one-off hire |
 
-- **3.5 – 5.0** — Apply. Strong fit.
-- **3.0 – 3.4** — Review carefully before applying.
-- **Below 3.0** — Low fit. Skip unless you have a specific reason.
+- **3.5 – 5.0**: Apply. Strong fit.
+- **3.0 – 3.4**: Review carefully before applying.
+- **Below 3.0**: Low fit. Skip unless you have a specific reason.
 
 ---
 
@@ -338,7 +338,7 @@ Every listing is scored out of 5 across 8 dimensions weighted for the Nigerian j
 
 **Always extracted**
 - Job title and company name
-- Location — state, city, and work mode
+- Location: state, city, and work mode
 - Required qualification level
 - NYSC status requirement
 - Direct application URL
@@ -349,7 +349,7 @@ Every listing is scored out of 5 across 8 dimensions weighted for the Nigerian j
 - Number of applicants so far
 - Salary range or band
 - Years of experience required
-- Application method — form, email, or portal
+- Application method: form, email, or portal
 
 ---
 
@@ -357,9 +357,9 @@ Every listing is scored out of 5 across 8 dimensions weighted for the Nigerian j
 
 ```
 naija-job-ops/
-├── CLAUDE.md                   # Agent instructions — the brain of the system
+├── CLAUDE.md                   # Agent instructions: the brain of the system
 ├── profile-skills.md           # Your skills profile (created during onboarding)
-├── cv.md                       # Your CV — auto-generated from whatever you provide
+├── cv.md                       # Your CV: auto-generated from whatever you provide
 ├── doctor.mjs                  # Setup health check script
 ├── scan.mjs                    # Zero-token multi-source job scanner
 ├── sources/                    # LinkedIn, Nigerian boards, remote boards, ATS, profile fit
@@ -389,12 +389,12 @@ naija-job-ops/
 │   ├── cv-template.html        # ATS-optimized CV template
 │   ├── cover-letter-template.html # Cover letter template
 │   └── states.yml              # Canonical application statuses
-├── data/                       # Your personal data — gitignored
+├── data/                       # Your personal data: gitignored
 │   ├── applications.md         # Application tracker
 │   ├── pipeline.md             # Pending URLs inbox
 │   └── scan-results.json       # Latest ranked scan
-├── reports/                    # Evaluation reports — gitignored
-├── output/                     # Generated PDFs — gitignored
+├── reports/                    # Evaluation reports: gitignored
+├── output/                     # Generated PDFs: gitignored
 └── dashboard/                  # Go TUI pipeline viewer
 ```
 
@@ -405,7 +405,7 @@ naija-job-ops/
 ## Available scripts
 
 ```bash
-npm run doctor      # Check your full setup — run this first
+npm run doctor      # Check your full setup: run this first
 npm run scan        # Scan all sources (see "Finding the newest jobs")
 npm run scan:linkedin  # LinkedIn, last 24h
 npm run scan:remote    # Remote roles open to Nigeria, last 3 days
@@ -420,7 +420,7 @@ npm run normalize   # Fix any non-canonical status values
 
 ## Ethical use
 
-> This system is a quality filter, not a volume tool. The goal is to find roles that genuinely fit — not to send generic applications to every open listing. The system never submits anything on your behalf. You review everything first. You always have the final call.
+> This system is a quality filter, not a volume tool. The goal is to find roles that genuinely fit, not to send generic applications to every open listing. The system never submits anything on your behalf. You review everything first. You always have the final call.
 
 ---
 
@@ -432,13 +432,13 @@ These folders and the `README.es/ja/ko-KR/pt-BR/ru.md` files come from the origi
 
 ## Contributing
 
-This is an early version built specifically for the Nigerian job market. Contributions are welcome — especially around portal coverage, company list expansion, scoring calibration for local context, and CV template improvements. Open an issue or pull request on GitHub.
+This is an early version built specifically for the Nigerian job market. Contributions are welcome, especially around portal coverage, company list expansion, scoring calibration for local context, and CV template improvements. Open an issue or pull request on GitHub.
 
 ---
 
 ## License
 
-MIT — same as the original career-ops. Fork it, adapt it for your market, improve it.
+MIT, same as the original career-ops. Fork it, adapt it for your market, improve it.
 
 ---
 

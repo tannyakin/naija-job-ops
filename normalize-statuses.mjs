@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * normalize-statuses.mjs — Clean non-canonical states in applications.md
+ * normalize-statuses.mjs: Clean non-canonical states in applications.md
  *
  * Maps all non-canonical statuses to canonical ones per states.yml:
  *   Evaluada, Aplicado, Respondido, Entrevista, Oferta, Rechazado, Descartado, NO APLICAR
@@ -59,10 +59,10 @@ function normalizeStatus(raw) {
   // Repost #NNN → Discarded
   if (/^repost/i.test(s)) return { status: 'Discarded', moveToNotes: raw.trim() };
 
-  // "—" (em dash, no status) → Discarded
-  if (s === '—' || s === '-' || s === '') return { status: 'Discarded' };
+  // A lone em dash (no status) → Discarded
+  if (s === '\u2014' || s === '-' || s === '') return { status: 'Discarded' };
 
-  // Already canonical (English, per states.yml) — just fix casing/bold
+  // Already canonical (English, per states.yml): just fix casing/bold
   const canonical = [
     'Evaluated', 'Applied', 'Responded', 'Interview',
     'Offer', 'Rejected', 'Discarded', 'SKIP',
@@ -80,7 +80,7 @@ function normalizeStatus(raw) {
   if (['cerrada', 'descartada'].includes(lower)) return { status: 'Discarded' };
   if (['no aplicar', 'no_aplicar', 'skip'].includes(lower)) return { status: 'SKIP' };
 
-  // Unknown — flag it
+  // Unknown: flag it
   return { status: null, unknown: true };
 }
 
@@ -149,7 +149,7 @@ if (!DRY_RUN && changes > 0) {
   writeFileSync(APPS_FILE, lines.join('\n'));
   console.log('✅ Written to applications.md (backup: applications.md.bak)');
 } else if (DRY_RUN) {
-  console.log('(dry-run — no changes written)');
+  console.log('(dry-run: no changes written)');
 } else {
   console.log('✅ No changes needed');
 }

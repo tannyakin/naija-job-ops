@@ -1,4 +1,4 @@
-# Mode: batch — Batch Processing of Multiple Listings
+# Mode: batch (Batch Processing of Multiple Listings)
 
 Process multiple job listings in parallel using `claude -p` worker processes. Each worker runs a clean, stateless eval on a single listing and produces a report, tracker addition, and optional PDF.
 
@@ -20,7 +20,7 @@ Claude Conductor (claude --chrome --dangerously-skip-permissions)
   └─ End: node merge-tracker.mjs → applications.md + summary
 ```
 
-Each worker runs with a clean 200K token context. The conductor only orchestrates — it does not evaluate.
+Each worker runs with a clean 200K token context. The conductor only orchestrates. It does not evaluate.
 
 ---
 
@@ -38,11 +38,11 @@ batch/
 
 ---
 
-## Mode A — Conductor with Chrome
+## Mode A: Conductor with Chrome
 
 Use this when you want to scan a portal interactively and batch-process everything visible.
 
-1. **Read state**: `batch/batch-state.tsv` — skip any listing already marked `completed`
+1. **Read state**: `batch/batch-state.tsv` and skip any listing already marked `completed`
 2. **Navigate portal**: Chrome → Nigerian job board or company careers page
 3. **Extract listings**: Read DOM → extract list of listing URLs → append to `batch-input.tsv`
 4. **For each URL in `batch-input.tsv` that is `pending`**:
@@ -63,18 +63,18 @@ Use this when you want to scan a portal interactively and batch-process everythi
 
 ---
 
-## Mode B — Standalone Script
+## Mode B: Standalone Script
 
 ```bash
 batch/batch-runner.sh [OPTIONS]
 ```
 
 Options:
-- `--dry-run` — list pending listings without processing
-- `--retry-failed` — reprocess only listings marked `failed`
-- `--start-from N` — begin from batch ID N
-- `--parallel N` — run N workers in parallel (default: 3)
-- `--max-retries N` — retries per listing on failure (default: 2)
+- `--dry-run`: list pending listings without processing
+- `--retry-failed`: reprocess only listings marked `failed`
+- `--start-from N`: begin from batch ID N
+- `--parallel N`: run N workers in parallel (default: 3)
+- `--max-retries N`: retries per listing on failure (default: 2)
 
 ---
 
@@ -93,7 +93,7 @@ id	url	status	started_at	completed_at	report_num	score	error	retries
 
 - If the conductor dies mid-run: re-execute → read `batch-state.tsv` → skip completed listings
 - Lock file at `batch/batch-runner.pid` prevents double execution
-- Each worker is independent — a failure at listing #12 does not affect listing #13
+- Each worker is independent, so a failure at listing #12 does not affect listing #13
 
 ---
 
@@ -135,7 +135,7 @@ This merges all `batch/tracker-additions/*.tsv` into `data/applications.md`.
 Display summary:
 
 ```
-Batch Complete — {YYYY-MM-DD}
+Batch Complete: {YYYY-MM-DD}
 ══════════════════════════════
 Processed:  {N}
 Completed:  {N}
@@ -143,8 +143,8 @@ Failed:     {N}
 Skipped:    {N}
 
 Top matches:
-  #{num} — {company} | {role} | {score}/5
-  #{num} — {company} | {role} | {score}/5
+  #{num}: {company} | {role} | {score}/5
+  #{num}: {company} | {role} | {score}/5
   ...
 
 → Run /naija-jobs pipeline to evaluate any remaining pending listings.

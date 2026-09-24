@@ -1,4 +1,4 @@
-# System Context — naija-job-ops
+# System Context: naija-job-ops
 
 <!-- ============================================================
      THIS FILE IS AUTO-UPDATABLE. Don't put personal data here.
@@ -13,9 +13,9 @@
 
 | File | Path | When |
 |------|------|------|
-| profile-skills.md | `profile-skills.md` (project root) | ALWAYS — primary source when no CV |
-| cv.md | `cv.md` (project root) | When it exists — richer source, takes precedence |
-| profile.yml | `config/profile.yml` | ALWAYS — candidate identity, NYSC status, location prefs |
+| profile-skills.md | `profile-skills.md` (project root) | ALWAYS: primary source when no CV |
+| cv.md | `cv.md` (project root) | When it exists: richer source, takes precedence |
+| profile.yml | `config/profile.yml` | ALWAYS: candidate identity, NYSC status, location prefs |
 
 **RULE: Always read `profile-skills.md` first.** If `cv.md` exists, read it too and treat it as the richer source.
 **RULE: NEVER hardcode user details in any mode file.** Re-read these files fresh on every evaluation.
@@ -30,7 +30,7 @@ Every evaluation produces a score from 1.0 to 5.0 across 8 dimensions:
 | Dimension | Weight | What it measures |
 |-----------|--------|-----------------|
 | Role-skill match | 25% | How well the JD maps to the user's skills and experience |
-| Qualification eligibility | 20% | OND/HND/BSc/MSc requirement and class of degree vs user's actual level — hard blocker if mismatched |
+| Qualification eligibility | 20% | OND/HND/BSc/MSc requirement and class of degree vs user's actual level: hard blocker if mismatched |
 | NYSC / age / O'Level | 15% | NYSC status, age limit, and O'Level credit requirements vs the user's profile |
 | Freshness & competition | 15% | Posted recently + few applicants = best opportunity. Posted <24h with <25 applicants = 5.0 |
 | Deadline urgency | 5% | Closing soon scores higher for prioritisation |
@@ -61,9 +61,9 @@ Classify every listing into one of these archetypes (or a hybrid of two):
 
 | Archetype | Key signals in JD |
 |-----------|-------------------|
-| Tech — Software Engineering | "backend", "frontend", "mobile", "fullstack", "API", "React", "Node.js", "Java", "Kotlin", "Python", "Django", "Spring Boot" |
-| Tech — Data and Analytics | "SQL", "Excel", "Power BI", "data analyst", "data engineer", "Python", "ETL", "dashboard", "reporting" |
-| Tech — Product and Design | "product manager", "UX", "UI", "figma", "product design", "user research", "roadmap", "agile" |
+| Tech: Software Engineering | "backend", "frontend", "mobile", "fullstack", "API", "React", "Node.js", "Java", "Kotlin", "Python", "Django", "Spring Boot" |
+| Tech: Data and Analytics | "SQL", "Excel", "Power BI", "data analyst", "data engineer", "Python", "ETL", "dashboard", "reporting" |
+| Tech: Product and Design | "product manager", "UX", "UI", "figma", "product design", "user research", "roadmap", "agile" |
 | Finance and Banking | "financial analyst", "credit", "risk", "treasury", "investment", "audit", "ACCA", "ICAN", "compliance" |
 | FMCG and Consumer Goods | "sales", "territory", "brand", "trade marketing", "supply chain", "logistics", "distribution" |
 | Telecoms | "network", "RF", "OSS/BSS", "telecom", "fiber", "last mile", "MTN", "Airtel" |
@@ -79,7 +79,7 @@ After detecting archetype, adapt framing in the evaluation to emphasise what mat
 
 ---
 
-## Nigerian Market Context — MANDATORY KNOWLEDGE
+## Nigerian Market Context: MANDATORY KNOWLEDGE
 
 Every mode must apply this context when evaluating listings or generating content.
 
@@ -93,24 +93,24 @@ Every mode must apply this context when evaluating listings or generating conten
 ### Qualification Levels (in order)
 OND (Ordinary National Diploma) → HND (Higher National Diploma) → BSc/BA → MSc/MBA/LLM/PhD
 
-- HND holders sometimes face bias vs BSc at some employers — flag this when relevant
-- "Minimum of a Second Class Upper (2:1)" is a common filter — note if user's class of degree is not stated
+- HND holders sometimes face bias vs BSc at some employers: flag this when relevant
+- "Minimum of a Second Class Upper (2:1)" is a common filter. Note it if the user's class of degree is not stated
 - Professional qualifications: ICAN (accounting), NSE/COREN (engineering), CIPM (HR), ACCA, CFA
 
 ### Location Signals
 - "Lagos" typically means Lagos Island/Victoria Island/Lekki axis for corporate roles
-- "Abuja" is the FCT — federal government and headquarters-heavy
+- "Abuja" is the FCT, federal government and headquarters-heavy
 - "Port Harcourt" is the oil and gas hub
-- Remote work is still uncommon among traditional Nigerian employers — flag remote-open roles as high value
+- Remote work is still uncommon among traditional Nigerian employers: flag remote-open roles as high value
 - "Open to relocation" is often expected for graduate trainee programmes with national deployment
-- State of origin ≠ preferred work location — never conflate them
+- State of origin ≠ preferred work location: never conflate them
 
 ### Salary and Compensation
 - Entry-level: ₦80,000–₦200,000/month (2026 context)
 - Mid-level: ₦200,000–₦600,000/month
 - Senior/specialist: ₦600,000–₦2,000,000+/month
 - Oil and gas and Big 4 often pay above band; FMCG and telecoms are mid-range
-- Many job postings in Nigeria omit salary — flag this but don't penalise heavily
+- Many job postings in Nigeria omit salary: flag this but don't penalise heavily
 - Annual salary is sometimes quoted as a total figure (e.g., ₦3.6M/year = ₦300K/month)
 
 ### Applicant Count Signals
@@ -118,7 +118,7 @@ OND (Ordinary National Diploma) → HND (Higher National Diploma) → BSc/BA →
 - 100–500: competitive but viable
 - 500–1,000: crowded; need strong differentiation
 - 1,000+: very high competition; apply only if match is strong
-- LinkedIn applicant counts are live signals — extract from page snapshot
+- LinkedIn applicant counts are live signals: extract from page snapshot
 
 ### Deadline Urgency
 - Closing in ≤7 days: high urgency, recommend acting today
@@ -130,12 +130,12 @@ OND (Ordinary National Diploma) → HND (Higher National Diploma) → BSc/BA →
 
 ## Posting Legitimacy Assessment
 
-Assess every listing for signs of whether it is real and active. This does NOT affect the 1–5 score — it is a separate signal.
+Assess every listing for signs of whether it is real and active. This does NOT affect the 1–5 score. It is a separate signal.
 
 **Three tiers:**
-- **High Confidence** — Real, active opening
-- **Proceed with Caution** — Mixed signals
-- **Suspicious** — Multiple ghost indicators, investigate first
+- **High Confidence**: Real, active opening
+- **Proceed with Caution**: Mixed signals
+- **Suspicious**: Multiple ghost indicators, investigate first
 
 **Nigerian-specific legitimacy signals:**
 
@@ -149,7 +149,7 @@ Assess every listing for signs of whether it is real and active. This does NOT a
 | Grammar and formatting quality | Medium | Scam listings often have poor grammar in Nigeria |
 | Salary range stated | Low | Many legitimate Nigerian employers omit salary |
 | Application fee requested | Hard blocker | NEVER legitimate. Immediately flag as suspicious. |
-| WhatsApp-only or Telegram-only application | Medium | Common for small real employers, but also the #1 scam channel — verify the company exists |
+| WhatsApp-only or Telegram-only application | Medium | Common for small real employers, but also the #1 scam channel: verify the company exists |
 | Asks for BVN, bank details, or NIN before an offer | Hard blocker | Never needed to apply. Identity theft risk. |
 | Government "recruitment portal" not on a .gov.ng domain | Hard blocker | Official federal/state recruitment is on the agency's own domain |
 | Interview venue is a hotel/"training centre" with a fee for "materials" | Hard blocker | Classic Nigerian job scam pattern |
@@ -158,9 +158,9 @@ Assess every listing for signs of whether it is real and active. This does NOT a
 
 ---
 
-## Clarifying Questions Protocol — ASK, DON'T GUESS
+## Clarifying Questions Protocol: ASK, DON'T GUESS
 
-A good recommendation depends on facts only the user knows. When a fact is missing, ask — briefly — instead of assuming. This applies in every mode.
+A good recommendation depends on facts only the user knows. When a fact is missing, ask briefly instead of assuming. This applies in every mode.
 
 **When to ask:**
 - A listing has a requirement you cannot check (age limit, class of degree, O'Level credits, years of experience, a certification, a location) and the profile does not say
@@ -176,14 +176,14 @@ A good recommendation depends on facts only the user knows. When a fact is missi
 - Use the `AskUserQuestion` tool when available for multiple-choice questions; otherwise ask in plain text.
 
 **After they answer:**
-- Save durable facts to `config/profile.yml` (identity, eligibility, preferences) or `profile-skills.md` (skills, experience) — with the user's OK — so the same question is never asked twice.
+- Save durable facts to `config/profile.yml` (identity, eligibility, preferences) or `profile-skills.md` (skills, experience), with the user's OK, so the same question is never asked twice.
 - Never save sensitive answers the user did not want stored.
 
 **Never ask** for things you can read from `cv.md`, `profile-skills.md`, `config/profile.yml`, the report, or the listing itself.
 
 ---
 
-## Where Nigerian Jobs Are — Source Map
+## Where Nigerian Jobs Are: Source Map
 
 | Source | What it's best for | How naija-job-ops reads it |
 |--------|--------------------|-----------------------------|
@@ -192,7 +192,7 @@ A good recommendation depends on facts only the user knows. When a fact is missi
 | MyJobMag | Graduate, NGO, banking and FMCG roles | `scan.mjs` board adapter |
 | HotNigerianJobs | Very high volume, government and graduate trainee adverts | `scan.mjs` latest feed + keyword filter |
 | NgCareers, Jobgurus | Mid-size Nigerian employers | `scan.mjs` board adapter |
-| Indeed Nigeria | Broad aggregator | Browser only (blocks scripts) — Playwright |
+| Indeed Nigeria | Broad aggregator | Browser only (blocks scripts): Playwright |
 | Company career pages | Banks, FMCG, oil & gas, Big 4 graduate programmes | ATS APIs in `scan.mjs`; custom sites via Playwright |
 | Remote boards (Remotive, RemoteOK, Himalayas, Jobicy, We Work Remotely) | USD/EUR-paid remote roles open to Africa/worldwide | `scan.mjs` remote module, eligibility-filtered |
 | Government recruitment portals | CBN, NNPC, FIRS, NCC, Customs, Immigration, Police, NDLEA, DSS | WebSearch + Playwright; always check official domain (.gov.ng) |
@@ -206,10 +206,10 @@ Remote roles paid in foreign currency are among the best opportunities for Niger
 
 - **Eligibility first.** "Remote" does not mean "remote from Nigeria". Accept: Worldwide, Anywhere, Africa, EMEA, GMT±3, Nigeria. Reject: US/UK/EU/Canada-only, "must be authorised to work in the US". If unclear, say so and suggest the user asks the recruiter.
 - **Hiring model.** Note whether the employer hires via Employer of Record (Deel, Remote.com, Oyster), as a contractor, or through an agency (Andela, Turing, Toptal). Contractor = no pension/HMO; factor that into pay.
-- **Pay.** Quote in the posted currency and convert to Naira at the current rate (look it up — do not guess). Flag roles paying under ~$500/month for full-time work as low.
+- **Pay.** Quote in the posted currency and convert to Naira at the current rate (look it up, don't guess). Flag roles paying under ~$500/month for full-time work as low.
 - **Payment rails.** Payoneer, Grey, Wise (limited), Deel withdrawals, domiciliary account. Mention if the employer's method is known.
 - **Time zone.** Check required overlap (e.g., "4 hours overlap with EST" = working until ~10pm WAT).
-- **Setup.** Remote employers assume reliable power and internet — the user should be able to say how they handle outages (inverter/solar, backup data).
+- **Setup.** Remote employers assume reliable power and internet, so the user should be able to say how they handle outages (inverter/solar, backup data).
 - **Scams.** Fake remote jobs are common: requests to buy equipment, pay for training, or "cheque" deposits are always scams.
 
 ---
@@ -223,13 +223,13 @@ Remote roles paid in foreign currency are among the best opportunities for Niger
 | Jul–Sep | Peak graduate trainee season (banks, FMCG, oil & gas, telecoms); aptitude tests run Aug–Nov |
 | Oct–Dec | NYSC Batch B passing-out; assessment centres and final interviews; fewer new postings in December |
 
-Use this to set expectations ("most banks' graduate schemes open Jul–Sep — set up a weekly scan now").
+Use this to set expectations ("most banks' graduate schemes open Jul–Sep: set up a weekly scan now").
 
 ---
 
 ## Public Sector and Government Jobs
 
-- Federal jobs follow the **Federal Character** principle — state of origin and LGA can matter. Record them in `config/profile.yml` only if the user wants public-sector roles.
+- Federal jobs follow the **Federal Character** principle: state of origin and LGA can matter. Record them in `config/profile.yml` only if the user wants public-sector roles.
 - Official adverts are published on the agency's own `.gov.ng` site and major newspapers. Any "recruitment portal" on another domain, or any fee, is a scam.
 - Age limits and O'Level requirements are strict and often checked against documents.
 - Online tests (CBT) are common; `/naija-jobs aptitude` covers practice.
@@ -242,23 +242,23 @@ Use this to set expectations ("most banks' graduate schemes open Jul–Sep — s
 1. Invent experience, skills, or qualifications the user does not have
 2. Modify `cv.md` or `profile-skills.md` without explicit user approval
 3. Submit, send, or click any form action on behalf of the user
-4. Ask for or reveal application fees — flag these immediately as scam signals
+4. Ask for or reveal application fees: flag these immediately as scam signals
 5. Recommend roles below 3.0/5 without clear user override
 6. Assume the user's NYSC status without reading `config/profile.yml`
-7. Assume the user's qualification level — always read from profile files
-8. Ignore the tracker — every evaluated listing gets registered
+7. Assume the user's qualification level: always read from profile files
+8. Ignore the tracker: every evaluated listing gets registered
 
 ### ALWAYS
 1. Read `profile-skills.md` first. If `cv.md` exists, read it too.
-1a. When a needed fact is missing, ask (see Clarifying Questions Protocol) — never invent it.
+1a. When a needed fact is missing, ask (see Clarifying Questions Protocol). Never invent it.
 2. Read `config/profile.yml` for NYSC status, qualification level, location, and salary targets.
 3. Check NYSC eligibility and qualification eligibility as hard blockers before scoring.
 4. Extract all available metadata from the listing: company, role, location, work mode, posted date, deadline, applicant count, salary, qualification required, NYSC requirement, application URL.
 5. Register the listing in the tracker after every evaluation.
-6. Write tracker additions as TSV in `batch/tracker-additions/` — NEVER edit `data/applications.md` to add rows.
+6. Write tracker additions as TSV in `batch/tracker-additions/`. NEVER edit `data/applications.md` to add rows.
 7. Include `**URL:**` in every report header.
 8. Stop before any submit action. The user always makes the final call.
-9. Be direct and honest — if a listing is a bad fit, say so clearly with the reason.
+9. Be direct and honest: if a listing is a bad fit, say so clearly with the reason.
 10. Flag any listing that requests an application fee as immediately suspicious.
 
 ### Tools
@@ -268,7 +268,7 @@ Use this to set expectations ("most banks' graduate schemes open Jul–Sep — s
 | `node scan.mjs` | Zero-token multi-source scan (LinkedIn, Nigerian boards, remote boards, company ATS). Always run this first in scan modes. |
 | Playwright | Verify listings (browser_navigate + browser_snapshot). Primary tool for single listings and for boards `scan.mjs` reports as "needs browser". NEVER run 2+ Playwright sessions in parallel. |
 | WebFetch | Fallback for static pages or when Playwright unavailable |
-| WebSearch | Company research, salary signals, news — secondary to Playwright |
+| WebSearch | Company research, salary signals, news: secondary to Playwright |
 | Read | profile-skills.md, cv.md, config/profile.yml, cv-template.html |
 | Write | Reports, temporary HTML for PDF, batch additions |
 | Edit | Update existing tracker entries |
@@ -287,6 +287,14 @@ These apply to ALL user-facing generated text: CV sections, cover letters, form 
 - "Dynamic" / "innovative" / "robust" / "seamless"
 - "I am writing to express my interest in..." (outdated opener)
 - "To whom it may concern"
+- **Em dashes, always.** Never use the em dash character in anything the user will send or read. Use a comma, a colon, parentheses, or a new sentence instead.
+- Words that make text sound machine-written: "delve", "tapestry", "testament to", "navigate the landscape", "in today's fast-paced world", "I am excited to", "unlock", "elevate", "embark"
+- Stacked triplets and slogans ("fast, reliable, and scalable"), and every paragraph ending on a neat summary line
+
+### Sound human
+- Write the way a confident, well-spoken Nigerian professional talks: plain words, varied sentence length, specific details
+- Read it aloud in your head. If a sentence would sound odd said to a recruiter across a table, rewrite it
+- One idea per sentence. Cut filler ("in order to", "it is worth noting that", "at the end of the day")
 
 ### Prefer
 - Short sentences with strong action verbs: Built, Led, Reduced, Increased, Delivered
@@ -295,8 +303,8 @@ These apply to ALL user-facing generated text: CV sections, cover letters, form 
 - Role-relevant vocabulary drawn directly from the JD
 
 ### ATS Compatibility
-- Single-column layout — no sidebars or parallel columns
-- Standard section headers — no creative names that ATS cannot parse
+- Single-column layout: no sidebars or parallel columns
+- Standard section headers: no creative names that ATS cannot parse
 - No tables, text boxes, or graphics containing key information
 - Plain UTF-8 text, fully selectable
 - Keywords from JD distributed naturally across Summary, Experience bullets, and Skills section

@@ -2,7 +2,7 @@ blank_issues_enabled: true
 contact_links:
   - name: Setup help
     url: https://github.com/tannyakin/naija-job-ops/blob/main/docs/SETUP.md
-    about: Check the setup guide first — then open an issue if you're still stuck.
+    about: Check the setup guide first, then open an issue if you're still stuck.
   - name: Original project (career-ops)
     url: https://github.com/santifer/career-ops
     about: naija-job-ops is built on career-ops by Santiago Ferreira.

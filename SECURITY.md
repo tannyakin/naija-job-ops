@@ -17,17 +17,17 @@ You will receive a response within 72 hours. We will work with you to understand
 
 Security issues in the following are in scope:
 
-- **Scripts** (`*.mjs`) — command injection, path traversal, SSRF
-- **Dashboard** (`dashboard/`) — any Go binary vulnerabilities
-- **Templates** (`templates/`) — XSS in generated HTML/PDF
-- **Configuration** — secrets exposure, unsafe defaults
+- **Scripts** (`*.mjs`): command injection, path traversal, SSRF
+- **Dashboard** (`dashboard/`): any Go binary vulnerabilities
+- **Templates** (`templates/`): XSS in generated HTML/PDF
+- **Configuration**: secrets exposure, unsafe defaults
 
 ## Out of Scope
 
 - Issues in third-party dependencies (report upstream)
 - Issues requiring physical access to the user's machine
 - Social engineering attacks
-- career-ops is a local tool — there is no hosted service to attack
+- career-ops is a local tool: there is no hosted service to attack
 
 ## Disclosure Policy
 

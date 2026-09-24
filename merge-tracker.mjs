@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * merge-tracker.mjs — Merge batch tracker additions into applications.md
+ * merge-tracker.mjs: Merge batch tracker additions into applications.md
  *
  * Handles multiple TSV formats:
  * - 12-col (canonical): num\tdate\tcompany\trole\tlocation\tscore\tdeadline\tapplicants\tstatus\tpdf\treport\tnotes
@@ -272,7 +272,7 @@ for (const file of tsvFiles) {
     const oldScore = parseScore(duplicate.score);
 
     if (newScore > oldScore) {
-      console.log(`🔄 Update: #${duplicate.num} ${addition.company} — ${addition.role} (${oldScore}→${newScore})`);
+      console.log(`🔄 Update: #${duplicate.num} ${addition.role} at ${addition.company} (${oldScore}→${newScore})`);
       const lineIdx = appLines.indexOf(duplicate.raw);
       if (lineIdx >= 0) {
         const updatedLine = formatAppLine({
@@ -289,18 +289,18 @@ for (const file of tsvFiles) {
         updated++;
       }
     } else {
-      console.log(`⏭️  Skip: ${addition.company} — ${addition.role} (existing #${duplicate.num} ${oldScore} >= new ${newScore})`);
+      console.log(`⏭️  Skip: ${addition.role} at ${addition.company} (existing #${duplicate.num} ${oldScore} >= new ${newScore})`);
       skipped++;
     }
   } else {
-    // New entry — use the number from the TSV
+    // New entry: use the number from the TSV
     const entryNum = addition.num > maxNum ? addition.num : ++maxNum;
     if (addition.num > maxNum) maxNum = addition.num;
 
     const newLine = formatAppLine({ ...addition, num: entryNum });
     newLines.push(newLine);
     added++;
-    console.log(`➕ Add #${entryNum}: ${addition.company} — ${addition.role} (${addition.score})`);
+    console.log(`➕ Add #${entryNum}: ${addition.role} at ${addition.company} (${addition.score})`);
   }
 }
 
@@ -332,7 +332,7 @@ if (!DRY_RUN) {
 }
 
 console.log(`\n📊 Summary: +${added} added, 🔄${updated} updated, ⏭️${skipped} skipped`);
-if (DRY_RUN) console.log('(dry-run — no changes written)');
+if (DRY_RUN) console.log('(dry-run: no changes written)');
 
 // Optional verify
 if (VERIFY && !DRY_RUN) {

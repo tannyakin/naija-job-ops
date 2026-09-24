@@ -1,35 +1,35 @@
-# Mode: cover-letter — Cover Letters That Get Read
+# Mode: cover-letter (Cover Letters That Get Read)
 
-Write a tailored cover letter (or application email) for one specific listing, in the format that listing actually needs. Output as PDF, as plain text to paste into a form, or as an email body — whichever the application uses.
+Write a tailored cover letter (or application email) for one specific listing, in the format that listing actually needs. Output as PDF, as plain text to paste into a form, or as an email body, whichever the application uses.
 
 Triggered by `/naija-jobs cover-letter`, by `pdf` mode (which calls this for page 2), or when the user asks for a cover letter, motivation letter, "why do you want this job" essay, or application email.
 
 ---
 
-## Step 1 — Gather inputs
+## Step 1: Gather inputs
 
-1. **The listing** — from context, a URL (open it), an existing report in `reports/`, or ask: "Which job is this for? Paste the link or the advert."
-2. **The user** — `cv.md` (or `profile-skills.md`), `config/profile.yml`, `modes/_profile.md` (narrative, proof points), and the evaluation report if one exists (it has matched strengths, gaps, and ATS keywords).
-3. **How it will be sent** — detect from the listing, or ask if unclear:
+1. **The listing**: from context, a URL (open it), an existing report in `reports/`, or ask: "Which job is this for? Paste the link or the advert."
+2. **The user**: `cv.md` (or `profile-skills.md`), `config/profile.yml`, `modes/_profile.md` (narrative, proof points), and the evaluation report if one exists (it has matched strengths, gaps, and ATS keywords).
+3. **How it will be sent**: detect from the listing, or ask if unclear:
    - Upload as a document → **PDF**
    - Text box on a portal (often with a character limit) → **plain text**, respect the limit
    - "Send your CV to hr@company.com" → **email body** + subject line (the CV is the attachment)
    - Graduate trainee or government portal "motivation statement" → **plain text**, word count as specified
 
 **Ask (max 3 questions) if you are missing something that would make the letter specific:**
-- "What's one thing you've done that you're proud of and that relates to this role — with a number if possible?"
-- "Why this company specifically — anything you've used, heard, or admire about them?"
+- "What's one thing you've done that you're proud of and that relates to this role, with a number if possible?"
+- "Why this company specifically? Anything you've used, heard, or admire about them?"
 - "Do you know the hiring manager's name?" (only if the listing hints at one)
 
 ---
 
-## Step 2 — Pick the right structure
+## Step 2: Pick the right structure
 
 **Standard (private sector, 250–350 words, 3–4 paragraphs):**
-1. **Hook** — the role, and one concrete reason this company. Mention something real and verified (a product, programme, expansion, value) — never invent.
-2. **Proof** — 2–3 most relevant experiences mapped to the top JD requirements. At least one number.
-3. **Fit & gap** — address the most obvious gap honestly and briefly (e.g. "My experience is from NYSC and SIWES rather than a full-time role, but…"), or show culture/sector fit.
-4. **Close** — clear ask, availability (e.g. NYSC passing-out date, notice period), thanks.
+1. **Hook**: the role, and one concrete reason this company. Mention something real and verified (a product, programme, expansion, value). Never invent.
+2. **Proof**: 2–3 most relevant experiences mapped to the top JD requirements. At least one number.
+3. **Fit & gap**: address the most obvious gap honestly and briefly (e.g. "My experience is from NYSC and SIWES rather than a full-time role, but…"), or show culture/sector fit.
+4. **Close**: clear ask, availability (e.g. NYSC passing-out date, notice period), thanks.
 
 **Graduate trainee / management trainee:** emphasise learning speed, leadership in school/NYSC/CDS, class of degree if strong, willingness to relocate if the scheme deploys nationally.
 
@@ -41,7 +41,7 @@ Triggered by `/naija-jobs cover-letter`, by `pdf` mode (which calls this for pag
 
 **Email application (send CV to an address):**
 ```
-Subject: Application — {Role} — {Full Name}
+Subject: Application for {Role} | {Full Name}
 
 Dear {Name / Hiring Team},
 
@@ -56,7 +56,7 @@ Kind regards,
 
 ---
 
-## Step 3 — Write it
+## Step 3: Write it
 
 Follow the Professional Writing Rules in `_shared.md`. Also:
 
@@ -72,7 +72,7 @@ Show the draft to the user. Offer 1–2 targeted alternatives for the opening li
 
 ---
 
-## Step 4 — Output
+## Step 4: Output
 
 **PDF:**
 1. Read `templates/cover-letter-template.html`
@@ -86,7 +86,7 @@ Always save the final text to `output/cl-{candidate-slug}-{company-slug}-{YYYY-M
 
 ---
 
-## Step 5 — Checklist before handing over
+## Step 5: Checklist before handing over
 
 - [ ] Company and role names spelled exactly as in the advert
 - [ ] Every claim traceable to `cv.md` / `profile-skills.md` / the user's answers
@@ -95,4 +95,4 @@ Always save the final text to `output/cl-{candidate-slug}-{company-slug}-{YYYY-M
 - [ ] Within the length/format required
 - [ ] No fee, no personal data beyond what the advert asks (no BVN, no NIN)
 
-Remind the user: **review before sending — you make the final call.** Offer `/naija-jobs apply` for the rest of the form.
+Remind the user: **review before sending. You make the final call.** Offer `/naija-jobs apply` for the rest of the form.

@@ -1,8 +1,8 @@
 ---
-description: Guided tour of naija-job-ops — how to use it and get the best from it
+description: Guided tour of naija-job-ops, how to use it and get the best from it
 ---
 
-Guided tour of naija-job-ops — how to use it and get the best from it.
+Guided tour of naija-job-ops: how to use it and get the best from it.
 
 Load the naija-jobs skill:
 ```

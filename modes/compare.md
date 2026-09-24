@@ -1,21 +1,21 @@
-# Mode: compare — Compare Multiple Listings
+# Mode: compare (Compare Multiple Listings)
 
 Compare two or more job listings side by side using the Nigerian scoring dimensions. Rank them and recommend which to pursue first.
 
 ---
 
-## Step 1 — Collect the Listings
+## Step 1: Collect the Listings
 
 The user provides 2 or more listings. Each can be:
-- A URL — use Playwright to extract JD (`browser_navigate` + `browser_snapshot`)
-- Pasted JD text — parse directly
-- A report already in `reports/` — read the file
+- A URL: use Playwright to extract JD (`browser_navigate` + `browser_snapshot`)
+- Pasted JD text: parse directly
+- A report already in `reports/`: read the file
 
 If URLs are provided, extract each JD sequentially (never 2 Playwright sessions in parallel).
 
 ---
 
-## Step 2 — Score Each Listing
+## Step 2: Score Each Listing
 
 For each listing, run the full 8-dimension scoring from `modes/_shared.md`:
 
@@ -36,12 +36,12 @@ Read user profile from `profile-skills.md` and `config/profile.yml`.
 
 ---
 
-## Step 3 — Side-by-Side Table
+## Step 3: Side-by-Side Table
 
 Present a comparison table:
 
 ```
-LISTING COMPARISON — {date}
+LISTING COMPARISON: {date}
 ══════════════════════════════════════════════════════════════════
 
                         | Listing A           | Listing B           | Listing C
@@ -72,27 +72,27 @@ Verdict                 | {Recommend/Flag/Skip} | ...               | ...
 
 ---
 
-## Step 4 — Ranking and Recommendation
+## Step 4: Ranking and Recommendation
 
 List the listings ranked by total score, highest first:
 
 ```
 Ranking:
-  1. {company} — {role} | {score}/5 | {Recommend/Flag}
-  2. {company} — {role} | {score}/5 | {Recommend/Flag}
-  3. {company} — {role} | {score}/5 | {Skip}
+  1. {role} at {company} | {score}/5 | {Recommend/Flag}
+  2. {role} at {company} | {score}/5 | {Recommend/Flag}
+  3. {role} at {company} | {score}/5 | {Skip}
 
 Recommendation:
-  → Apply to {company #1} first — {1-sentence reason}.
-  → {company #2} is worth applying to in parallel — {1-sentence reason}.
-  → Skip {company #3} — {1-sentence reason}.
+  → Apply to {company #1} first: {1-sentence reason}.
+  → {company #2} is worth applying to in parallel: {1-sentence reason}.
+  → Skip {company #3}: {1-sentence reason}.
 ```
 
 If two listings are within 0.3 points of each other, note the tie and highlight the single deciding dimension.
 
 ---
 
-## Step 5 — Application Sequencing Advice
+## Step 5: Application Sequencing Advice
 
 Based on deadlines and competition levels, advise on order and timing:
 
@@ -102,6 +102,6 @@ Based on deadlines and competition levels, advise on order and timing:
 
 ---
 
-## Step 6 — Save Reports (optional)
+## Step 6: Save Reports (optional)
 
 If the user wants full evaluation reports for each listing, run `modes/eval.md` for each and save to `reports/`. Otherwise, the comparison table is the only output.

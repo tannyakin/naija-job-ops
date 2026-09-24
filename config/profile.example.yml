@@ -10,8 +10,8 @@ candidate:
   location_city: "Ikeja"
   linkedin: "linkedin.com/in/emekaokafor"
   github: "github.com/emekaokafor"      # optional
-  portfolio_url: ""                      # optional — link to portfolio, GitHub Pages, etc.
-  # Eligibility details — used ONLY to check adverts' cut-offs (e.g. "not older than 26").
+  portfolio_url: ""                      # optional, link to portfolio, GitHub Pages, etc.
+  # Eligibility details: used ONLY to check adverts' cut-offs (e.g. "not older than 26").
   # Leave blank if you prefer; the system will ask when an advert needs it.
   date_of_birth: ""                      # YYYY-MM-DD
   state_of_origin: ""                    # only needed for some public-sector forms
@@ -23,7 +23,7 @@ education:
   institution: "University of Lagos"
   class_of_degree: "Second Class Upper"  # First Class | Second Class Upper | Second Class Lower | Pass | HND Upper | HND Lower
   graduation_year: 2024
-  cgpa: ""                               # e.g. "4.12/5.0" — state the scale
+  cgpa: ""                               # e.g. "4.12/5.0", state the scale
   olevel: "WAEC, one sitting, 7 credits incl. English and Mathematics"
 
 experience:
@@ -45,14 +45,14 @@ target_roles:
   primary:
     - "Software Engineer (Backend)"
     - "Junior Software Developer"
-    - "Graduate Trainee — Technology"
+    - "Graduate Trainee: Technology"
   # Archetypes from _shared.md that best describe you
   archetypes:
-    - name: "Tech — Software Engineering"
+    - name: "Tech: Software Engineering"
       fit: "primary"     # primary = ideal, secondary = good fit, adjacent = stretch
     - name: "Graduate/Management Trainee"
       fit: "secondary"
-    - name: "Tech — Data and Analytics"
+    - name: "Tech: Data and Analytics"
       fit: "adjacent"
 
 preferred_locations:
@@ -66,13 +66,13 @@ work_mode_preference: "any"              # remote | hybrid | onsite | any
 
 remote:
   open_to_international: true            # remote roles with foreign employers (USD/EUR/GBP)
-  salary_expectation_usd_monthly: 1200   # optional — for remote/international roles
+  salary_expectation_usd_monthly: 1200   # optional, for remote/international roles
   contractor_ok: true                    # OK with contractor/EOR arrangements (no pension/HMO)?
   overlap_hours_ok: "up to 9pm WAT"
 
 # What the scanner searches for and how it ranks results (scan.mjs + sources/fit.mjs)
 search:
-  keywords:                              # short search phrases — any field works
+  keywords:                              # short search phrases, any field works
     - "backend developer"
     - "software engineer"
     - "graduate trainee technology"
@@ -93,17 +93,17 @@ compensation:
   open_to_negotiation: true
 
 narrative:
-  # Your professional headline — how you would describe yourself in one line
+  # Your professional headline: how you would describe yourself in one line
   headline: "Backend developer with 2 years of Python and Django experience, seeking first full-time role"
   # Your top 3–5 strengths or differentiators
   superpowers:
-    - "Python (Django, FastAPI) — 2 years hands-on"
+    - "Python (Django, FastAPI): 2 years hands-on"
     - "Built a campus event app used by 300+ students during NYSC"
     - "Strong SQL and database design skills"
   # Any notable projects, articles, or achievements worth referencing
   proof_points:
     - name: "Campus Event Management System"
-      description: "Built during NYSC CDS — a web app used by 300+ students at my PPA institution"
+      description: "Built during NYSC CDS, a web app used by 300+ students at my PPA institution"
       url: ""           # link if publicly available
     - name: "Open source contribution"
       description: "Contributed bug fixes to a Django authentication library"
@@ -112,7 +112,7 @@ narrative:
 # Language setting
 # Uncomment and set if you are targeting non-English markets
 # language:
-#   modes_dir: "modes"     # default — change to modes/de, modes/fr etc. for other markets
+#   modes_dir: "modes"     # default, change to modes/de, modes/fr etc. for other markets
 
 # Additional context for the evaluation system
 # Add any information that helps the system make better recommendations

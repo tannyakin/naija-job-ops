@@ -8,7 +8,7 @@ These files contain your personal data, customizations, and work product. Update
 
 | File | Purpose |
 |------|---------|
-| `cv.md` | Your CV in markdown (optional — system works without it) |
+| `cv.md` | Your CV in markdown (optional; the system works without it) |
 | `profile-skills.md` | Your skills profile (primary source of truth when no CV) |
 | `modes/_profile.md` | Your archetypes, narrative, negotiation scripts, deal-breakers |
 | `config/profile.yml` | Your identity, targets, salary range, NYSC status |

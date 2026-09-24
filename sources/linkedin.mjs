@@ -1,7 +1,7 @@
 /**
- * sources/linkedin.mjs — Logged-out LinkedIn job search
+ * sources/linkedin.mjs: Logged-out LinkedIn job search
  *
- * Uses LinkedIn's public "guest" job endpoints — the same ones that power
+ * Uses LinkedIn's public "guest" job endpoints, the same ones that power
  * linkedin.com/jobs for visitors who are not signed in. No account, no
  * cookies, no login: nobody's LinkedIn account is ever put at risk.
  *
@@ -216,7 +216,7 @@ export async function enrichLinkedIn(jobs, { limit = 15, log = () => {} } = {}) 
       done++;
     } catch (err) {
       if (err instanceof FetchError && err.status === 429) {
-        log('  linkedin detail: rate limited — stopping enrichment');
+        log('  linkedin detail: rate limited, so stopping enrichment');
         break;
       }
     }

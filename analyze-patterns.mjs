@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * analyze-patterns.mjs — Rejection Pattern Detector for naija-job-ops
+ * analyze-patterns.mjs: Rejection Pattern Detector for naija-job-ops
  *
  * Parses applications.md + all linked reports, extracts dimensions
  * (archetype, seniority, remote, gaps, scores), classifies outcomes,
@@ -82,7 +82,7 @@ function parseReport(reportPath) {
   // Strip bold markers for easier matching
   const plain = content.replace(/\*\*/g, '');
 
-  // Extract Block A table (Role Summary) — works with both EN and ES headers
+  // Extract Block A table (Role Summary): works with both EN and ES headers
   const blockARegex = /\|\s*(?:Archetype|Arquetipo)\s*\|\s*(.*?)\s*\|/i;
   const seniorityRegex = /\|\s*(?:Seniority|Nivel|Level)\s*\|\s*(.*?)\s*\|/i;
   const remoteRegex = /\|\s*(?:Remote|Remoto|Location)\s*\|\s*(.*?)\s*\|/i;
@@ -108,7 +108,7 @@ function parseReport(reportPath) {
   const domainMatch = plain.match(domainRegex);
   if (domainMatch) report.domain = domainMatch[1].trim();
 
-  // Extract scoring table — look for table with "Global" row (using plain, bold already stripped)
+  // Extract scoring table: look for table with "Global" row (using plain, bold already stripped)
   const scoreRegex = /\|\s*(?:CV Match|Match con CV)\s*\|\s*([\d.]+)\/5\s*\|/i;
   const northStarRegex = /\|\s*(?:North Star)\s*\|\s*([\d.]+)\/5\s*\|/i;
   const compScoreRegex = /\|\s*(?:Comp)\s*\|\s*([\d.]+)\/5\s*\|/i;
@@ -457,7 +457,7 @@ function printSummary(result) {
   const { metadata, funnel, scoreComparison, archetypeBreakdown, blockerAnalysis, remotePolicy, scoreThreshold, techStackGaps, recommendations } = result;
 
   console.log(`\n${'='.repeat(60)}`);
-  console.log(`  Pattern Analysis — ${metadata.analysisDate}`);
+  console.log(`  Pattern Analysis: ${metadata.analysisDate}`);
   console.log(`  ${metadata.total} applications (${metadata.dateRange.from} to ${metadata.dateRange.to})`);
   console.log(`${'='.repeat(60)}\n`);
 

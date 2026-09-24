@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * tests/test-sources.mjs — Offline tests for the job-source scrapers
+ * tests/test-sources.mjs: Offline tests for the job-source scrapers
  *
  * Uses saved HTML/JSON fixtures and a mocked fetch(), so it runs without
  * network access and never touches real job sites.
@@ -314,7 +314,7 @@ await test('tracker-lib reads 12-col and legacy 9-col rows', () => {
 });
 
 await test('formatAppLine round-trips', () => {
-  const app = tracker.parseAppLine('| 3 | 2026-09-24 | Wema Bank | Data Analyst | Lagos | 4.2/5 | — | — | Evaluated | ✅ | [3](reports/x.md) | ok |');
+  const app = tracker.parseAppLine('| 3 | 2026-09-24 | Wema Bank | Data Analyst | Lagos | 4.2/5 | N/A | N/A | Evaluated | ✅ | [3](reports/x.md) | ok |');
   assert.equal(tracker.parseAppLine(tracker.formatAppLine(app)).role, 'Data Analyst');
   const up = tracker.formatAppLine(tracker.parseAppLine('| 1 | d | C | R | 3.8/5 | Applied | ❌ | [1](r.md) | n |'));
   assert.equal(tracker.splitRow(up).length, 12);

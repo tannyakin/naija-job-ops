@@ -6,16 +6,16 @@ career-ops is an open source project maintained in limited time. Here's how to g
 
 | Question type | Where |
 |---|---|
-| **Bug** (something is broken) | [GitHub Issues](https://github.com/tannyakin/naija-job-ops/issues) — use the Bug Report template |
-| **Feature idea** | [GitHub Issues](https://github.com/tannyakin/naija-job-ops/issues) — use the Feature Request template |
+| **Bug** (something is broken) | [GitHub Issues](https://github.com/tannyakin/naija-job-ops/issues), use the Bug Report template |
+| **Feature idea** | [GitHub Issues](https://github.com/tannyakin/naija-job-ops/issues), use the Feature Request template |
 | **How do I...?** | [GitHub Issues](https://github.com/tannyakin/naija-job-ops/issues) |
 | **Setup help** | Check [docs/SETUP.md](docs/SETUP.md) first, then open an [issue](https://github.com/tannyakin/naija-job-ops/issues) |
-| **Security vulnerability** | Email hi@santifer.io — see [SECURITY.md](SECURITY.md) |
+| **Security vulnerability** | Email hi@santifer.io (see [SECURITY.md](SECURITY.md) |
 
 ## Before opening an issue
 
-1. Search existing issues — someone may have reported it already
-2. Run `npm run doctor` — it catches most setup problems
+1. Search existing issues: someone may have reported it already
+2. Run `npm run doctor`: it catches most setup problems
 3. Include your OS, Node.js version, and the CLI you're using (Claude Code, OpenCode, etc.)
 
 ## What NOT to use GitHub Issues for

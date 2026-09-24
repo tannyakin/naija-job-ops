@@ -1,4 +1,4 @@
-# User Profile Context — naija-job-ops
+# User Profile Context: naija-job-ops
 
 <!-- ============================================================
      THIS FILE IS YOURS. It will NEVER be auto-updated.
@@ -64,7 +64,7 @@
 
 ## Your NYSC Differentiator
 
-<!-- NYSC is often more than an eligibility checkbox — it can be a proof point.
+<!-- NYSC is often more than an eligibility checkbox: it can be a proof point.
      Did you do anything notable? CDS leadership, community project, skill gained?
      
      Examples:
@@ -72,7 +72,7 @@
      - Community project: Built school management system for primary school
      - Placement: IT department of a fintech, gained hands-on Django experience
      
-     Leave blank if your NYSC was standard — don't force a story that isn't there. -->
+     Leave blank if your NYSC was standard. Don't force a story that isn't there. -->
 
 [Describe any notable NYSC experience here, or leave blank]
 
@@ -87,9 +87,9 @@
      - Maintained ₦45M monthly petty cash ledger with zero reconciliation errors for 8 months
      - Graduated Second Class Upper (3.68 GPA) from a university with JAMB > 280 -->
 
-- [Proof point 1 — quantified if possible]
-- [Proof point 2 — quantified if possible]
-- [Proof point 3 — quantified if possible]
+- [Proof point 1: quantified if possible]
+- [Proof point 2: quantified if possible]
+- [Proof point 3: quantified if possible]
 
 ## Your Comp Targets
 
@@ -131,14 +131,14 @@
 <!-- Adapt to your actual situation. -->
 
 **In application forms:**
-- State of origin: [your state] — answer honestly, this is a legal document
+- State of origin: [your state]. Answer honestly; this is a legal document
 - Current location: [your city, state]
 - Willing to relocate: [Yes/No/Yes to specific cities]
 
 **In scoring:**
 - A role in your preferred city or remote: score full location points
 - A role requiring relocation to a city you'd accept: score 3/5 on location
-- A role in a city you'd refuse: score 1/5 on location — flag it clearly
+- A role in a city you'd refuse: score 1/5 on location, flag it clearly
 
 ## What to Avoid
 
@@ -151,5 +151,5 @@
      - Night shift or rotating shift work
      - Any role where NYSC completion is a hard requirement and you haven't completed yet -->
 
-- Application fees — always flag as Suspicious
+- Application fees: always flag as Suspicious
 - [Add your own deal-breakers here]

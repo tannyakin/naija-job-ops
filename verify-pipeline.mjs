@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * verify-pipeline.mjs — Health check for career-ops pipeline integrity
+ * verify-pipeline.mjs: Health check for career-ops pipeline integrity
  *
  * Checks:
  * 1. All statuses are canonical (per states.yml)
@@ -86,7 +86,7 @@ for (const e of entries) {
 
   // Check for dates in status
   if (/\d{4}-\d{2}-\d{2}/.test(e.status)) {
-    error(`#${e.num}: Status contains date: "${e.status}" — dates go in date column`);
+    error(`#${e.num}: Status contains date: "${e.status}". Dates go in the date column`);
     badStatuses++;
   }
 }
@@ -103,7 +103,7 @@ for (const e of entries) {
 }
 for (const [key, group] of companyRoleMap) {
   if (group.length > 1) {
-    warn(`Possible duplicates: ${group.map(e => `#${e.num}`).join(', ')} (${group[0].company} — ${group[0].role})`);
+    warn(`Possible duplicates: ${group.map(e => `#${e.num}`).join(', ')} (${group[0].role} at ${group[0].company})`);
     dupes++;
   }
 }
@@ -144,7 +144,7 @@ for (const line of lines) {
     error(`Malformed row: ${line.substring(0, 80)}...`);
     badRows++;
   } else if (app.legacy) {
-    warn(`#${app.num}: legacy 9-column row — add Location/Deadline/Applicants columns`);
+    warn(`#${app.num}: legacy 9-column row; add Location/Deadline/Applicants columns`);
     badRows++;
   }
 }
@@ -179,7 +179,7 @@ if (errors === 0 && warnings === 0) {
 } else if (errors === 0) {
   console.log('🟡 Pipeline OK with warnings');
 } else {
-  console.log('🔴 Pipeline has errors — fix before proceeding');
+  console.log('🔴 Pipeline has errors. Fix them before proceeding');
 }
 
 process.exit(errors > 0 ? 1 : 0);

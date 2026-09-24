@@ -1,29 +1,29 @@
-# Mode: pipeline — URL Inbox Processor
+# Mode: pipeline (URL Inbox Processor)
 
 Process all pending job listing URLs in `data/pipeline.md`. Run a full evaluation on each, save reports, and update the tracker.
 
 ---
 
-## Step 1 — Load Pipeline
+## Step 1: Load Pipeline
 
 Read `data/pipeline.md`. Look for all items marked `- [ ]` in the Pending section.
 
-Line format (from `scan.mjs`): `- [ ] {url} | {company} | {title} | {location} | {posted} | {applicants} | {source} | rank {N}[ | 🔥]` — older lines may have only `url | company | title`. Process 🔥 items first, then by rank. Full scan data for each URL is in `data/scan-results.json`.
+Line format (from `scan.mjs`): `- [ ] {url} | {company} | {title} | {location} | {posted} | {applicants} | {source} | rank {N}[ | 🔥]`. Older lines may have only `url | company | title`. Process 🔥 items first, then by rank. Full scan data for each URL is in `data/scan-results.json`.
 
 If there are no pending items:
 > "Your pipeline is empty. Add URLs to data/pipeline.md under Pending, or run /naija-jobs scan to discover new listings."
 
 ---
 
-## Step 2 — Determine Processing Mode
+## Step 2: Determine Processing Mode
 
 - **1–2 URLs**: process sequentially in the current context
 - **3–5 URLs**: process sequentially using `modes/eval.md` for each, within the current context
-- **6+ URLs**: hand off to batch mode — launch `modes/batch.md`
+- **6+ URLs**: hand off to batch mode and launch `modes/batch.md`
 
 ---
 
-## Step 3 — Process Each URL
+## Step 3: Process Each URL
 
 For each pending item, in order:
 
@@ -33,11 +33,11 @@ For each pending item, in order:
 - New number = maximum found + 1, zero-padded to 3 digits
 
 **b. Extract the JD:**
-1. Playwright (`browser_navigate` + `browser_snapshot`) — preferred
-2. WebFetch — fallback for static pages
-3. WebSearch — last resort
-4. `local:` prefix — if URL starts with `local:`, read the referenced local file (e.g., `local:jds/moniepoint-swe.md` → read `jds/moniepoint-swe.md`)
-5. If nothing works → mark `- [!] {url} — Error: could not extract JD` and continue
+1. Playwright (`browser_navigate` + `browser_snapshot`): preferred
+2. WebFetch: fallback for static pages
+3. WebSearch: last resort
+4. `local:` prefix: if URL starts with `local:`, read the referenced local file (e.g., `local:jds/moniepoint-swe.md` → read `jds/moniepoint-swe.md`)
+5. If nothing works → mark `- [!] {url} | Error: could not extract JD` and continue
 
 **Special cases:**
 - LinkedIn: logged-out job pages work. If Playwright hits a login wall, WebFetch `https://www.linkedin.com/jobs-guest/jobs/api/jobPosting/{jobId}` (numeric ID from the URL). Only if both fail → mark `[!]` with note "LinkedIn: paste JD text manually"
@@ -64,7 +64,7 @@ Write TSV to `batch/tracker-additions/{num}-{company-slug}.tsv`.
 
 ---
 
-## Step 4 — Summary
+## Step 4: Summary
 
 After all URLs are processed:
 
@@ -75,7 +75,7 @@ node merge-tracker.mjs
 Then display:
 
 ```
-Pipeline Complete — {YYYY-MM-DD}
+Pipeline Complete: {YYYY-MM-DD}
 ══════════════════════════════════
 Processed:  {N}
 Successful: {N}
@@ -83,12 +83,12 @@ Errors:     {N}
 Skipped:    {N}
 
 Results:
-  #{num} — {company} | {role} | {score}/5 | {Recommend / Flag / Skip}
-  #{num} — {company} | {role} | {score}/5 | {Recommend / Flag / Skip}
+  #{num}: {company} | {role} | {score}/5 | {Recommend / Flag / Skip}
+  #{num}: {company} | {role} | {score}/5 | {Recommend / Flag / Skip}
   ...
 
 Errors (manual action needed):
-  {url} — {reason}
+  {url}: {reason}
   ...
 
 → Run /naija-jobs tracker to see your updated applications.
@@ -103,7 +103,7 @@ Errors (manual action needed):
 - [ ] https://jobberman.com/jobs/12345
 - [ ] https://myjobmag.com/jobs/67890 | GTBank | Graduate Trainee 2026
 - [ ] local:jds/moniepoint-android-dev.md | Moniepoint | Android Developer
-- [!] https://linkedin.com/jobs/view/98765 — Error: LinkedIn login required
+- [!] https://linkedin.com/jobs/view/98765 | Error: LinkedIn login required
 
 ## Processed
 - [x] #007 | https://jobberman.com/jobs/11111 | Zenith Bank | Analyst | 4.2/5 | PDF ✅

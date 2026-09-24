@@ -6,7 +6,7 @@ This file is a regression fixture for the text normalization pass added in `gene
 
 | Name | Codepoint | Sample line | Converts to |
 |------|-----------|-------------|-------------|
-| Em-dash | U+2014 | Built and sold a SaaS — now shipping AI in production. | Built and sold a SaaS - now shipping AI in production. |
+| Em-dash | U+2014 | Built and sold a SaaS \u2014 now shipping AI in production. (source contains the U+2014 character) | Built and sold a SaaS - now shipping AI in production. |
 | En-dash | U+2013 | 2020–2024 at Acme Corp. | 2020-2024 at Acme Corp. |
 | Curly double quote | U+201C / U+201D | "Led the migration" was a real bullet. | "Led the migration" was a real bullet. |
 | Curly single quote | U+2018 / U+2019 | The team's velocity tripled. | The team's velocity tripled. |

@@ -1,21 +1,21 @@
-# naija-job-ops — AI Job Search Pipeline for Nigeria
+# naija-job-ops: AI Job Search Pipeline for Nigeria
 
 ## Origin
 
 This system is built on **career-ops** by Santiago Ferreira (santifer).
-Original repo: [github.com/santifer/career-ops](https://github.com/santifer/career-ops) — [santifer.io](https://santifer.io)
+Original repo: [github.com/santifer/career-ops](https://github.com/santifer/career-ops), [santifer.io](https://santifer.io)
 
 naija-job-ops adapts the full career-ops architecture for the Nigerian job market: Nigerian job boards, company tracker, NYSC eligibility scoring, qualification-level filtering, and Nigerian employer context.
 
-**It works out of the box but is designed to be made yours.** If the archetypes don't match your career, the scoring doesn't reflect your priorities, or you want to add companies — just ask. The system reads the same files it uses. You (AI Agent) can edit config and mode files directly when the user asks.
+**It works out of the box but is designed to be made yours.** If the archetypes don't match your career, the scoring doesn't reflect your priorities, or you want to add companies, just ask. The system reads the same files it uses. You (AI Agent) can edit config and mode files directly when the user asks.
 
 ## Data Contract (CRITICAL)
 
-**User Layer (NEVER auto-updated — personalisation goes HERE):**
+**User Layer (NEVER auto-updated; personalisation goes HERE):**
 - `cv.md`, `profile-skills.md`, `config/profile.yml`, `portals.yml`
 - `data/*`, `reports/*`, `output/*`
 
-**System Layer (updatable — DON'T put user data here):**
+**System Layer (updatable; DON'T put user data here):**
 - `modes/_shared.md`, `modes/eval.md`, all other mode files
 - `CLAUDE.md`, `*.mjs` scripts, `dashboard/*`, `templates/*`, `batch/*`
 
@@ -45,8 +45,8 @@ AI-powered job search automation built on Claude Code: fresh-job scanning (logge
 
 | File | Function |
 |------|----------|
-| `profile-skills.md` | Skills and background when no CV exists — primary source of truth for new users |
-| `cv.md` | Full CV when available — takes precedence over profile-skills.md |
+| `profile-skills.md` | Skills and background when no CV exists: primary source of truth for new users |
+| `cv.md` | Full CV when available: takes precedence over profile-skills.md |
 | `config/profile.yml` | Candidate identity, targets, location, NYSC status |
 | `data/applications.md` | Application tracker |
 | `data/pipeline.md` | Inbox of pending URLs to evaluate |
@@ -88,7 +88,7 @@ AI-powered job search automation built on Claude Code: fresh-job scanning (logge
 | `/naija-jobs deep` | Deep research on a Nigerian company |
 | `/naija-jobs onboard` | Run onboarding or update your profile |
 
-## First Run — Onboarding (IMPORTANT)
+## First Run and Onboarding (IMPORTANT)
 
 **Before doing ANYTHING else, check if the system is set up.** Run these checks silently every session:
 
@@ -110,18 +110,18 @@ If `modes/_profile.md` is missing, copy from `modes/_profile.template.md` silent
 Every time the user sends a message that is NOT a recognised slash command, check what they gave you and route accordingly:
 
 1. **Contains a URL** → navigate with Playwright, verify listing is active (title + description + apply button present), extract full JD, run full eval pipeline
-2. **Looks like a job description** — multi-line text with role, responsibilities, or requirements → parse as JD, run full eval pipeline
-3. **Looks like a role or skill description** — short phrase like "android developer", "graduate trainee finance", "kotlin java mobile" → treat as quick-start, run `node scan.mjs --keywords "{phrase}"` (see `modes/scan.md`), show top results and append: "For more accurate results run /naija-jobs onboard so I can learn your full profile, qualifications, and preferences."
+2. **Looks like a job description**: multi-line text with role, responsibilities, or requirements → parse as JD, run full eval pipeline
+3. **Looks like a role or skill description**: short phrase like "android developer", "graduate trainee finance", "kotlin java mobile" → treat as quick-start, run `node scan.mjs --keywords "{phrase}"` (see `modes/scan.md`), show top results and append: "For more accurate results run /naija-jobs onboard so I can learn your full profile, qualifications, and preferences."
 4. **Anything else** → respond normally as a conversation
 
 ## CV Source of Truth
 
 - `profile-skills.md` is the source of truth when no CV exists
-- `cv.md` is the canonical CV when it exists — read this instead of profile-skills.md, or alongside it
-- **NEVER hardcode user details** — read from these files at evaluation time, every time
+- `cv.md` is the canonical CV when it exists: read this instead of profile-skills.md, or alongside it
+- **NEVER hardcode user details**: read from these files at evaluation time, every time
 - After any evaluation, if the user says a score is wrong or you missed context, update `profile-skills.md` or `config/profile.yml` accordingly
 
-## Offer Verification — MANDATORY
+## Offer Verification (MANDATORY)
 
 **NEVER trust WebSearch or WebFetch to verify if a listing is still active.** ALWAYS use Playwright:
 1. `browser_navigate` to the URL
@@ -170,25 +170,38 @@ Standalone modes (only their mode file):
 
 ## Ask, Don't Guess
 
-When a fact needed for a good recommendation is missing (age for an age-limited scheme, class of degree, O'Level, years of experience, a vague CV detail), ask the user — at most 3 short questions at a time — and save the answer to `config/profile.yml` or `profile-skills.md` so it is never asked twice. Full protocol: `modes/_shared.md` → Clarifying Questions Protocol.
+When a fact needed for a good recommendation is missing (age for an age-limited scheme, class of degree, O'Level, years of experience, a vague CV detail), ask the user, at most 3 short questions at a time, and save the answer to `config/profile.yml` or `profile-skills.md` so it is never asked twice. Full protocol: `modes/_shared.md` → Clarifying Questions Protocol.
 
 ## Job Sources and Scraping Etiquette
 
 - `node scan.mjs` is the first step of every scan. It is zero-token and polite (sequential LinkedIn requests with delays, stops on rate limits).
 - LinkedIn is read **logged-out only** (public guest job pages). Never log in to LinkedIn, never use the user's cookies or account.
-- Sources that block scripts are reported as "needs browser" — use Playwright for those, one session at a time.
+- Sources that block scripts are reported as "needs browser": use Playwright for those, one session at a time.
 - Scanning is for the user's personal job search. Don't run scans in tight loops.
 
-## Ethical Use — CRITICAL
+## Ethical Use (CRITICAL)
 
 **This system is a quality filter, not a volume tool.**
 
-- **NEVER submit an application without the user reviewing it first.** Fill forms, draft answers, generate PDFs — but always STOP before clicking Submit/Send/Apply. The user makes the final call.
+- **NEVER submit an application without the user reviewing it first.** Fill forms, draft answers, generate PDFs, but always STOP before clicking Submit/Send/Apply. The user makes the final call.
 - **Strongly discourage low-fit applications.** If a score is below 3.5/5, recommend against applying. If below 3.0, recommend skipping with a clear explanation.
 - **Quality over speed.** Five well-targeted applications beat fifty generic ones.
 - **Respect recruiters' time.** Only send what is worth reading.
 - **Assessments are the user's own.** Help practise for aptitude, personality and SJT tests; never answer a live test for the user.
-- **Never misrepresent** age, grades, NYSC status, qualifications or experience — in CVs, forms or interviews.
+- **Never misrepresent** age, grades, NYSC status, qualifications or experience in CVs, forms or interviews.
+
+## Writing Style (STRICT)
+
+Applies to every piece of text: docs, mode files, code comments, CLI output, generated CVs, cover letters and form answers, commit messages and PR descriptions.
+
+- **No em dashes, ever.** Use a comma, colon, parentheses or a new sentence.
+- Write like a person: plain words, varied sentences, specific details. No filler, no hype, no stock AI phrasing.
+
+## Commits and Pull Requests
+
+- Commit messages are one line in Conventional Commits style: `type: brief description` (e.g. `feat: add remote job filter`, `fix: parse 12-column tracker rows`). Types: feat, fix, docs, refactor, test, chore.
+- No trailers, co-author lines, tool names or session links in commits.
+- PR titles follow the same style. PR descriptions are standard software write-ups (summary, changes, testing) and never mention the AI assistant or tooling used to write them.
 
 ## Stack and Conventions
 
@@ -210,22 +223,22 @@ Write one TSV file per evaluation to `batch/tracker-additions/{num}-{company-slu
 ```
 
 **Column order:**
-1. `num` — sequential number (integer)
-2. `date_found` — YYYY-MM-DD
-3. `company` — short company name
-4. `role` — job title
-5. `location` — city/state or Remote
-6. `score` — format `X.X/5`
-7. `deadline` — YYYY-MM-DD or `—`
-8. `applicants` — number or `—`
-9. `status` — canonical status (e.g., `Evaluated`)
-10. `pdf` — `✅` or `❌`
-11. `report` — markdown link `[num](reports/...)`
-12. `notes` — one-line summary
+1. `num`: sequential number (integer)
+2. `date_found`: YYYY-MM-DD
+3. `company`: short company name
+4. `role`: job title
+5. `location`: city/state or Remote
+6. `score`: format `X.X/5`
+7. `deadline`: YYYY-MM-DD or `N/A`
+8. `applicants`: number or `N/A`
+9. `status`: canonical status (e.g., `Evaluated`)
+10. `pdf`: `✅` or `❌`
+11. `report`: markdown link `[num](reports/...)`
+12. `notes`: one-line summary
 
 ## Pipeline Integrity Rules
 
-1. **NEVER edit applications.md to ADD new rows** — Write TSV in `batch/tracker-additions/` and run `node merge-tracker.mjs`.
+1. **NEVER edit applications.md to ADD new rows**: Write TSV in `batch/tracker-additions/` and run `node merge-tracker.mjs`.
 2. **YES update existing rows in applications.md directly** for status changes and notes.
 3. All reports MUST include `**URL:**` in the header.
 4. All statuses MUST be canonical (see `templates/states.yml`).

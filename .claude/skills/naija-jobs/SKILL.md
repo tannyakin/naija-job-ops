@@ -55,15 +55,15 @@ Otherwise show discovery.
 Show this menu:
 
 ```
-naija-job-ops — Command Center
+naija-job-ops: Command Center
 
 New here?  /naija-jobs tutorial   (10-minute guided tour)
 
 FIND JOBS
   /naija-jobs scan {role}      → LinkedIn + Nigerian boards + remote + company pages, newest first
-  /naija-jobs linkedin {role}  → LinkedIn only — "last hour" for the very newest postings
+  /naija-jobs linkedin {role}  → LinkedIn only; say "last hour" for the very newest postings
   /naija-jobs remote {role}    → remote roles you can take from Nigeria (incl. USD-paid)
-  /naija-jobs match            → rank results against YOUR CV — best fits first
+  /naija-jobs match            → rank results against YOUR CV, best fits first
   /naija-jobs pipeline         → evaluate every job queued in data/pipeline.md
 
 EVALUATE
@@ -131,5 +131,5 @@ Execute the instructions from the loaded mode file.
 
 ## Always
 
-- Ask when a needed fact is missing (max 3 questions at a time) — never guess eligibility facts.
+- Ask when a needed fact is missing (max 3 questions at a time). Never guess eligibility facts.
 - Never submit an application, and never answer live assessment tests for the user.

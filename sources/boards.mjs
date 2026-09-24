@@ -1,5 +1,5 @@
 /**
- * sources/boards.mjs — Nigerian job boards (Jobberman, MyJobMag, HotNigerianJobs, …)
+ * sources/boards.mjs: Nigerian job boards (Jobberman, MyJobMag, HotNigerianJobs, …)
  *
  * Config-driven: each board is described by a search URL template and a
  * regex that recognises job-detail links. Defaults live in DEFAULT_BOARDS;
@@ -12,7 +12,7 @@
  * validThrough (deadline), education, experience, salary. When JSON-LD is
  * missing we fall back to text patterns ("Deadline:", "Posted:").
  *
- * Boards that block scripts (e.g. Indeed) are marked needs_browser —
+ * Boards that block scripts (e.g. Indeed) are marked needs_browser, and
  * the scan mode hands those to Playwright instead.
  */
 
@@ -155,7 +155,7 @@ export function parseDetailPage(html, url, now = Date.now()) {
   }
   if (!job.description) job.description = text.slice(0, 8000);
 
-  // JSON-LD descriptions live in <script> tags, which cleanText drops — scan both
+  // JSON-LD descriptions live in <script> tags, which cleanText drops, so scan both
   const fullText = ld ? `${text}\n${job.description}` : text;
   const lower = fullText.toLowerCase();
   job.closed = /(this (?:job|position|vacancy) (?:has )?(?:expired|closed)|no longer (?:available|accepting)|application (?:is )?closed)/i.test(lower);

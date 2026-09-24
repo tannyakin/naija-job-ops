@@ -1,10 +1,10 @@
-# Mode: pdf — CV and Cover Letter PDF Generation
+# Mode: pdf (CV and Cover Letter PDF Generation)
 
-Generate a role-tailored CV and cover letter for a specific job listing. Always tailored to the target JD — never a generic document.
+Generate a role-tailored CV and cover letter for a specific job listing. Always tailored to the target JD, never a generic document.
 
 ---
 
-## Step 0 — Gather Inputs
+## Step 0: Gather Inputs
 
 **Source of truth:**
 - If `cv.md` exists: read it. This is the primary source.
@@ -23,39 +23,39 @@ Extract from the JD:
 
 ---
 
-## Step 1 — Tailor the CV Content
+## Step 1: Tailor the CV Content
 
 **Rules:**
 - NEVER invent skills, experience, or qualifications the user does not have
 - Reformulate real experience using the exact vocabulary of the JD
 - Reorder bullets to put the most JD-relevant points first
 - Highlight experiences that match the detected Nigerian archetype
-- Inject JD keywords naturally — not as a keyword dump
+- Inject JD keywords naturally, not as a keyword dump
 
 **What to produce:**
 
-1. **Professional Summary** — 3–4 lines. Lead with the user's strongest relevant credential (degree, years of experience, or a key achievement). Second sentence maps their main skills to the JD. Third sentence signals enthusiasm without using the word "passionate".
+1. **Professional Summary**: 3–4 lines. Lead with the user's strongest relevant credential (degree, years of experience, or a key achievement). Second sentence maps their main skills to the JD. Third sentence signals enthusiasm without using the word "passionate".
 
-2. **Core Competencies grid** — 6–8 keyword phrases drawn directly from JD requirements mapped to real user skills. E.g., if JD says "financial modelling" and user has Excel + accounting coursework, include "Financial Modelling (Excel)".
+2. **Core Competencies grid**: 6–8 keyword phrases drawn directly from JD requirements mapped to real user skills. E.g., if JD says "financial modelling" and user has Excel + accounting coursework, include "Financial Modelling (Excel)".
 
-3. **Work Experience** — reordered bullets for each role, most JD-relevant first. If the user has limited work history (common for recent graduates), expand internships, NYSC CDS projects, and academic projects.
+3. **Work Experience**: reordered bullets for each role, most JD-relevant first. If the user has limited work history (common for recent graduates), expand internships, NYSC CDS projects, and academic projects.
 
-4. **Education** — format Nigerian qualification levels clearly: Degree type, Institution, Class (if 2:1 or 1st, always include), Year of graduation.
+4. **Education**: format Nigerian qualification levels clearly: Degree type, Institution, Class (if 2:1 or 1st, always include), Year of graduation.
 
-5. **NYSC** — if completed, include as a line in Education or as a standalone entry: "National Youth Service Corps, {State} | {Year}" with any CDS or achievement worth noting.
+5. **NYSC**: if completed, include as a line in Education or as a standalone entry: "National Youth Service Corps, {State} | {Year}" with any CDS or achievement worth noting.
 
-6. **Skills section** — organised by category: Technical skills, Software tools, Languages (if any).
+6. **Skills section**: organised by category: Technical skills, Software tools, Languages (if any).
 
-7. **Certifications** — include any professional certifications (ICAN, NSE, Google certs, Coursera, etc.).
+7. **Certifications**: include any professional certifications (ICAN, NSE, Google certs, Coursera, etc.).
 
 **Tailoring examples (legitimate reformulation, not fabrication):**
 - JD says "SQL database management" + user has "MySQL queries for academic project" → CV says "SQL database management (MySQL)"
-- JD says "client relationship management" + user has "customer service role at NYSC PPA" → CV says "Client relationship management — 12-month experience at [organisation]"
+- JD says "client relationship management" + user has "customer service role at NYSC PPA" → CV says "Client relationship management (12 months at [organisation])"
 - JD says "data analysis" + user has "Excel dashboards" → CV says "Data analysis and reporting using Excel"
 
 ---
 
-## Step 2 — Generate the Cover Letter
+## Step 2: Generate the Cover Letter
 
 Always generate a cover letter unless the user says not to. Follow `modes/cover-letter.md` (structure by listing type, writing rules, checklist) and render it with `templates/cover-letter-template.html` as a **separate PDF** next to the CV:
 
@@ -65,7 +65,7 @@ If the application takes the cover letter as a text box or email body instead of
 
 ---
 
-## Step 3 — Format Detection
+## Step 3: Format Detection
 
 Detect the correct paper format:
 - Nigeria-based employer → A4
@@ -74,7 +74,7 @@ Detect the correct paper format:
 
 ---
 
-## Step 4 — Generate PDF
+## Step 4: Generate PDF
 
 1. Read `templates/cv-template.html`
 2. Replace all `{{PLACEHOLDER}}` tokens with tailored content
@@ -87,7 +87,7 @@ Detect the correct paper format:
 
 ---
 
-## Step 5 — Update Tracker
+## Step 5: Update Tracker
 
 If this listing is already in `data/applications.md`, update its PDF column from ❌ to ✅.
 
@@ -98,7 +98,7 @@ If it is not yet registered, generate the TSV tracker addition as per the standa
 ## ATS Rules Checklist
 
 Before writing the HTML:
-- [ ] Single column — no sidebars, no parallel columns
+- [ ] Single column: no sidebars, no parallel columns
 - [ ] Standard section headers (Professional Summary, Work Experience, Education, Skills)
 - [ ] No tables in the main content (competency grid uses flex/inline-block, not HTML table)
 - [ ] No images, logos, or SVGs containing text

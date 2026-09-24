@@ -1,10 +1,10 @@
-# Mode: eval — Full Listing Evaluation
+# Mode: eval (Full Listing Evaluation)
 
 When the user pastes a job listing (text or URL), or when the auto-pipeline calls this mode, execute the full evaluation.
 
 ---
 
-## Step 0 — Extract the Listing
+## Step 0: Extract the Listing
 
 If the input is a **URL**:
 1. Playwright: `browser_navigate` to the URL → `browser_snapshot` to read content
@@ -14,14 +14,14 @@ If the input is a **URL**:
 
 If the input is **pasted text** (JD already in context): use directly.
 
-If the listing came from a scan, read its entry in `data/scan-results.json` (match by URL) — it already has posting age, applicant count, source, and eligibility hints. Re-check them on the live page; the page wins if they differ.
+If the listing came from a scan, read its entry in `data/scan-results.json` (match by URL). It already has posting age, applicant count, source, and eligibility hints. Re-check them on the live page; the page wins if they differ.
 
-**LinkedIn URLs:** logged-out job pages work. If Playwright hits a login wall, WebFetch `https://www.linkedin.com/jobs-guest/jobs/api/jobPosting/{jobId}` (the numeric ID from the URL) — it returns the public JD, posting age and applicant count.
+**LinkedIn URLs:** logged-out job pages work. If Playwright hits a login wall, WebFetch `https://www.linkedin.com/jobs-guest/jobs/api/jobPosting/{jobId}` (the numeric ID from the URL). It returns the public JD, posting age and applicant count.
 
 **Verify the listing is active (mandatory for URLs):**
 - Active: job title + description + Apply button visible in the main content area
 - Closed: only navbar/footer visible, or page shows "no longer available", "position filled", "job expired"
-- If closed: tell the user immediately and stop — do not evaluate a dead listing
+- If closed: tell the user immediately and stop. Do not evaluate a dead listing
 
 **Extract and display the listing header before evaluation:**
 
@@ -45,18 +45,18 @@ Apply URL:     {direct link}
 
 ---
 
-## Step 1 — Load User Profile
+## Step 1: Load User Profile
 
 Read `profile-skills.md`. If `cv.md` exists, read it too and treat it as the richer source.
 Read `config/profile.yml` for NYSC status, qualification level, location preferences, and salary target.
 
-**Missing facts → ask, don't guess.** If the listing has a requirement you cannot check against the profile (e.g. an age limit but no `candidate.date_of_birth`; a 2:1 cutoff but no `class_of_degree`; "5 credits" but no `education.olevel`), ask the user before scoring — follow the Clarifying Questions protocol in `_shared.md`. Save the answer to `config/profile.yml` so you never ask twice.
+**Missing facts → ask, don't guess.** If the listing has a requirement you cannot check against the profile (e.g. an age limit but no `candidate.date_of_birth`; a 2:1 cutoff but no `class_of_degree`; "5 credits" but no `education.olevel`), ask the user before scoring: follow the Clarifying Questions protocol in `_shared.md`. Save the answer to `config/profile.yml` so you never ask twice.
 
-**Detect archetype** — classify the listing into one of the Nigerian market archetypes from `_shared.md`. If it is a hybrid, name both. This determines what to emphasise in the match analysis.
+**Detect archetype**: classify the listing into one of the Nigerian market archetypes from `_shared.md`. If it is a hybrid, name both. This determines what to emphasise in the match analysis.
 
 ---
 
-## Block 1 — Role Summary
+## Block 1: Role Summary
 
 Produce a concise overview of the listing:
 - What the company does, and its position in Nigeria (sector, size, known for what)
@@ -69,16 +69,16 @@ Keep this factual and direct. No hype, no corporate language.
 
 ---
 
-## Block 2 — Profile Match
+## Block 2: Profile Match
 
 Map the JD requirements to the user's skills and experience from `profile-skills.md` (and `cv.md` if available).
 
 **Format:**
 | JD requirement | User has | Match |
 |----------------|----------|-------|
-| React (3+ years) | React — 2 years (profile-skills.md) | Partial |
+| React (3+ years) | React: 2 years (profile-skills.md) | Partial |
 | BSc Computer Science | BSc Computer Science (cv.md) | ✅ Full |
-| NYSC completed | Currently serving — completes Oct 2026 | ⚠ Timing |
+| NYSC completed | Currently serving: completes Oct 2026 | ⚠ Timing |
 
 After the table, list gaps:
 - **Hard gaps** (would likely disqualify): e.g., requires ICAN certification, user does not have it
@@ -87,7 +87,7 @@ After the table, list gaps:
 
 ---
 
-## Block 3 — Eligibility Check
+## Block 3: Eligibility Check
 
 This is the most critical block. Be direct and unambiguous.
 
@@ -101,10 +101,10 @@ This is the most critical block. Be direct and unambiguous.
 - State what the JD requires (completion / exemption / currently serving / no mention)
 - State the user's current status from `config/profile.yml`
 - Verdict: ✅ Eligible / ⚠ Borderline / ❌ Not eligible
-- If "currently serving" and role requires "completed" — flag the timeline gap
+- If "currently serving" and role requires "completed": flag the timeline gap
 - If corps members are explicitly welcome: note this as a positive signal
 
-**Age limit verdict** (very common in Nigerian graduate trainee adverts — "not older than 26 by {date}"):
+**Age limit verdict** (very common in Nigerian graduate trainee adverts: "not older than 26 by {date}"):
 - Compute the user's age on the date the advert specifies (or today) from `candidate.date_of_birth`
 - Over the limit → ❌ hard blocker. Never suggest misstating age.
 
@@ -117,13 +117,13 @@ This is the most critical block. Be direct and unambiguous.
 - Flag any hard blockers clearly
 
 **Overall eligibility verdict:**
-- **Fully eligible** — no blockers, proceed
-- **Borderline** — one or more soft issues, apply but address in cover letter
-- **Not eligible** — one or more hard blockers, recommend not applying unless user has context that overrides
+- **Fully eligible**: no blockers, proceed
+- **Borderline**: one or more soft issues, apply but address in cover letter
+- **Not eligible**: one or more hard blockers, recommend not applying unless user has context that overrides
 
 ---
 
-## Block 4 — Competition and Deadline Analysis
+## Block 4: Competition and Deadline Analysis
 
 **Applicant count signal:**
 - <100: Good window. Strong reason to act quickly.
@@ -133,27 +133,27 @@ This is the most critical block. Be direct and unambiguous.
 - Not stated: Treat as moderate competition.
 
 **Posting freshness** (from the page or `data/scan-results.json`):
-- Posted in the last 24 hours: early-applicant window — recruiters often shortlist the first batch. Act today.
+- Posted in the last 24 hours: early-applicant window. Recruiters often shortlist the first batch. Act today.
 - 1–7 days: still fresh.
 - 8–30 days: most shortlisting may be done; apply only if fit is strong.
-- 30+ days (and no deadline): may be a stale or evergreen posting — check legitimacy.
+- 30+ days (and no deadline): may be a stale or evergreen posting, so check legitimacy.
 
 **Deadline urgency:**
 - Closing ≤7 days: Act today if you want to apply.
 - Closing 8–21 days: This week.
 - Closing 22+ days: No immediate rush.
-- No deadline: Moderate urgency — listings without deadlines often close without warning.
+- No deadline: Moderate urgency. Listings without deadlines often close without warning.
 
 **Recommendation:** State explicitly whether the user should act today, this week, or can take their time.
 
 ---
 
-## Block 5 — Company Context
+## Block 5: Company Context
 
 Cover:
 - What this company is known for in Nigeria
 - Sector, approximate size, years in Nigeria
-- Reputation as an employer — use WebSearch for Glassdoor, Jobberman reviews, or LinkedIn presence
+- Reputation as an employer: use WebSearch for Glassdoor, Jobberman reviews, or LinkedIn presence
 - Known for graduate/management trainee programmes? Structured career paths?
 - Any recent news relevant to hiring or company health (layoffs, expansion, funding, regulatory issues)
 - Whether applications via this company are known to be competitive or accessible
@@ -161,7 +161,7 @@ Cover:
 
 ---
 
-## Block 6 — Application Strategy
+## Block 6: Application Strategy
 
 Give concrete, actionable guidance:
 
@@ -213,14 +213,14 @@ Signals:
   ✅ Apply button active (Playwright verified)
   ✅ Known Nigerian employer (GTBank)
   ⚠ No salary stated
-  ⚠ Posted 45 days ago — approaching stale threshold
+  ⚠ Posted 45 days ago: approaching stale threshold
 
 Notes: GTBank runs continuous recruitment for graduate trainees. Older posting age
        is normal for this programme type.
 ```
 
 **Hard blocker:** If the listing requests an application fee of any kind, mark as **Suspicious** and warn the user directly:
-> "⚠ This listing requests a fee to apply. Legitimate Nigerian employers do not charge application fees. This is a strong scam indicator — do not pay and do not proceed."
+> "⚠ This listing requests a fee to apply. Legitimate Nigerian employers do not charge application fees. This is a strong scam indicator. Do not pay and do not proceed."
 
 ---
 
@@ -235,7 +235,7 @@ Save the full evaluation to `reports/{###}-{company-slug}-{YYYY-MM-DD}.md`.
 **Report header format:**
 
 ```markdown
-# Evaluation: {Company} — {Role}
+# Evaluation: {Company} ({Role})
 
 **Date:** {YYYY-MM-DD}
 **Archetype:** {detected}
@@ -249,22 +249,22 @@ Save the full evaluation to `reports/{###}-{company-slug}-{YYYY-MM-DD}.md`.
 ## Listing Details
 {the listing header table from Step 0}
 
-## Block 1 — Role Summary
+## Block 1: Role Summary
 {full content}
 
-## Block 2 — Profile Match
+## Block 2: Profile Match
 {full content}
 
-## Block 3 — Eligibility Check
+## Block 3: Eligibility Check
 {full content}
 
-## Block 4 — Competition and Deadline
+## Block 4: Competition and Deadline
 {full content}
 
-## Block 5 — Company Context
+## Block 5: Company Context
 {full content}
 
-## Block 6 — Application Strategy
+## Block 6: Application Strategy
 {full content}
 
 ## Score

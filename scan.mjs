@@ -1,24 +1,24 @@
 #!/usr/bin/env node
 
 /**
- * scan.mjs — Multi-source job scanner for Nigeria (zero Claude tokens)
+ * scan.mjs: Multi-source job scanner for Nigeria (zero Claude tokens)
  *
  * Sources (all additive, deduplicated):
- *   linkedin — logged-out LinkedIn search, newest first, with applicant counts
- *   boards   — Nigerian job boards (Jobberman, MyJobMag, HotNigerianJobs, NgCareers, Jobgurus…)
- *   remote   — remote boards filtered to roles a Nigeria-based candidate can take
- *   ats      — tracked companies on Greenhouse/Lever/Ashby/Workable/SmartRecruiters
+ *   linkedin: logged-out LinkedIn search, newest first, with applicant counts
+ *   boards: Nigerian job boards (Jobberman, MyJobMag, HotNigerianJobs, NgCareers, Jobgurus…)
+ *   remote: remote boards filtered to roles a Nigeria-based candidate can take
+ *   ats: tracked companies on Greenhouse/Lever/Ashby/Workable/SmartRecruiters
  *
  * Every job gets:
  *   freshness   (how recently it was posted)
  *   competition (how few people have applied)
- *   quick fit   (keyword match against YOUR profile — see sources/fit.mjs)
+ *   quick fit   (keyword match against YOUR profile, see sources/fit.mjs)
  * and the list is ranked by a blend of the three, so brand-new, low-competition,
  * well-matched roles come first.
  *
  * Usage:
  *   node scan.mjs                                   # all enabled sources, keywords from your profile
- *   node scan.mjs --keywords "data analyst"         # any field — repeatable or comma-separated
+ *   node scan.mjs --keywords "data analyst"         # any field; repeatable or comma-separated
  *   node scan.mjs --source linkedin --since 1h      # LinkedIn only, posted in the last hour
  *   node scan.mjs --source remote --since 3d        # remote roles open to Nigeria
  *   node scan.mjs --location Lagos --experience entry,internship
@@ -26,9 +26,9 @@
  *   node scan.mjs --json                            # machine-readable output
  *
  * Outputs:
- *   data/scan-results.json  — full ranked results of the latest scan (for /naija-jobs match)
- *   data/pipeline.md        — new listings appended under ## Pending
- *   data/scan-history.tsv   — dedup history
+ *   data/scan-results.json: full ranked results of the latest scan (for /naija-jobs match)
+ *   data/pipeline.md: new listings appended under ## Pending
+ *   data/scan-history.tsv: dedup history
  */
 
 import { readFileSync, writeFileSync, appendFileSync, existsSync, mkdirSync } from 'fs';
@@ -147,7 +147,7 @@ export function rankJobs(jobs, profile) {
 const cell = (s) => String(s ?? '').replace(/[|\t\n]/g, ' ').trim();
 
 function pipelineLine(j) {
-  const bits = [j.url, cell(j.company) || '?', cell(j.title), cell(j.location) || '—', formatAge(j.ageHours), j.applicantsText ? cell(j.applicantsText) : j.applicants != null ? `${j.applicants} applicants` : 'applicants ?', cell(j.sourceName || j.source), `rank ${j.rank}`];
+  const bits = [j.url, cell(j.company) || '?', cell(j.title), cell(j.location) || 'N/A', formatAge(j.ageHours), j.applicantsText ? cell(j.applicantsText) : j.applicants != null ? `${j.applicants} applicants` : 'applicants ?', cell(j.sourceName || j.source), `rank ${j.rank}`];
   return `- [ ] ${bits.join(' | ')}${j.hot ? ' | 🔥' : ''}`;
 }
 
@@ -187,7 +187,7 @@ async function main() {
   const log = quiet ? () => {} : (m) => console.log(m);
 
   const config = existsSync(PORTALS_PATH) ? yaml.load(readFileSync(PORTALS_PATH, 'utf-8')) || {} : {};
-  if (!existsSync(PORTALS_PATH)) log('ℹ portals.yml not found — using built-in defaults (run /naija-jobs onboard to personalise).');
+  if (!existsSync(PORTALS_PATH)) log('ℹ portals.yml not found, so using built-in defaults (run /naija-jobs onboard to personalise).');
 
   const search = config.search || {};
   const profile = loadProfile('.');
@@ -195,7 +195,7 @@ async function main() {
   // Keywords: CLI → portals.yml search.keywords → profile.yml search.keywords → profile target roles
   let keywords = args.keywords.length ? args.keywords : search.keywords || [];
   if (!keywords.length) keywords = profile.searchKeywords;
-  if (!keywords.length) keywords = profile.targets.slice(0, 5).map((t) => t.split(/[—(]/)[0].trim());
+  if (!keywords.length) keywords = profile.targets.slice(0, 5).map((t) => t.split(/[\u2014(]/)[0].trim());
   if (!keywords.length) {
     console.error('No keywords. Pass --keywords "your role" or set search.keywords in portals.yml (or run /naija-jobs onboard).');
     process.exit(2);
@@ -319,20 +319,20 @@ async function main() {
   // Human summary
   const top = parseInt(args.top || 25, 10);
   console.log(`\n${'━'.repeat(60)}`);
-  console.log(`Naija Job Scan — ${date}`);
+  console.log(`Naija Job Scan · ${date}`);
   console.log('━'.repeat(60));
   console.log(`Listings found:        ${all.length}`);
   console.log(`After filters/merge:   ${merged.length}`);
   console.log(`Already seen:          ${dupes}`);
   console.log(`New:                   ${fresh.length}${dryRun ? '' : `  (${results.counts.added_to_pipeline} added to pipeline)`}`);
-  if (!profile.loaded) console.log('\n⚠ No profile found — ranking uses freshness/competition only. Run /naija-jobs onboard for better matches.');
+  if (!profile.loaded) console.log('\n⚠ No profile found, so ranking uses freshness/competition only. Run /naija-jobs onboard for better matches.');
 
   if (fresh.length) {
     console.log(`\nTop ${Math.min(top, fresh.length)} new (🔥 = posted <24h, few applicants, good fit):\n`);
     fresh.slice(0, top).forEach((j, i) => {
       const applicants = j.applicantsText || (j.applicants != null ? `${j.applicants} applicants` : '');
-      console.log(`${String(i + 1).padStart(2)}. ${j.hot ? '🔥 ' : ''}${j.title} — ${j.company || '?'}`);
-      console.log(`    ${[j.location || '—', formatAge(j.ageHours), applicants, j.eligibility ? `remote: ${j.eligibility}` : '', j.sourceName || j.source].filter(Boolean).join(' · ')}  [rank ${j.rank} | fit ${j.fit}]`);
+      console.log(`${String(i + 1).padStart(2)}. ${j.hot ? '🔥 ' : ''}${j.title} at ${j.company || 'unknown company'}`);
+      console.log(`    ${[j.location || 'location n/a', formatAge(j.ageHours), applicants, j.eligibility ? `remote: ${j.eligibility}` : '', j.sourceName || j.source].filter(Boolean).join(' · ')}  [rank ${j.rank} | fit ${j.fit}]`);
       if (j.warnings.length) console.log(`    ! ${j.warnings.join('; ')}`);
       console.log(`    ${j.url}`);
     });
@@ -344,7 +344,7 @@ async function main() {
   if (browserCompanies.length && sources.includes('ats')) {
     console.log(`Companies on custom career sites (check with browser): ${browserCompanies.length}`);
   }
-  if (rateLimited) console.log('\n⚠ LinkedIn rate-limited this scan — wait 15–30 minutes before scanning LinkedIn again.');
+  if (rateLimited) console.log('\n⚠ LinkedIn rate-limited this scan. Wait 15–30 minutes before scanning LinkedIn again.');
   if (errors.length) {
     console.log(`\nSource errors (${errors.length}):`);
     for (const e of errors.slice(0, 15)) console.log(`  ✗ ${e}`);

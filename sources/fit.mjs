@@ -1,5 +1,5 @@
 /**
- * sources/fit.mjs — Fast, zero-token profile pre-match
+ * sources/fit.mjs: Fast, zero-token profile pre-match
  *
  * Gives every scanned job a 0–100 "quick fit" from the user's own files so
  * the scanner can put the most promising, freshest, least-crowded roles at
@@ -18,7 +18,7 @@ import { readFileSync, existsSync } from 'fs';
 import yaml from 'js-yaml';
 import { normalise } from './util.mjs';
 
-const STOP = new Set('and or the a an of for in to with at on by from as is are be — - / & junior senior entry level graduate trainee mid role roles officer'.split(' '));
+const STOP = new Set('and or the a an of for in to with at on by from as is are be - / & junior senior entry level graduate trainee mid role roles officer'.split(' '));
 
 function words(s) {
   return normalise(s).split(' ').filter((w) => w.length > 1 && !STOP.has(w));
@@ -32,7 +32,7 @@ function sectionItems(md, heading) {
   return m[1]
     .split('\n')
     .filter((l) => /^\s*[-*]\s+/.test(l))
-    .map((l) => l.replace(/^\s*[-*]\s+/, '').split(/\s+[—–-]\s+/)[0])
+    .map((l) => l.replace(/^\s*[-*]\s+/, '').split(/\s+[\u2014\u2013-]\s+/)[0])
     .flatMap((l) => l.split(/[,(]/).map((x) => x.replace(/[)*]/g, '').trim()))
     .filter((x) => x && x.length < 40);
 }
@@ -88,7 +88,7 @@ const SENIOR = /\b(senior|sr\.?|lead|principal|staff|head|manager|director|vp|ch
 export function quickFit(job, profile) {
   const reasons = [];
   const warnings = [];
-  if (!profile?.loaded) return { score: 50, reasons: ['no profile yet — run /naija-jobs onboard'], warnings };
+  if (!profile?.loaded) return { score: 50, reasons: ['no profile yet; run /naija-jobs onboard'], warnings };
 
   const title = normalise(job.title || '');
   const desc = normalise(`${job.description || ''} ${job.seniority || ''} ${job.jobFunction || ''}`);

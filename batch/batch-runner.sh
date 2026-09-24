@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# naija-job-ops batch runner — standalone orchestrator for claude -p workers
+# naija-job-ops batch runner: standalone orchestrator for claude -p workers
 # Reads batch-input.tsv, delegates each offer to a claude -p worker,
 # tracks state in batch-state.tsv for resumability.
 
@@ -30,7 +30,7 @@ MAX_RETRIES=2
 
 usage() {
   cat <<'USAGE'
-naija-job-ops batch runner — process job listings in batch via claude -p workers
+naija-job-ops batch runner: process job listings in batch via claude -p workers
 Uses your default Claude model (Claude Max subscription).
 
 Usage: batch-runner.sh [OPTIONS]

@@ -43,7 +43,7 @@ PRs without a corresponding issue may be closed if they don't align with the pro
 
 - Keep modes language-agnostic when possible (Claude handles both EN and ES)
 - Scripts should handle missing files gracefully (check `existsSync` before `readFileSync`)
-- Dashboard changes require `go build` — test with real data before submitting
+- Dashboard changes require `go build`. Test with real data before submitting
 - Don't commit personal data (cv.md, profile.yml, applications.md, reports/)
 
 ## What we do NOT accept
@@ -68,6 +68,6 @@ cd dashboard && go build -o career-dashboard .
 
 ## Need Help?
 
-- [Open a discussion or issue](https://github.com/tannyakin/naija-job-ops/issues) — the fastest way to get answers
+- [Open an issue](https://github.com/tannyakin/naija-job-ops/issues). It is the fastest way to get answers
 - [Open an issue](https://github.com/tannyakin/naija-job-ops/issues)
 - [Read the architecture docs](docs/ARCHITECTURE.md)

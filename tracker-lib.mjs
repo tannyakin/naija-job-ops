@@ -1,5 +1,5 @@
 /**
- * tracker-lib.mjs — Shared parsing/formatting for data/applications.md
+ * tracker-lib.mjs: Shared parsing/formatting for data/applications.md
  *
  * Canonical 12-column layout (see CLAUDE.md → Tracker Column Order):
  *   | # | Date Found | Company | Role | Location | Score | Deadline | Applicants | Status | PDF | Report | Notes |
@@ -29,7 +29,7 @@ export function splitRow(line) {
 
 /**
  * Parse one tracker row. Returns null for headers, separators and non-data lines.
- * The returned object always has the 12-column fields; legacy rows get '—'
+ * The returned object always has the 12-column fields; legacy rows get 'N/A'
  * for location, deadline and applicants.
  */
 export function parseAppLine(line) {
@@ -45,7 +45,7 @@ export function parseAppLine(line) {
   if (isLegacy) {
     return {
       num, date: cells[1], company: cells[2], role: cells[3],
-      location: '—', score: cells[4], deadline: '—', applicants: '—',
+      location: 'N/A', score: cells[4], deadline: 'N/A', applicants: 'N/A',
       status: cells[5], pdf: cells[6] || '', report: cells[7] || '',
       notes: cells.slice(8).join(' | '),
       legacy: true, raw: line,
@@ -63,7 +63,7 @@ export function parseAppLine(line) {
 
 /** Format an app object as a canonical 12-column row. */
 export function formatAppLine(app) {
-  const v = (x) => (x === undefined || x === null || x === '' ? '—' : String(x).replace(/\|/g, '/'));
+  const v = (x) => (x === undefined || x === null || x === '' ? 'N/A' : String(x).replace(/\|/g, '/'));
   return `| ${app.num} | ${v(app.date)} | ${v(app.company)} | ${v(app.role)} | ${v(app.location)} | ${v(app.score)} | ${v(app.deadline)} | ${v(app.applicants)} | ${v(app.status)} | ${app.pdf || '❌'} | ${v(app.report)} | ${app.notes ? String(app.notes).replace(/\|/g, '/') : ''} |`;
 }
 

@@ -1,5 +1,5 @@
 /**
- * sources/ats.mjs — Company career pages hosted on public ATS platforms
+ * sources/ats.mjs: Company career pages hosted on public ATS platforms
  *
  * Zero-token JSON APIs for Greenhouse, Ashby, Lever, Workable and
  * SmartRecruiters. Detected from each tracked company's careers_url (or an
