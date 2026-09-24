@@ -109,11 +109,6 @@ narrative:
       description: "Contributed bug fixes to a Django authentication library"
       url: ""
 
-# Language setting
-# Uncomment and set if you are targeting non-English markets
-# language:
-#   modes_dir: "modes"     # default, change to modes/de, modes/fr etc. for other markets
-
 # Additional context for the evaluation system
 # Add any information that helps the system make better recommendations
 notes: >

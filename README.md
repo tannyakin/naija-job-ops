@@ -424,9 +424,9 @@ npm run normalize   # Fix any non-canonical status values
 
 ---
 
-## Other languages (`modes/de`, `modes/fr`, `modes/ja`, `modes/pt`, `modes/ru`)
+## Other markets
 
-These folders and the `README.es/ja/ko-KR/pt-BR/ru.md` files come from the original career-ops project. They are translated modes for job markets in Germany/Austria/Switzerland, France, Japan, Brazil/Portugal and Russia, with local rules like German probation periods, French CDI/CDD contracts and Japanese application formats. naija-job-ops doesn't use them: every Nigerian mode lives in `modes/`. They're kept so the project stays close to its upstream and remains easy to adapt for other markets. They're safe to delete if you don't need them.
+The original career-ops project ships translated modes for Germany, France, Japan, Brazil/Portugal and Russia. naija-job-ops focuses on Nigeria only, so those have been removed. If you want to adapt the system for another market, start from [career-ops](https://github.com/santifer/career-ops).
 
 ---
 

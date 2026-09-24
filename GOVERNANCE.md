@@ -11,7 +11,7 @@ The goal is to build a self-sustaining community where the project thrives even 
 - **Architecture decisions** (CLAUDE.md, scoring system, data contract): maintainer only
 - **New features**: require an approved issue before PR submission
 - **Bug fixes**: can be submitted directly with a clear description
-- **Documentation and translations**: welcome from anyone, low barrier
+- **Documentation**: welcome from anyone, low barrier
 
 ## Contributor Ladder
 
@@ -63,7 +63,7 @@ Anyone can grow their role in the project. Roles are earned through sustained, q
 
 You don't apply for roles. They emerge naturally:
 
-1. **Start contributing**: fix a bug, translate a mode, improve docs
+1. **Start contributing**: fix a bug, add a job board, improve docs
 2. **Be consistent**: one quality PR per month beats ten rushed ones
 3. **Help others**: answer questions in issues, review PRs, triage issues
 4. **Understand the project**: read CLAUDE.md, DATA_CONTRACT.md, the architecture docs

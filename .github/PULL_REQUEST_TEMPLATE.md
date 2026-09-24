@@ -10,16 +10,16 @@
 
 - [ ] Bug fix
 - [ ] New feature
-- [ ] Documentation / translation
+- [ ] Documentation
 - [ ] Refactor (no behavior change)
 
 ## Checklist
 
-- [ ] I have read [CONTRIBUTING.md](https://github.com/santifer/career-ops/blob/main/CONTRIBUTING.md)
+- [ ] I have read [CONTRIBUTING.md](../CONTRIBUTING.md)
 - [ ] I opened an issue first (required for features and architecture changes)
 - [ ] My PR does not include personal data (CV, email, real names)
 - [ ] I ran `node test-all.mjs` and all tests pass
-- [ ] My changes respect the [Data Contract](https://github.com/santifer/career-ops/blob/main/DATA_CONTRACT.md) (no modifications to user-layer files)
+- [ ] My changes respect the [Data Contract](../DATA_CONTRACT.md) (no modifications to user-layer files)
 
 ---
 Questions? [Open an issue](https://github.com/tannyakin/naija-job-ops/issues).
