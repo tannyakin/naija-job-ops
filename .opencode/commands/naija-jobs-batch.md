@@ -6,7 +6,7 @@ Batch processing using naija-job-ops batch mode.
 
 $ARGUMENTS
 
-Load the career-ops skill:
+Load the naija-jobs skill:
 ```
-skill({ name: "career-ops" })
+skill({ name: "naija-jobs" })
 ```

@@ -6,12 +6,12 @@ Analyze all tracked applications to find patterns in outcomes and surface action
 
 ## Inputs
 
-- `data/applications.md` — Application tracker
-- `reports/` — Individual evaluation reports
-- `config/profile.yml` — User profile (for recommendation context)
-- `modes/_profile.md` — User archetypes and framing
-- `config/profile.yml` — Structured candidate data (NYSC, education, location)
-- `portals.yml` — Portal config (for filter update recommendations)
+- `data/applications.md`: Application tracker
+- `reports/`: Individual evaluation reports
+- `config/profile.yml`: User profile (for recommendation context)
+- `modes/_profile.md`: User archetypes and framing
+- `config/profile.yml`: Structured candidate data (NYSC, education, location)
+- `portals.yml`: Portal config (for filter update recommendations)
 
 ## Minimum Threshold
 
@@ -22,7 +22,7 @@ If not, tell the user:
 
 Exit gracefully.
 
-## Step 1 — Run Analysis Script
+## Step 1: Run Analysis Script
 
 Execute:
 
@@ -47,7 +47,7 @@ Parse the JSON output. It contains:
 
 If the script returns `error`, display the error message and exit.
 
-## Step 2 — Generate Report
+## Step 2: Generate Report
 
 Write the report to `reports/pattern-analysis-{YYYY-MM-DD}.md`.
 
@@ -110,7 +110,7 @@ Number the top recommendations (from the script output). For each:
    Reasoning behind the recommendation.
 ```
 
-## Step 3 — Present Summary
+## Step 3: Present Summary
 
 Show the user a condensed version with:
 1. One-line stat summary (X applications, Y% applied, Z% positive outcome)
@@ -127,7 +127,7 @@ Example:
 >
 > Full report: `reports/pattern-analysis-2026-04-08.md`
 
-## Step 4 — Offer to Apply Recommendations
+## Step 4: Offer to Apply Recommendations
 
 Ask the user if they want to act on any recommendations:
 

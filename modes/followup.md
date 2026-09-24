@@ -6,13 +6,13 @@ Track follow-up cadence for active applications. Flag overdue follow-ups, extrac
 
 ## Inputs
 
-- `data/applications.md` — Application tracker
-- `data/follow-ups.md` — Follow-up history (created on first use)
-- `reports/` — Evaluation reports (for context in drafts)
-- `config/profile.yml` — User profile (name, identity)
-- `cv.md` — CV for proof points in drafts
+- `data/applications.md`: Application tracker
+- `data/follow-ups.md`: Follow-up history (created on first use)
+- `reports/`: Evaluation reports (for context in drafts)
+- `config/profile.yml`: User profile (name, identity)
+- `cv.md`: CV for proof points in drafts
 
-## Step 1 — Run Cadence Script
+## Step 1: Run Cadence Script
 
 Execute:
 
@@ -31,24 +31,24 @@ Parse the JSON output. It contains:
 If no actionable entries, tell the user:
 > "No active applications to follow up on. Apply to some roles first with `/naija-jobs` and come back when they're aging."
 
-## Step 2 — Display Dashboard
+## Step 2: Display Dashboard
 
 Show a cadence dashboard sorted by urgency (urgent > overdue > waiting > cold):
 
 ```
-Follow-up Cadence Dashboard — {date}
+Follow-up Cadence Dashboard: {date}
 {N} applications tracked, {N} actionable
 
 | # | Company | Role | Status | Days | Follow-ups | Next | Urgency | Contact |
 ```
 
 Use visual indicators:
-- **URGENT** — respond within 24 hours (company replied)
-- **OVERDUE** — follow-up is past due
-- **waiting (X days)** — on track, follow-up scheduled
-- **COLD** — 2+ follow-ups sent, suggest closing
+- **URGENT**: respond within 24 hours (company replied)
+- **OVERDUE**: follow-up is past due
+- **waiting (X days)**: on track, follow-up scheduled
+- **COLD**: 2+ follow-ups sent, suggest closing
 
-## Step 3 — Generate Follow-up Drafts
+## Step 3: Generate Follow-up Drafts
 
 For each **overdue** or **urgent** entry only:
 
@@ -60,7 +60,7 @@ For each **overdue** or **urgent** entry only:
 
 Generate a 3-4 sentence email:
 
-1. **Sentence 1:** Reference the specific role + when you applied. Be specific — mention the company name and role title.
+1. **Sentence 1:** Reference the specific role + when you applied. Be specific and mention the company name and role title.
 2. **Sentence 2:** One concrete value-add from the report's Block B match or a proof point from cv.md. Quantify if possible.
 3. **Sentence 3:** Soft ask + availability. Offer a specific time window ("this week" or "next Tuesday").
 4. **Sentence 4 (optional):** Brief mention of a relevant recent project or achievement.
@@ -75,11 +75,11 @@ Generate a 3-4 sentence email:
 - Use the candidate's name from `config/profile.yml`
 
 **Example tone:**
-> Subject: Re: Senior PHP/Laravel Developer — IxDF
+> Subject: Re: Senior PHP/Laravel Developer at IxDF
 >
 > Hi [contact name or "team"],
 >
-> I submitted my application for the Senior PHP/Laravel Developer role on April 7th. I wanted to share that my production Laravel app (Barbeiro.app — 120 models, 315 API endpoints, full test suite) closely mirrors the TDD-driven culture described in the posting.
+> I submitted my application for the Senior PHP/Laravel Developer role on April 7th. I wanted to share that my production Laravel app (Barbeiro.app, with 120 models, 315 API endpoints and a full test suite) closely mirrors the TDD-driven culture described in the posting.
 >
 > I'd love to discuss how my 15 years of PHP experience and hands-on AI tooling workflow could contribute to IxDF's platform. Would any time this week work for a brief conversation?
 >
@@ -107,14 +107,14 @@ Do NOT generate another follow-up. Instead suggest:
 > - Trying a different contact via `/naija-jobs outreach`
 > - Keeping in `Applied` status but deprioritizing"
 
-## Step 4 — Present Drafts
+## Step 4: Present Drafts
 
 For each draft, show:
 
 ```
-## Follow-up: {Company} — {Role} (#{num})
+## Follow-up: {Role} at {Company} (#{num})
 
-**To:** {email or "No contact found — run `/naija-jobs outreach` first"}
+**To:** {email or "No contact found. Run `/naija-jobs outreach` first"}
 **Subject:** {subject line}
 **Days since application:** {N}
 **Follow-ups sent:** {N}
@@ -123,7 +123,7 @@ For each draft, show:
 {draft text}
 ```
 
-## Step 5 — Record Follow-ups
+## Step 5: Record Follow-ups
 
 After the user reviews and says they've sent a follow-up, record it:
 
@@ -149,16 +149,16 @@ After the user reviews and says they've sent a follow-up, record it:
 
 **IMPORTANT:** Only record follow-ups the user confirms they actually sent. Never record a draft as sent.
 
-## Step 6 — Summary
+## Step 6: Summary
 
 After showing all drafts, summarize:
 
 > **Follow-up Dashboard** ({date})
 > - {N} applications being tracked
-> - {N} overdue — drafts generated above
-> - {N} urgent — respond today
-> - {N} waiting — next follow-up dates shown
-> - {N} cold — consider closing
+> - {N} overdue: drafts generated above
+> - {N} urgent: respond today
+> - {N} waiting: next follow-up dates shown
+> - {N} cold: consider closing
 >
 > Review the drafts above and tell me which ones you've sent so I can record them.
 

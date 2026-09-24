@@ -75,30 +75,45 @@ func ParseApplications(careerOpsPath string) []model.CareerApplication {
 		}
 
 		num++
+		// Column layout: 12-col canonical
+		//   # | Date | Company | Role | Location | Score | Deadline | Applicants | Status | PDF | Report | Notes
+		// or 9-col legacy
+		//   # | Date | Company | Role | Score | Status | PDF | Report | Notes
+		idxScore, idxStatus, idxPDF, idxReport, idxNotes := 4, 5, 6, 7, 8
+		twelveCol := len(fields) >= 11 && reScoreValue.MatchString(fields[5]) && !reScoreValue.MatchString(fields[4])
+		if twelveCol {
+			idxScore, idxStatus, idxPDF, idxReport, idxNotes = 5, 8, 9, 10, 11
+		}
+
 		app := model.CareerApplication{
 			Number:  num,
 			Date:    fields[1],
 			Company: fields[2],
 			Role:    fields[3],
-			Status:  fields[5],
-			HasPDF:  strings.Contains(fields[6], "\u2705"),
+			Status:  fields[idxStatus],
+			HasPDF:  strings.Contains(fields[idxPDF], "\u2705"),
+		}
+		if twelveCol {
+			app.Location = fields[4]
+			app.Deadline = fields[6]
+			app.Applicants = fields[7]
 		}
 
-		// Parse score (field 4 = Score column)
-		app.ScoreRaw = fields[4]
-		if sm := reScoreValue.FindStringSubmatch(fields[4]); sm != nil {
+		// Parse score
+		app.ScoreRaw = fields[idxScore]
+		if sm := reScoreValue.FindStringSubmatch(fields[idxScore]); sm != nil {
 			app.Score, _ = strconv.ParseFloat(sm[1], 64)
 		}
 
 		// Parse report link
-		if rm := reReportLink.FindStringSubmatch(fields[7]); rm != nil {
+		if rm := reReportLink.FindStringSubmatch(fields[idxReport]); rm != nil {
 			app.ReportNumber = rm[1]
 			app.ReportPath = rm[2]
 		}
 
-		// Notes (field 8 if exists)
-		if len(fields) > 8 {
-			app.Notes = fields[8]
+		// Notes
+		if len(fields) > idxNotes {
+			app.Notes = fields[idxNotes]
 		}
 
 		apps = append(apps, app)
@@ -474,7 +489,7 @@ func NormalizeStatus(raw string) string {
 	}
 
 	switch {
-	// Most restrictive first — accepts both English and Spanish
+	// Most restrictive first: accepts both English and Spanish
 	case strings.Contains(s, "no aplicar") || strings.Contains(s, "no_aplicar") || s == "skip" || strings.Contains(s, "geo blocker"):
 		return "skip"
 	case strings.Contains(s, "interview") || strings.Contains(s, "entrevista"):

@@ -6,7 +6,7 @@ Compare the following job listings using naija-job-ops compare mode:
 
 $ARGUMENTS
 
-Load the career-ops skill:
+Load the naija-jobs skill:
 ```
-skill({ name: "career-ops" })
+skill({ name: "naija-jobs" })
 ```

@@ -6,7 +6,7 @@ Deep research about company using naija-job-ops deep mode:
 
 $ARGUMENTS
 
-Load the career-ops skill:
+Load the naija-jobs skill:
 ```
-skill({ name: "career-ops" })
+skill({ name: "naija-jobs" })
 ```

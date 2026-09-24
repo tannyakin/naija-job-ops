@@ -68,7 +68,7 @@ export function classifyLiveness({ status = 0, finalUrl = '', bodyText = '', app
   }
 
   if (bodyText.trim().length < MIN_CONTENT_CHARS) {
-    return { result: 'expired', reason: 'insufficient content — likely nav/footer only' };
+    return { result: 'expired', reason: 'insufficient content, likely nav/footer only' };
   }
 
   return { result: 'uncertain', reason: 'content present but no visible apply control found' };

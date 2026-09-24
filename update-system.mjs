@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * update-system.mjs — Safe auto-updater for naija-job-ops
+ * update-system.mjs: Safe auto-updater for naija-job-ops
  *
  * Updates ONLY system layer files (modes, scripts, dashboard, templates).
  * NEVER touches user data (cv.md, profile-skills.md, profile.yml, data/, reports/).
@@ -27,7 +27,7 @@ const CANONICAL_REPO = 'https://github.com/tannyakin/naija-job-ops.git';
 const RAW_VERSION_URL = 'https://raw.githubusercontent.com/tannyakin/naija-job-ops/main/VERSION';
 const RELEASES_API = 'https://api.github.com/repos/tannyakin/naija-job-ops/releases/latest';
 
-// System layer paths — ONLY these files get updated
+// System layer paths: ONLY these files get updated
 const SYSTEM_PATHS = [
   'modes/_shared.md',
   'modes/_profile.template.md',
@@ -49,6 +49,11 @@ const SYSTEM_PATHS = [
   'modes/followup.md',
   'modes/patterns.md',
   'modes/interview-prep.md',
+  'modes/match.md',
+  'modes/cover-letter.md',
+  'modes/mock-interview.md',
+  'modes/aptitude.md',
+  'modes/tutorial.md',
   'CLAUDE.md',
   'AGENTS.md',
   'generate-pdf.mjs',
@@ -58,6 +63,17 @@ const SYSTEM_PATHS = [
   'normalize-statuses.mjs',
   'cv-sync-check.mjs',
   'update-system.mjs',
+  'scan.mjs',
+  'tracker-lib.mjs',
+  'doctor.mjs',
+  'check-liveness.mjs',
+  'liveness-core.mjs',
+  'followup-cadence.mjs',
+  'analyze-patterns.mjs',
+  'test-all.mjs',
+  'sources/',
+  'tests/',
+  '.opencode/',
   'batch/batch-prompt.md',
   'batch/batch-runner.sh',
   'dashboard/',
@@ -75,7 +91,7 @@ const SYSTEM_PATHS = [
   'package.json',
 ];
 
-// User layer paths — NEVER touch these (safety check)
+// User layer paths: NEVER touch these (safety check)
 const USER_PATHS = [
   'cv.md',
   'profile-skills.md',

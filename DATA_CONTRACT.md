@@ -8,15 +8,16 @@ These files contain your personal data, customizations, and work product. Update
 
 | File | Purpose |
 |------|---------|
-| `cv.md` | Your CV in markdown (optional — system works without it) |
+| `cv.md` | Your CV in markdown (optional; the system works without it) |
 | `profile-skills.md` | Your skills profile (primary source of truth when no CV) |
 | `modes/_profile.md` | Your archetypes, narrative, negotiation scripts, deal-breakers |
 | `config/profile.yml` | Your identity, targets, salary range, NYSC status |
 | `interview-prep/story-bank.md` | Your accumulated STAR+R stories |
-| `portals.yml` | Your customized company list |
+| `portals.yml` | Your search keywords, boards, and company list |
 | `data/applications.md` | Your application tracker |
 | `data/pipeline.md` | Your URL inbox |
 | `data/scan-history.tsv` | Your scan history |
+| `data/scan-results.json` | Your latest ranked scan results |
 | `data/follow-ups.md` | Your follow-up history |
 | `reports/*` | Your evaluation reports |
 | `output/*` | Your generated PDFs |
@@ -45,6 +46,9 @@ These files contain system logic, scripts, templates, and instructions that impr
 | `modes/patterns.md` | Pattern analysis instructions |
 | `modes/followup.md` | Follow-up cadence instructions |
 | `modes/onboard.md` | Onboarding mode instructions |
+| `modes/match.md`, `modes/cover-letter.md`, `modes/mock-interview.md`, `modes/aptitude.md`, `modes/tutorial.md` | Matching, cover letters, interview practice, test practice, tutorial |
+| `sources/*` | Job source scrapers (LinkedIn, Nigerian boards, remote boards, ATS) and quick profile fit |
+| `tests/*` | Offline tests and fixtures |
 | `CLAUDE.md` | Agent instructions |
 | `AGENTS.md` | Codex instructions |
 | `*.mjs` | Utility scripts |

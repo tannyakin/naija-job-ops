@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * test-all.mjs — Comprehensive test suite for career-ops
+ * test-all.mjs: Comprehensive test suite for naija-job-ops
  *
  * Run before merging any PR or pushing changes.
  * Tests: syntax, scripts, dashboard, data contract, personal data, paths.
@@ -45,7 +45,11 @@ console.log('\n🧪 naija-job-ops test suite\n');
 
 console.log('1. Syntax checks');
 
-const mjsFiles = readdirSync(ROOT).filter(f => f.endsWith('.mjs'));
+const mjsFiles = [
+  ...readdirSync(ROOT).filter(f => f.endsWith('.mjs')),
+  ...readdirSync(join(ROOT, 'sources')).filter(f => f.endsWith('.mjs')).map(f => `sources/${f}`),
+  ...readdirSync(join(ROOT, 'tests')).filter(f => f.endsWith('.mjs')).map(f => `tests/${f}`),
+];
 for (const f of mjsFiles) {
   const result = run(`node --check ${f}`);
   if (result !== null) {
@@ -129,6 +133,16 @@ if (!QUICK) {
   console.log('\n4. Dashboard build (skipped --quick)');
 }
 
+// ── 4b. JOB SOURCE SCRAPERS (offline fixtures) ───────────────────
+
+console.log('\n4b. Job source scrapers (offline fixtures)');
+{
+  const out = run('node tests/test-sources.mjs');
+  const summary = out ? out.trim().split('\n').pop() : '';
+  if (out !== null && /\b0 failed/.test(summary)) pass(`Source tests: ${summary}`);
+  else fail(`Source tests failed. Run: node tests/test-sources.mjs${summary ? ` (${summary})` : ''}`);
+}
+
 // ── 5. DATA CONTRACT ────────────────────────────────────────────
 
 console.log('\n5. Data contract validation');
@@ -138,8 +152,10 @@ const systemFiles = [
   'CLAUDE.md', 'VERSION', 'DATA_CONTRACT.md',
   'modes/_shared.md',
   'modes/eval.md', 'modes/pdf.md', 'modes/scan.md',
-  'templates/states.yml', 'templates/cv-template.html',
-  '.claude/skills/career-ops/SKILL.md',
+  'templates/states.yml', 'templates/cv-template.html', 'templates/cover-letter-template.html',
+  'tracker-lib.mjs', 'sources/linkedin.mjs', 'sources/boards.mjs', 'sources/remote.mjs',
+  'sources/ats.mjs', 'sources/fit.mjs', 'sources/util.mjs',
+  '.claude/skills/naija-jobs/SKILL.md',
 ];
 
 for (const f of systemFiles) {
@@ -222,6 +238,8 @@ const expectedModes = [
   'batch.md', 'apply.md', 'auto-pipeline.md', 'outreach.md', 'deep.md',
   'compare.md', 'pipeline.md', 'project.md', 'tracker.md', 'training.md',
   'onboard.md', 'cv.md', 'followup.md', 'patterns.md',
+  'match.md', 'cover-letter.md', 'mock-interview.md', 'aptitude.md', 'tutorial.md',
+  'interview-prep.md',
 ];
 
 for (const mode of expectedModes) {
@@ -280,12 +298,12 @@ console.log('\n' + '='.repeat(50));
 console.log(`📊 Results: ${passed} passed, ${failed} failed, ${warnings} warnings`);
 
 if (failed > 0) {
-  console.log('🔴 TESTS FAILED — do NOT push/merge until fixed\n');
+  console.log('🔴 TESTS FAILED. Do NOT push/merge until fixed\n');
   process.exit(1);
 } else if (warnings > 0) {
-  console.log('🟡 Tests passed with warnings — review before pushing\n');
+  console.log('🟡 Tests passed with warnings. Review before pushing\n');
   process.exit(0);
 } else {
-  console.log('🟢 All tests passed — safe to push/merge\n');
+  console.log('🟢 All tests passed. Safe to push/merge\n');
   process.exit(0);
 }

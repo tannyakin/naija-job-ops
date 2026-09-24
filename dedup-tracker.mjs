@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * dedup-tracker.mjs — Remove duplicate entries from applications.md
+ * dedup-tracker.mjs: Remove duplicate entries from applications.md
  *
  * Groups by normalized company + fuzzy role match.
  * Keeps entry with highest score. If discarded entry had more advanced status,
@@ -12,6 +12,7 @@
 import { readFileSync, writeFileSync, copyFileSync, existsSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
+import { parseAppLine, formatAppLine } from './tracker-lib.mjs';
 
 const CAREER_OPS = dirname(fileURLToPath(import.meta.url));
 // Support both layouts: data/applications.md (boilerplate) and applications.md (original)
@@ -32,12 +33,12 @@ const STATUS_RANK = {
   'responded': 4,
   'interview': 5,
   'offer': 6,
-  // Spanish aliases — kept for backwards compat with existing tracker data
+  // Spanish aliases: kept for backwards compat with existing tracker data
   'no_aplicar': 0,
   'no aplicar': 0,
   'descartado': 0,
   'descartada': 0,
-  'rechazado': 1,  // Terminal — below active states
+  'rechazado': 1,  // Terminal, below active states
   'rechazada': 1,
   'evaluada': 2,
   'aplicado': 3,
@@ -72,25 +73,6 @@ function roleMatch(a, b) {
 function parseScore(s) {
   const m = s.replace(/\*\*/g, '').match(/([\d.]+)/);
   return m ? parseFloat(m[1]) : 0;
-}
-
-function parseAppLine(line) {
-  const parts = line.split('|').map(s => s.trim());
-  if (parts.length < 9) return null;
-  const num = parseInt(parts[1]);
-  if (isNaN(num)) return null;
-  return {
-    num,
-    date: parts[2],
-    company: parts[3],
-    role: parts[4],
-    score: parts[5],
-    status: parts[6],
-    pdf: parts[7],
-    report: parts[8],
-    notes: parts[9] || '',
-    raw: line,
-  };
 }
 
 // Read
@@ -167,9 +149,8 @@ for (const [company, companyEntries] of groups) {
     if (bestStatus !== keeper.status) {
       const lineIdx = entryLineMap.get(keeper.num);
       if (lineIdx !== undefined) {
-        const parts = lines[lineIdx].split('|').map(s => s.trim());
-        parts[6] = bestStatus;
-        lines[lineIdx] = '| ' + parts.slice(1, -1).join(' | ') + ' |';
+        const app = parseAppLine(lines[lineIdx]);
+        lines[lineIdx] = formatAppLine({ ...app, status: bestStatus });
         console.log(`  📝 #${keeper.num}: status promoted to "${bestStatus}" (from #${cluster.find(e => e.status === bestStatus)?.num})`);
       }
     }
@@ -181,7 +162,7 @@ for (const [company, companyEntries] of groups) {
       if (lineIdx !== undefined) {
         linesToRemove.add(lineIdx);
         removed++;
-        console.log(`🗑️  Remove #${dup.num} (${dup.company} — ${dup.role}, ${dup.score}) → kept #${keeper.num} (${keeper.score})`);
+        console.log(`🗑️  Remove #${dup.num} (${dup.role} at ${dup.company}, ${dup.score}) → kept #${keeper.num} (${keeper.score})`);
       }
     }
   }
@@ -200,7 +181,7 @@ if (!DRY_RUN && removed > 0) {
   writeFileSync(APPS_FILE, lines.join('\n'));
   console.log('✅ Written to applications.md (backup: applications.md.bak)');
 } else if (DRY_RUN) {
-  console.log('(dry-run — no changes written)');
+  console.log('(dry-run: no changes written)');
 } else {
   console.log('✅ No duplicates found');
 }

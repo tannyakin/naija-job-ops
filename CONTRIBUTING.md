@@ -31,7 +31,7 @@ PRs without a corresponding issue may be closed if they don't align with the pro
 - Translate modes to other languages
 - Improve documentation
 - Add example CVs for different roles (in `examples/`)
-- Report bugs via [Issues](https://github.com/santifer/career-ops/issues)
+- Report bugs via [Issues](https://github.com/tannyakin/naija-job-ops/issues)
 
 **Bigger contributions:**
 - New evaluation dimensions or scoring logic
@@ -43,7 +43,7 @@ PRs without a corresponding issue may be closed if they don't align with the pro
 
 - Keep modes language-agnostic when possible (Claude handles both EN and ES)
 - Scripts should handle missing files gracefully (check `existsSync` before `readFileSync`)
-- Dashboard changes require `go build` — test with real data before submitting
+- Dashboard changes require `go build`. Test with real data before submitting
 - Don't commit personal data (cv.md, profile.yml, applications.md, reports/)
 
 ## What we do NOT accept
@@ -68,6 +68,6 @@ cd dashboard && go build -o career-dashboard .
 
 ## Need Help?
 
-- [Join the Discord](https://discord.gg/8pRpHETxa4) — fastest way to get answers and connect with other contributors
-- [Open an issue](https://github.com/santifer/career-ops/issues)
+- [Open an issue](https://github.com/tannyakin/naija-job-ops/issues). It is the fastest way to get answers
+- [Open an issue](https://github.com/tannyakin/naija-job-ops/issues)
 - [Read the architecture docs](docs/ARCHITECTURE.md)

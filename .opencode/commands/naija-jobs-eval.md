@@ -6,7 +6,7 @@ Evaluate the following job listing using naija-job-ops eval mode:
 
 $ARGUMENTS
 
-Load the career-ops skill:
+Load the naija-jobs skill:
 ```
-skill({ name: "career-ops" })
+skill({ name: "naija-jobs" })
 ```

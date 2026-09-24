@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * verify-pipeline.mjs — Health check for career-ops pipeline integrity
+ * verify-pipeline.mjs: Health check for career-ops pipeline integrity
  *
  * Checks:
  * 1. All statuses are canonical (per states.yml)
@@ -17,6 +17,7 @@
 import { readFileSync, readdirSync, existsSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
+import { parseTracker, parseAppLine } from './tracker-lib.mjs';
 
 const CAREER_OPS = dirname(fileURLToPath(import.meta.url));
 // Support both layouts: data/applications.md (boilerplate) and applications.md (original)
@@ -61,19 +62,7 @@ if (!existsSync(APPS_FILE)) {
 const content = readFileSync(APPS_FILE, 'utf-8');
 const lines = content.split('\n');
 
-const entries = [];
-for (const line of lines) {
-  if (!line.startsWith('|')) continue;
-  const parts = line.split('|').map(s => s.trim());
-  if (parts.length < 9) continue;
-  const num = parseInt(parts[1]);
-  if (isNaN(num)) continue;
-  entries.push({
-    num, date: parts[2], company: parts[3], role: parts[4],
-    score: parts[5], status: parts[6], pdf: parts[7], report: parts[8],
-    notes: parts[9] || '',
-  });
-}
+const entries = parseTracker(content);
 
 console.log(`\n📊 Checking ${entries.length} entries in applications.md\n`);
 
@@ -97,7 +86,7 @@ for (const e of entries) {
 
   // Check for dates in status
   if (/\d{4}-\d{2}-\d{2}/.test(e.status)) {
-    error(`#${e.num}: Status contains date: "${e.status}" — dates go in date column`);
+    error(`#${e.num}: Status contains date: "${e.status}". Dates go in the date column`);
     badStatuses++;
   }
 }
@@ -114,7 +103,7 @@ for (const e of entries) {
 }
 for (const [key, group] of companyRoleMap) {
   if (group.length > 1) {
-    warn(`Possible duplicates: ${group.map(e => `#${e.num}`).join(', ')} (${group[0].company} — ${group[0].role})`);
+    warn(`Possible duplicates: ${group.map(e => `#${e.num}`).join(', ')} (${group[0].role} at ${group[0].company})`);
     dupes++;
   }
 }
@@ -149,9 +138,13 @@ let badRows = 0;
 for (const line of lines) {
   if (!line.startsWith('|')) continue;
   if (line.includes('---') || line.includes('Empresa')) continue;
-  const parts = line.split('|');
-  if (parts.length < 9) {
-    error(`Row with <9 columns: ${line.substring(0, 80)}...`);
+  if (!/^\|\s*\d+\s*\|/.test(line)) continue;
+  const app = parseAppLine(line);
+  if (!app) {
+    error(`Malformed row: ${line.substring(0, 80)}...`);
+    badRows++;
+  } else if (app.legacy) {
+    warn(`#${app.num}: legacy 9-column row; add Location/Deadline/Applicants columns`);
     badRows++;
   }
 }
@@ -186,7 +179,7 @@ if (errors === 0 && warnings === 0) {
 } else if (errors === 0) {
   console.log('🟡 Pipeline OK with warnings');
 } else {
-  console.log('🔴 Pipeline has errors — fix before proceeding');
+  console.log('🔴 Pipeline has errors. Fix them before proceeding');
 }
 
 process.exit(errors > 0 ? 1 : 0);

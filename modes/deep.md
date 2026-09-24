@@ -1,4 +1,4 @@
-# Mode: deep — Deep Company Research
+# Mode: deep (Deep Company Research)
 
 Produce a thorough research brief on a Nigerian company. Use WebSearch and Playwright. Deliver actionable intelligence for interview preparation or to inform whether to apply.
 
@@ -36,7 +36,7 @@ Use WebSearch: `"{company}" employer reviews Nigeria` and `"{company}" Glassdoor
 - Overall reputation as an employer
 - Known strengths (e.g., "excellent graduate training programme", "strong pension scheme", "promotes from within")
 - Known weaknesses or red flags (e.g., "salaries are negotiated from a low base", "high attrition in first 2 years")
-- Typical salary bands for entry-level and mid-level (from available sources — cite the source)
+- Typical salary bands for entry-level and mid-level (from available sources, with citations)
 - Culture signals: work-life balance, management style, diversity
 
 ---
@@ -71,7 +71,7 @@ Use WebSearch: `"{company}" recruitment process Nigeria` and `"{company}" interv
 Use WebSearch for the last 12 months: `"{company}" news 2025 2026` and `"{company}" expansion hiring Nigeria`
 
 - Any significant expansion, new products, or new markets that affect hiring
-- Any layoffs, restructuring, regulatory issues, or leadership changes — note the date and scope
+- Any layoffs, restructuring, regulatory issues, or leadership changes: note the date and scope
 - If there are concerning signs: put them plainly. Do not soften financial distress signals.
 
 ---
@@ -94,4 +94,4 @@ Deliver as a structured markdown document. Offer to save it:
 
 > "Want me to save this research to `reports/deep-{company-slug}-{YYYY-MM-DD}.md` for future reference?"
 
-If yes, save it. This file is informational — it does not follow the evaluation report numbering system and does not get logged in the applications tracker.
+If yes, save it. This file is informational: it does not follow the evaluation report numbering system and does not get logged in the applications tracker.

@@ -2,6 +2,9 @@
 data/applications.md
 data/pipeline.md
 data/scan-history.tsv
+data/scan-results.json
+data/follow-ups.md
+data/*.bak
 reports/*.md
 !reports/.gitkeep
 output/*
@@ -16,6 +19,9 @@ jds/*
 !jds/.gitkeep
 
 # User config and customization (never auto-updated)
+cv.md
+cv-draft-*.md
+profile-skills.md
 config/profile.yml
 portals.yml
 modes/_profile.md
@@ -37,3 +43,4 @@ bun.lock
 .claude/memory/
 career-dashboard
 package-lock.json
+bash.exe.stackdump

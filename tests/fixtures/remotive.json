@@ -1,0 +1,5 @@
+{"job-count":3,"jobs":[
+ {"id":1,"url":"https://remotive.com/remote-jobs/data/data-analyst-1","title":"Data Analyst","company_name":"Andela","category":"Data","job_type":"full_time","publication_date":"2026-09-23T10:00:00","candidate_required_location":"Africa, Europe","salary":"$30k - $45k","description":"<p>SQL, Python, dashboards</p>"},
+ {"id":2,"url":"https://remotive.com/remote-jobs/data/data-analyst-2","title":"Data Analyst (US only)","company_name":"Acme","category":"Data","job_type":"full_time","publication_date":"2026-09-23T10:00:00","candidate_required_location":"USA Only","salary":"","description":"<p>SQL</p>"},
+ {"id":3,"url":"https://remotive.com/remote-jobs/data/old","title":"Data Analyst","company_name":"Oldco","category":"Data","job_type":"full_time","publication_date":"2026-06-01T10:00:00","candidate_required_location":"Worldwide","salary":"","description":""}
+]}

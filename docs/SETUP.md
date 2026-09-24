@@ -27,7 +27,7 @@ Edit `config/profile.yml` with your personal details: name, email, target roles,
 
 ### 3. Add your skills profile
 
-Create `profile-skills.md` in the project root with your skills, education, and experience summary. This is the primary source of truth for all evaluations. If you have a CV, you can also create `cv.md` — but `profile-skills.md` alone is enough to start.
+Create `profile-skills.md` in the project root with your skills, education, and experience summary. This is the primary source of truth for all evaluations. If you have a CV, you can also create `cv.md`, but `profile-skills.md` alone is enough to start.
 
 Run `/naija-jobs onboard` to have the system guide you through creating both files.
 

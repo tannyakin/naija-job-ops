@@ -1,8 +1,8 @@
-blank_issues_enabled: false
+blank_issues_enabled: true
 contact_links:
-  - name: Setup Help / How-to Questions
-    url: https://discord.gg/8pRpHETxa4
-    about: For setup help and general questions, ask in Discord instead of opening an issue.
-  - name: GitHub Discussions
-    url: https://github.com/santifer/career-ops/discussions
-    about: For ideas, Q&A, and community conversations.
+  - name: Setup help
+    url: https://github.com/tannyakin/naija-job-ops/blob/main/docs/SETUP.md
+    about: Check the setup guide first, then open an issue if you're still stuck.
+  - name: Original project (career-ops)
+    url: https://github.com/santifer/career-ops
+    about: naija-job-ops is built on career-ops by Santiago Ferreira.

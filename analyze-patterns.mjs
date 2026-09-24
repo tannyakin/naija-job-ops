@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * analyze-patterns.mjs — Rejection Pattern Detector for naija-job-ops
+ * analyze-patterns.mjs: Rejection Pattern Detector for naija-job-ops
  *
  * Parses applications.md + all linked reports, extracts dimensions
  * (archetype, seniority, remote, gaps, scores), classifies outcomes,
@@ -14,6 +14,7 @@
 import { readFileSync, existsSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
+import { parseTracker as parseTrackerContent } from './tracker-lib.mjs';
 
 const CAREER_OPS = dirname(fileURLToPath(import.meta.url));
 const APPS_FILE = existsSync(join(CAREER_OPS, 'data/applications.md'))
@@ -60,21 +61,7 @@ function classifyOutcome(status) {
 // --- Parse applications.md ---
 function parseTracker() {
   if (!existsSync(APPS_FILE)) return [];
-  const content = readFileSync(APPS_FILE, 'utf-8');
-  const entries = [];
-  for (const line of content.split('\n')) {
-    if (!line.startsWith('|')) continue;
-    const parts = line.split('|').map(s => s.trim());
-    if (parts.length < 9) continue;
-    const num = parseInt(parts[1]);
-    if (isNaN(num)) continue;
-    entries.push({
-      num, date: parts[2], company: parts[3], role: parts[4],
-      score: parts[5], status: parts[6], pdf: parts[7], report: parts[8],
-      notes: parts[9] || '',
-    });
-  }
-  return entries;
+  return parseTrackerContent(readFileSync(APPS_FILE, 'utf-8'));
 }
 
 // --- Parse a single report file ---
@@ -95,7 +82,7 @@ function parseReport(reportPath) {
   // Strip bold markers for easier matching
   const plain = content.replace(/\*\*/g, '');
 
-  // Extract Block A table (Role Summary) — works with both EN and ES headers
+  // Extract Block A table (Role Summary): works with both EN and ES headers
   const blockARegex = /\|\s*(?:Archetype|Arquetipo)\s*\|\s*(.*?)\s*\|/i;
   const seniorityRegex = /\|\s*(?:Seniority|Nivel|Level)\s*\|\s*(.*?)\s*\|/i;
   const remoteRegex = /\|\s*(?:Remote|Remoto|Location)\s*\|\s*(.*?)\s*\|/i;
@@ -121,7 +108,7 @@ function parseReport(reportPath) {
   const domainMatch = plain.match(domainRegex);
   if (domainMatch) report.domain = domainMatch[1].trim();
 
-  // Extract scoring table — look for table with "Global" row (using plain, bold already stripped)
+  // Extract scoring table: look for table with "Global" row (using plain, bold already stripped)
   const scoreRegex = /\|\s*(?:CV Match|Match con CV)\s*\|\s*([\d.]+)\/5\s*\|/i;
   const northStarRegex = /\|\s*(?:North Star)\s*\|\s*([\d.]+)\/5\s*\|/i;
   const compScoreRegex = /\|\s*(?:Comp)\s*\|\s*([\d.]+)\/5\s*\|/i;
@@ -470,7 +457,7 @@ function printSummary(result) {
   const { metadata, funnel, scoreComparison, archetypeBreakdown, blockerAnalysis, remotePolicy, scoreThreshold, techStackGaps, recommendations } = result;
 
   console.log(`\n${'='.repeat(60)}`);
-  console.log(`  Pattern Analysis — ${metadata.analysisDate}`);
+  console.log(`  Pattern Analysis: ${metadata.analysisDate}`);
   console.log(`  ${metadata.total} applications (${metadata.dateRange.from} to ${metadata.dateRange.to})`);
   console.log(`${'='.repeat(60)}\n`);
 

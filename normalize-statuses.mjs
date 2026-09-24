@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * normalize-statuses.mjs — Clean non-canonical states in applications.md
+ * normalize-statuses.mjs: Clean non-canonical states in applications.md
  *
  * Maps all non-canonical statuses to canonical ones per states.yml:
  *   Evaluada, Aplicado, Respondido, Entrevista, Oferta, Rechazado, Descartado, NO APLICAR
@@ -14,6 +14,7 @@
 import { readFileSync, writeFileSync, copyFileSync, existsSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
+import { parseAppLine, formatAppLine } from './tracker-lib.mjs';
 
 const CAREER_OPS = dirname(fileURLToPath(import.meta.url));
 // Support both layouts: data/applications.md (boilerplate) and applications.md (original)
@@ -58,10 +59,10 @@ function normalizeStatus(raw) {
   // Repost #NNN → Discarded
   if (/^repost/i.test(s)) return { status: 'Discarded', moveToNotes: raw.trim() };
 
-  // "—" (em dash, no status) → Discarded
-  if (s === '—' || s === '-' || s === '') return { status: 'Discarded' };
+  // A lone em dash (no status) → Discarded
+  if (s === '\u2014' || s === '-' || s === '') return { status: 'Discarded' };
 
-  // Already canonical (English, per states.yml) — just fix casing/bold
+  // Already canonical (English, per states.yml): just fix casing/bold
   const canonical = [
     'Evaluated', 'Applied', 'Responded', 'Interview',
     'Offer', 'Rejected', 'Discarded', 'SKIP',
@@ -79,7 +80,7 @@ function normalizeStatus(raw) {
   if (['cerrada', 'descartada'].includes(lower)) return { status: 'Discarded' };
   if (['no aplicar', 'no_aplicar', 'skip'].includes(lower)) return { status: 'SKIP' };
 
-  // Unknown — flag it
+  // Unknown: flag it
   return { status: null, unknown: true };
 }
 
@@ -98,15 +99,11 @@ for (let i = 0; i < lines.length; i++) {
   const line = lines[i];
   if (!line.startsWith('|')) continue;
 
-  const parts = line.split('|').map(s => s.trim());
-  // Format: ['', '#', 'fecha', 'empresa', 'rol', 'score', 'STATUS', 'pdf', 'report', 'notas', '']
-  if (parts.length < 9) continue;
-  if (parts[1] === '#' || parts[1] === '---' || parts[1] === '') continue;
+  const app = parseAppLine(line);
+  if (!app) continue;
+  const num = app.num;
 
-  const num = parseInt(parts[1]);
-  if (isNaN(num)) continue;
-
-  const rawStatus = parts[6];
+  const rawStatus = app.status;
   const result = normalizeStatus(rawStatus);
 
   if (result.unknown) {
@@ -114,29 +111,23 @@ for (let i = 0; i < lines.length; i++) {
     continue;
   }
 
-  if (result.status === rawStatus) continue; // Already canonical
+  const cleanScore = app.score.replace(/\*\*/g, '');
+  if (result.status === rawStatus && cleanScore === app.score && !app.legacy) continue; // Already canonical
 
   // Apply change
   const oldStatus = rawStatus;
-  parts[6] = result.status;
+  app.status = result.status;
 
   // Move DUPLICADO info to notes if needed
-  if (result.moveToNotes && parts[9]) {
-    const existing = parts[9] || '';
-    if (!existing.includes(result.moveToNotes)) {
-      parts[9] = result.moveToNotes + (existing ? '. ' + existing : '');
-    }
-  } else if (result.moveToNotes && !parts[9]) {
-    parts[9] = result.moveToNotes;
+  if (result.moveToNotes && !app.notes.includes(result.moveToNotes)) {
+    app.notes = result.moveToNotes + (app.notes ? '. ' + app.notes : '');
   }
 
   // Also strip bold from score field
-  if (parts[5]) {
-    parts[5] = parts[5].replace(/\*\*/g, '');
-  }
+  app.score = cleanScore;
 
-  // Reconstruct line
-  const newLine = '| ' + parts.slice(1, -1).join(' | ') + ' |';
+  // Reconstruct line (also upgrades legacy 9-column rows to 12 columns)
+  const newLine = formatAppLine(app);
   lines[i] = newLine;
   changes++;
 
@@ -158,7 +149,7 @@ if (!DRY_RUN && changes > 0) {
   writeFileSync(APPS_FILE, lines.join('\n'));
   console.log('✅ Written to applications.md (backup: applications.md.bak)');
 } else if (DRY_RUN) {
-  console.log('(dry-run — no changes written)');
+  console.log('(dry-run: no changes written)');
 } else {
   console.log('✅ No changes needed');
 }

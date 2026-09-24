@@ -1,9 +1,10 @@
 #!/usr/bin/env node
 /**
- * merge-tracker.mjs — Merge batch tracker additions into applications.md
+ * merge-tracker.mjs: Merge batch tracker additions into applications.md
  *
  * Handles multiple TSV formats:
- * - 9-col: num\tdate\tcompany\trole\tstatus\tscore\tpdf\treport\tnotes
+ * - 12-col (canonical): num\tdate\tcompany\trole\tlocation\tscore\tdeadline\tapplicants\tstatus\tpdf\treport\tnotes
+ * - 9-col (legacy): num\tdate\tcompany\trole\tstatus\tscore\tpdf\treport\tnotes
  * - 8-col: num\tdate\tcompany\trole\tstatus\tscore\tpdf\treport (no notes)
  * - Pipe-delimited (markdown table row): | col | col | ... |
  *
@@ -11,13 +12,14 @@
  * If duplicate with higher score → update in-place, update report link
  * Validates status against states.yml (rejects non-canonical, logs warning)
  *
- * Run: node career-ops/merge-tracker.mjs [--dry-run] [--verify]
+ * Run: node merge-tracker.mjs [--dry-run] [--verify]
  */
 
 import { readFileSync, writeFileSync, readdirSync, mkdirSync, renameSync, existsSync } from 'fs';
 import { join, basename, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { execFileSync } from 'child_process';
+import { parseAppLine, formatAppLine } from './tracker-lib.mjs';
 
 const CAREER_OPS = dirname(fileURLToPath(import.meta.url));
 // Support both layouts: data/applications.md (boilerplate) and applications.md (original)
@@ -84,18 +86,6 @@ function parseScore(s) {
   return m ? parseFloat(m[1]) : 0;
 }
 
-function parseAppLine(line) {
-  const parts = line.split('|').map(s => s.trim());
-  if (parts.length < 9) return null;
-  const num = parseInt(parts[1]);
-  if (isNaN(num) || num === 0) return null;
-  return {
-    num, date: parts[2], company: parts[3], role: parts[4],
-    score: parts[5], status: parts[6], pdf: parts[7], report: parts[8],
-    notes: parts[9] || '', raw: line,
-  };
-}
-
 /**
  * Parse a TSV file content into a structured addition object.
  * Handles: 9-col TSV, 8-col TSV, pipe-delimited markdown.
@@ -129,6 +119,21 @@ function parseTsvContent(content, filename) {
   } else {
     // Tab-separated
     parts = content.split('\t');
+    if (parts.length >= 11) {
+      // Canonical 12-col: num date company role location score deadline applicants status pdf report notes
+      addition = {
+        num: parseInt(parts[0]),
+        date: parts[1], company: parts[2], role: parts[3], location: parts[4],
+        score: parts[5], deadline: parts[6], applicants: parts[7],
+        status: validateStatus(parts[8]),
+        pdf: parts[9], report: parts[10], notes: parts[11] || '',
+      };
+      if (isNaN(addition.num) || addition.num === 0) {
+        console.warn(`⚠️  Skipping ${filename}: invalid entry number`);
+        return null;
+      }
+      return addition;
+    }
     if (parts.length < 8) {
       console.warn(`⚠️  Skipping malformed TSV ${filename}: ${parts.length} fields`);
       return null;
@@ -192,7 +197,7 @@ const existingApps = [];
 let maxNum = 0;
 
 for (const line of appLines) {
-  if (line.startsWith('|') && !line.includes('---') && !line.includes('Empresa')) {
+  if (line.startsWith('|') && !line.includes('---')) {
     const app = parseAppLine(line);
     if (app) {
       existingApps.push(app);
@@ -267,26 +272,35 @@ for (const file of tsvFiles) {
     const oldScore = parseScore(duplicate.score);
 
     if (newScore > oldScore) {
-      console.log(`🔄 Update: #${duplicate.num} ${addition.company} — ${addition.role} (${oldScore}→${newScore})`);
+      console.log(`🔄 Update: #${duplicate.num} ${addition.role} at ${addition.company} (${oldScore}→${newScore})`);
       const lineIdx = appLines.indexOf(duplicate.raw);
       if (lineIdx >= 0) {
-        const updatedLine = `| ${duplicate.num} | ${addition.date} | ${addition.company} | ${addition.role} | ${addition.score} | ${duplicate.status} | ${duplicate.pdf} | ${addition.report} | Re-eval ${addition.date} (${oldScore}→${newScore}). ${addition.notes} |`;
+        const updatedLine = formatAppLine({
+          ...duplicate,
+          date: addition.date, company: addition.company, role: addition.role,
+          location: addition.location || duplicate.location,
+          score: addition.score,
+          deadline: addition.deadline || duplicate.deadline,
+          applicants: addition.applicants || duplicate.applicants,
+          report: addition.report,
+          notes: `Re-eval ${addition.date} (${oldScore}→${newScore}). ${addition.notes}`,
+        });
         appLines[lineIdx] = updatedLine;
         updated++;
       }
     } else {
-      console.log(`⏭️  Skip: ${addition.company} — ${addition.role} (existing #${duplicate.num} ${oldScore} >= new ${newScore})`);
+      console.log(`⏭️  Skip: ${addition.role} at ${addition.company} (existing #${duplicate.num} ${oldScore} >= new ${newScore})`);
       skipped++;
     }
   } else {
-    // New entry — use the number from the TSV
+    // New entry: use the number from the TSV
     const entryNum = addition.num > maxNum ? addition.num : ++maxNum;
     if (addition.num > maxNum) maxNum = addition.num;
 
-    const newLine = `| ${entryNum} | ${addition.date} | ${addition.company} | ${addition.role} | ${addition.score} | ${addition.status} | ${addition.pdf} | ${addition.report} | ${addition.notes} |`;
+    const newLine = formatAppLine({ ...addition, num: entryNum });
     newLines.push(newLine);
     added++;
-    console.log(`➕ Add #${entryNum}: ${addition.company} — ${addition.role} (${addition.score})`);
+    console.log(`➕ Add #${entryNum}: ${addition.role} at ${addition.company} (${addition.score})`);
   }
 }
 
@@ -318,7 +332,7 @@ if (!DRY_RUN) {
 }
 
 console.log(`\n📊 Summary: +${added} added, 🔄${updated} updated, ⏭️${skipped} skipped`);
-if (DRY_RUN) console.log('(dry-run — no changes written)');
+if (DRY_RUN) console.log('(dry-run: no changes written)');
 
 // Optional verify
 if (VERIFY && !DRY_RUN) {

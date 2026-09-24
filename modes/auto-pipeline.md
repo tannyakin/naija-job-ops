@@ -1,15 +1,15 @@
-# Mode: auto-pipeline — Full Automatic Pipeline
+# Mode: auto-pipeline (Full Automatic Pipeline)
 
 When the user pastes a job listing (text or URL) without an explicit sub-command, run the complete pipeline in sequence automatically.
 
 ---
 
-## Step 0 — Extract the Listing
+## Step 0: Extract the Listing
 
 If the input is a **URL**:
-1. Playwright: `browser_navigate` → `browser_snapshot` — works with SPAs and dynamically loaded pages
+1. Playwright: `browser_navigate` → `browser_snapshot` (works with SPAs and dynamically loaded pages)
 2. WebFetch: fallback for static pages
-3. WebSearch: last resort — search for the role title and company on Nigerian job boards that may have indexed it
+3. WebSearch as a last resort: search for the role title and company on Nigerian job boards that may have indexed it
 4. If nothing works: ask the user to paste the listing text directly or share a screenshot
 
 If the input is **pasted text** (JD already in context): use directly, skip extraction.
@@ -21,13 +21,13 @@ If the input is **pasted text** (JD already in context): use directly, skip extr
 
 ---
 
-## Step 1 — Full Evaluation
+## Step 1: Full Evaluation
 
-Execute `modes/eval.md` in full — all 6 blocks plus the legitimacy assessment. Read `modes/_shared.md` for scoring context.
+Execute `modes/eval.md` in full: all 6 blocks plus the legitimacy assessment. Read `modes/_shared.md` for scoring context.
 
 ---
 
-## Step 2 — Save Report
+## Step 2: Save Report
 
 Save the complete evaluation to `reports/{###}-{company-slug}-{YYYY-MM-DD}.md`.
 
@@ -38,7 +38,7 @@ Save the complete evaluation to `reports/{###}-{company-slug}-{YYYY-MM-DD}.md`.
 
 ---
 
-## Step 3 — Generate PDF (if score ≥ 3.5)
+## Step 3: Generate PDF (if score ≥ 3.5)
 
 Execute the PDF pipeline from `modes/pdf.md`. Generate a tailored CV and cover letter for this specific listing.
 
@@ -46,7 +46,7 @@ If score is below 3.5: skip PDF generation. Note in the tracker: `PDF ❌ (score
 
 ---
 
-## Step 4 — Draft Application Answers (if score ≥ 4.5)
+## Step 4: Draft Application Answers (if score ≥ 4.5)
 
 If the final score is 4.5 or higher, draft application form answers as a section `## Draft Application Answers` in the report.
 
@@ -73,7 +73,7 @@ Do not use: "I am passionate about", "I would be honoured", "I humbly apply", or
 
 ---
 
-## Step 5 — Register in Tracker
+## Step 5: Register in Tracker
 
 Write a TSV tracker addition to `batch/tracker-additions/{num}-{company-slug}.tsv`.
 

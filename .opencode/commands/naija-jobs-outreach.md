@@ -6,7 +6,7 @@ LinkedIn outreach for company/role using naija-job-ops outreach mode:
 
 $ARGUMENTS
 
-Load the career-ops skill:
+Load the naija-jobs skill:
 ```
-skill({ name: "career-ops" })
+skill({ name: "naija-jobs" })
 ```

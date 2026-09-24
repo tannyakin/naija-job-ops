@@ -1,179 +1,147 @@
-# Mode: scan — Nigerian Portal Scanner
+# Mode: scan (find the newest, best-fit jobs on LinkedIn, Nigerian boards and remote boards)
 
-Scan Nigerian job boards and tracked companies for new listings that match the user's profile. Filter, deduplicate, verify liveness, and add new listings to the pipeline for evaluation.
+Find fresh listings across LinkedIn, the main Nigerian job boards, remote boards open to Nigeria, and tracked company career pages. Rank them by **freshness**, **competition** (applicant count), and **fit with the user's profile**, then hand the best ones to `/naija-jobs match` or the pipeline.
 
-## Recommended execution
+Sub-commands that route here with presets:
 
-Run as a subagent to avoid consuming main context:
-
-```
-Agent(
-    subagent_type="general-purpose",
-    prompt="[content of _shared.md]\n\n[content of scan.md]\n\nUser profile summary: [extracted from profile-skills.md]",
-    run_in_background=True
-)
-```
+| Command | Preset |
+|---------|--------|
+| `/naija-jobs scan` | All sources, keywords from profile, last 24h |
+| `/naija-jobs scan {role or field}` | All sources for that role/field (any field, e.g. "nursing", "civil engineer", "HR") |
+| `/naija-jobs linkedin {role}` | `--source linkedin --since 24h`. Add "last hour" → `--since 1h` |
+| `/naija-jobs remote {role}` | `--source remote --since 7d` plus LinkedIn with `--workplace remote` |
+| `/naija-jobs boards {role}` | `--source boards` (Jobberman, MyJobMag, HotNigerianJobs, NgCareers, Jobgurus, Indeed NG) |
 
 ---
 
-## Configuration
+## Step 0: Make sure we know what to look for
 
-Read `portals.yml` which contains:
-- `search_queries` — WebSearch queries with `site:` filters per Nigerian job board
-- `tracked_companies` — Nigerian companies with `careers_url` for direct Playwright scanning
-- `title_filter` — positive/negative keywords and seniority boost terms
+Read `config/profile.yml`, `profile-skills.md`, and `cv.md` (if present), and `portals.yml`.
 
-Read user profile from `profile-skills.md` and `config/profile.yml` to understand target roles, skills, qualification level, NYSC status, and location preferences.
+- If the user named a role/field in the command, use it as the keywords.
+- Otherwise use `search.keywords` from `portals.yml`, then `target_roles.primary` from the profile.
+- **If there are no keywords at all, ask** (Clarifying Questions Protocol, `_shared.md`):
+  1. "What roles or fields should I search for? (e.g. data analyst, graduate trainee banking, nursing)"
+  2. "Nigeria only, remote only, or both?"
+  3. "Any city preference? (Lagos, Abuja, Port Harcourt, anywhere)"
+- If the profile has no experience level and the user did not say, ask whether they want internship/entry-level, mid, or senior roles. It changes the LinkedIn filters (`--experience internship,entry`).
 
----
-
-## Discovery Strategy (3 levels, all additive)
-
-### Level 1 — Playwright (primary)
-
-For each company in `tracked_companies` with `enabled: true` and `careers_url` defined:
-1. `browser_navigate` to the `careers_url`
-2. `browser_snapshot` to read all visible job listings
-3. Extract title + URL for each listing found
-4. If the page paginates, navigate additional pages
-5. If `careers_url` returns 404 or redirect, try `scan_query` as fallback and note the broken URL
-
-This is the most reliable method — it reads pages in real time, works with SPAs, and does not depend on search engine caching.
-
-### Level 2 — WebSearch queries (broad discovery)
-
-For each query in `search_queries` with `enabled: true`:
-1. Execute WebSearch with the configured query
-2. Extract title, URL, and company from each result
-3. Accumulate candidates (deduplicate with Level 1 results)
-
-WebSearch results may be stale (Google caches for days or weeks). Level 2 results require liveness verification before adding to pipeline (see Liveness Verification below).
-
-Level 2 is useful for discovering companies not yet in `tracked_companies`.
-
-### Level 3 — Nigerian job board direct scan (supplementary)
-
-If specific Nigerian portals are not covered by Level 1 companies or Level 2 queries, directly navigate:
-- `jobberman.com` — search with role keywords from user profile
-- `myjobmag.com` — search by category matching user's target archetype
-- `ngcareers.com` — search by keyword
-- `hotnigerianjobs.com` — search by keyword
-- `ng.indeed.com` — search by job title + Nigeria
-- `linkedin.com/jobs` — search by role + Nigeria, filter to past 30 days
-
-Extract all visible listings and accumulate as candidates.
+Offer to save new answers to `portals.yml` (`search.keywords`) and `config/profile.yml`.
 
 ---
 
-## Workflow
+## Step 1: Run the zero-token scanner
 
-1. **Read configuration**: `portals.yml`
-2. **Read dedup sources**: `data/scan-history.tsv`, `data/applications.md`, `data/pipeline.md`
-3. **Read user profile**: `profile-skills.md` + `config/profile.yml`
-4. **Run all 3 levels** (Levels 2 and 3 can run in parallel; Level 1 must be sequential — never 2 Playwright sessions at once)
-5. **Filter by title** using `title_filter` from portals.yml:
-   - At least 1 positive keyword must appear in the title (case-insensitive)
-   - 0 negative keywords can appear
-   - `seniority_boost` keywords raise priority but are not required
-6. **Filter by user profile** — additionally filter results to plausible matches:
-   - Discard roles that require a higher qualification than the user holds
-   - Discard roles that require NYSC completion if the user has not completed and the JD makes it a hard requirement
-   - Discard roles in locations the user has excluded
-7. **Deduplicate** against all 3 dedup sources (URL exact match and company+role normalised match)
-8. **Liveness verification** (Level 2 and Level 3 results only — Level 1 is real-time):
-   - Navigate each URL with Playwright: `browser_navigate` + `browser_snapshot`
-   - Active: job title + description + Apply/Submit button visible
-   - Closed: only navbar/footer, or explicit "no longer available" / "position filled" message
-   - If URL errors (timeout, 403): mark as `skipped_expired` and continue
-   - NEVER run 2 Playwright sessions in parallel
-9. **For each new verified listing**:
-   - Add to `data/pipeline.md` under Pending: `- [ ] {url} | {company} | {title}`
-   - Record in `data/scan-history.tsv`: `{url}\t{date}\t{source}\t{title}\t{company}\tadded`
-10. **For filtered/discarded listings**, record in `data/scan-history.tsv` with appropriate status:
-    - `skipped_title` — did not match title filter
-    - `skipped_profile` — did not match user profile (qualification, NYSC, location)
-    - `skipped_dup` — already in pipeline or applications
-    - `skipped_expired` — liveness check failed
+```bash
+node scan.mjs --keywords "{kw1}" --keywords "{kw2}" [--source ...] [--since 24h] [--location Lagos] [--experience entry,associate] [--workplace remote]
+```
+
+- `--since` accepts `1h`, `6h`, `24h`, `3d`, `1w`. For "newest postings", use `1h`–`24h`.
+- The script is polite (sequential LinkedIn requests with delays). If it prints "rate-limited", do not retry LinkedIn for 15–30 minutes.
+- Output files:
+  - `data/scan-results.json`: every result, ranked, with `ageHours`, `applicants`, `fit`, `fitReasons`, `warnings`, `hints`, `flags`, `eligibility` (remote), `isNew`
+  - `data/pipeline.md`: new, reasonably matched, non-suspicious listings appended under `## Pending`
+  - `data/scan-history.tsv`: dedup history
+
+Read `data/scan-results.json` after the run.
 
 ---
 
-## Scan History Format
+## Step 2: Cover what the script couldn't (browser fallback)
 
-`data/scan-history.tsv` — tab-separated, one row per URL seen:
+`scan-results.json` lists two things the script could not read:
 
-```
-url	first_seen	source	title	company	status
-https://jobberman.com/...	2026-04-11	Level1-GTBank	Graduate Trainee	GTBank	added
-https://myjobmag.com/...	2026-04-11	Level2-search	Software Engineer	Interswitch	skipped_dup
-https://ng.indeed.com/...	2026-04-11	Level3-Indeed	Android Developer	Andela	added
-```
+1. **`needs_browser`**: boards that block plain HTTP (always Indeed Nigeria; sometimes others). For each, with Playwright:
+   - `browser_navigate` to the search URL (replace `{q}` with the keywords, sort by date if the site offers it)
+   - `browser_snapshot` → extract title, company, location, posted date, URL for each listing
+   - Keep only listings posted within the `--since` window (or 7 days if the board only shows dates)
+2. **`browser_companies`**: tracked companies on custom career sites. Only visit these when the user asked for a company scan or the list is short (≤ 10); otherwise mention them.
 
----
+Also run 2–3 **WebSearch** queries for sources no scraper covers, e.g.:
+- `"{role}" recruitment 2026 site:gov.ng` (public sector)
+- `"{role}" graduate trainee programme 2026 Nigeria`
 
-## Portals Config Management
+Rules: NEVER run two Playwright sessions in parallel. Treat WebSearch hits as unverified until opened.
 
-Each company in `tracked_companies` should have `careers_url`. If it is missing:
-1. Try the pattern for known ATS platforms (Workable, SmartRecruiters, Lever)
-2. If no pattern applies, do a WebSearch: `"{company}" careers jobs Nigeria`
-3. Navigate with Playwright to confirm it works
-4. **Save the found URL to `portals.yml`** for future scans
-
-If a `careers_url` returns 404 or redirects to a non-careers page, note it in the scan summary and mark for manual update.
+Add browser/WebSearch finds to the list with the same fields, and append the good ones to `data/pipeline.md` and `data/scan-history.tsv` using the formats below.
 
 ---
 
-## Scan Output
+## Step 3: Sanity-check the top results
 
-```
-Nigerian Portal Scan — {YYYY-MM-DD}
-════════════════════════════════════
-Sources scanned:      {N companies (Level 1)} + {N queries (Level 2)} + {N boards (Level 3)}
-Total listings found: {N}
-Filtered by title:    {N} relevant
-Filtered by profile:  {N} disqualified (qualification/NYSC/location)
-Duplicates:           {N} (already evaluated or in pipeline)
-Expired/closed:       {N} removed
-New added to pipeline: {N}
-
-New listings:
-  + {company} | {role} | {location} | {source}
-  + {company} | {role} | {location} | {source}
-  ...
-
-→ Run /naija-jobs pipeline to evaluate new listings.
-→ Or paste any URL from the list above to evaluate it individually.
-```
-
-If no new listings were found:
-```
-No new listings found matching your profile. 
-Checked {N} sources. {N} listings seen, all duplicates or filtered out.
-→ Try broadening your keywords in portals.yml or run /naija-jobs onboard to update your profile.
-```
+For the top 10 by rank:
+- Anything with `flags` (fee, personal Gmail, WhatsApp-only, BVN) → move to a "⚠ Be careful" list with the reason. Never recommend applying.
+- `hints` with an age limit, 2:1, NYSC completion or O'Level requirement the profile can't confirm → ask the user (max 3 questions), then update the profile.
+- Remote roles with `eligibility: unclear` → say so; suggest asking the recruiter.
+- Listings with `closed: true` are already removed.
 
 ---
 
-## Nigerian Company Career Pages — Known Patterns
+## Step 4: Present results
 
-| Company | Platform | careers_url pattern |
-|---------|----------|---------------------|
-| GTBank | Custom | https://www.gtbank.com/careers |
-| Zenith Bank | Custom | https://www.zenithbank.com/careers |
-| Access Bank | Custom | https://www.accessbankplc.com/careers |
-| Flutterwave | Lever | https://jobs.lever.co/flutterwave |
-| Paystack | Workday | https://paystack.com/careers |
-| Moniepoint | Custom | https://moniepoint.com/careers |
-| Kuda Bank | Greenhouse | https://kuda.com/en-ng/careers |
-| Andela | Workable | https://andela.com/careers/ |
-| Interswitch | SmartRecruiters | https://interswitchgroup.com/careers |
-| MTN Nigeria | Custom | https://www.mtnonline.com/careers |
-| Airtel Nigeria | Custom | https://airtel.africa/nigeria/careers |
-| Shell Nigeria | Custom | https://www.shell.com.ng/careers |
-| Unilever Nigeria | Unilever global | https://www.unilever.com/careers/ (filter NG) |
-| Nestlé Nigeria | Custom | https://www.nestle-cwa.com/en/jobs |
-| Dangote Group | Custom | https://dangote.com/careers |
-| Deloitte Nigeria | Custom | https://www2.deloitte.com/ng/en/careers |
-| KPMG Nigeria | Custom | https://www.kpmg.com/ng/en/home/careers.html |
-| PwC Nigeria | Custom | https://www.pwc.com/ng/en/careers.html |
+```
+Naija Job Scan · {YYYY-MM-DD} · {keywords} · last {window}
+══════════════════════════════════════════════════════════
+Sources: LinkedIn ✓ · Jobberman ✓ · MyJobMag ✓ · HotNigerianJobs ✓ · Remote (5) ✓ · Indeed (browser) ✓
+Found {N} · new {N} · added to pipeline {N}
 
-These are starting-point URLs — verify with Playwright on first use and update `portals.yml` with the actual working URL.
+🔥 Apply today (posted <24h, few applicants, good fit)
+ 1. Data Analyst at Moniepoint · Lagos · 2h ago · <25 applicants · fit 72
+    Why: title matches; SQL, Power BI in JD
+    {url}
+
+Good matches
+ 2. ...
+
+Remote, open to Nigeria
+ 5. Data Analyst at Andela · Africa/Europe · 20h ago · USD · Remotive
+    ...
+
+⚠ Be careful
+ - Sales Executive at Bright Future Ventures · asks for a fee, Gmail address → skip
+
+Needs your input
+ - Access Bank GT programme has an age limit of 26. What is your date of birth? (I'll save it)
+```
+
+Then offer next steps:
+- "Want me to rank these against your full CV? → `/naija-jobs match`"
+- "Evaluate the 🔥 ones now? → I'll run the full evaluation on each"
+- "Run this every morning? → I can set up a daily scan (see Scheduling below)"
+
+---
+
+## Pipeline and history formats
+
+`data/pipeline.md` (under `## Pending`):
+```
+- [ ] {url} | {company} | {title} | {location} | {posted age} | {applicants} | {source} | rank {N}[ | 🔥]
+```
+
+`data/scan-history.tsv`:
+```
+url	first_seen	source	title	company	status	posted	applicants	location	rank
+```
+Statuses: `added`, `skipped_low_fit`, `skipped_title`, `skipped_profile`, `skipped_dup`, `skipped_expired`, `skipped_scam`.
+
+---
+
+## Scheduling (optional)
+
+Fresh postings reward speed. If the user wants daily scans:
+- In Claude Code: suggest `/loop 24h /naija-jobs scan` or a scheduled routine.
+- Without Claude: `node scan.mjs` runs on its own (cron / Windows Task Scheduler) and costs no tokens. The user can then run `/naija-jobs match` when they sit down.
+
+---
+
+## Portals config
+
+`portals.yml` sections used here:
+- `search`: default `keywords`, `location`, `since`, `experience`, `min_rank`, `min_fit`
+- `linkedin`: `enabled`, `details` (how many listings to fetch applicant counts for), `workplace`
+- `job_boards`: override/extend the built-in Nigerian boards by `id` (e.g. disable one, fix a URL pattern, add a new board)
+- `remote_boards`: `enabled`, `sources`, `since`, `include_restricted`
+- `tracked_companies`: company career pages (`careers_url`); Greenhouse, Lever, Ashby, Workable and SmartRecruiters URLs are read via API
+- `title_filter`: positive/negative title keywords
+
+If a board keeps showing up in `needs_browser` or returns 0 links, its URL pattern has probably changed. Open it with Playwright, find the new job-link format, and update that board's `job_link` / `search_url` in `portals.yml` (user layer: safe from updates).

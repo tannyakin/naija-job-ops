@@ -1,17 +1,17 @@
 #!/usr/bin/env node
 
 /**
- * doctor.mjs — Setup validation for naija-job-ops
+ * doctor.mjs: Setup validation for naija-job-ops
  *
  * Checks all prerequisites and prints a pass/fail/warn checklist.
  * Run with: npm run doctor
  *
  * Exit codes:
- *   0 — all checks pass (warnings are OK)
- *   1 — one or more errors found
+ *   0: all checks pass (warnings are OK)
+ *   1: one or more errors found
  */
 
-import { existsSync, mkdirSync, readdirSync } from 'fs';
+import { existsSync, mkdirSync, readdirSync, readFileSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { execSync } from 'child_process';
@@ -44,7 +44,7 @@ function checkNodeVersion() {
     return pass(`Node.js ${process.versions.node} (>= 18 required)`);
   }
   return fail(
-    `Node.js ${process.versions.node} — version 18 or later required`,
+    `Node.js ${process.versions.node}: version 18 or later required`,
     'Download Node.js 18+ from https://nodejs.org'
   );
 }
@@ -104,7 +104,7 @@ function checkGo() {
     return pass('Go found on PATH');
   } catch {
     return warn(
-      'Go not found on PATH (optional — not required for core features)',
+      'Go not found on PATH (optional, not required for core features)',
       'Install from https://golang.org if you need Go-based tooling'
     );
   }
@@ -124,7 +124,16 @@ function checkProfileYml() {
 }
 
 function checkPortalsYml() {
-  if (existsSync(join(root, 'portals.yml'))) {
+  const path = join(root, 'portals.yml');
+  if (existsSync(path)) {
+    const text = readFileSync(path, 'utf-8');
+    if (!/^search:/m.test(text) || !/^linkedin:/m.test(text)) {
+      return warn(
+        'portals.yml is from an older version (no search/linkedin sections)',
+        'Scanning still works with built-in defaults.',
+        'To get LinkedIn, board and remote settings: copy the search, linkedin, job_boards and remote_boards blocks from templates/portals.example.yml'
+      );
+    }
     return pass('portals.yml found');
   }
   return fail(
@@ -139,7 +148,7 @@ function checkProfileSkills() {
     return pass('profile-skills.md found');
   }
   return fail(
-    'profile-skills.md not found (required — used when no CV exists)',
+    'profile-skills.md not found (required, used when no CV exists)',
     'Run: /naija-jobs onboard in Claude Code to create it',
     'Or copy profile-skills.example.md to profile-skills.md and edit it'
   );
@@ -150,8 +159,8 @@ function checkCvMd() {
     return pass('cv.md found');
   }
   return warn(
-    'cv.md not found (optional but recommended — improves evaluation accuracy)',
-    'Run: /naija-jobs cv edit to create or import your CV'
+    'cv.md not found (optional but recommended; it improves evaluation accuracy)',
+    'Run: /naija-jobs cv build to create one, or /naija-jobs cv edit to import yours'
   );
 }
 
@@ -170,7 +179,7 @@ function checkFonts() {
   if (!existsSync(fontsDir)) {
     return fail(
       'fonts/ directory not found (required for PDF generation)',
-      'The fonts/ directory should have been included in the repository — check your clone'
+      'The fonts/ directory should have been included in the repository. Check your clone'
     );
   }
   try {
@@ -178,7 +187,7 @@ function checkFonts() {
     if (files.length === 0) {
       return fail(
         'fonts/ directory is empty (required for PDF generation)',
-        'Check your repository clone — font files should be present'
+        'Check your repository clone: font files should be present'
       );
     }
     return pass(`fonts/ directory ready (${files.length} file${files.length === 1 ? '' : 's'})`);
@@ -195,12 +204,12 @@ function checkFonts() {
 function checkUnmergedTsvFiles() {
   const trackerDir = join(root, 'batch', 'tracker-additions');
   if (!existsSync(trackerDir)) {
-    return pass('batch/tracker-additions/ — no unmerged additions');
+    return pass('batch/tracker-additions/: no unmerged additions');
   }
   try {
     const files = readdirSync(trackerDir).filter(f => f.endsWith('.tsv'));
     if (files.length === 0) {
-      return pass('batch/tracker-additions/ — no unmerged additions');
+      return pass('batch/tracker-additions/: no unmerged additions');
     }
     return warn(
       `${files.length} unmerged TSV file${files.length === 1 ? '' : 's'} in batch/tracker-additions/`,
@@ -209,7 +218,7 @@ function checkUnmergedTsvFiles() {
     );
   } catch {
     return warn(
-      'Could not read batch/tracker-additions/ — check permissions'
+      'Could not read batch/tracker-additions/. Check permissions'
     );
   }
 }
