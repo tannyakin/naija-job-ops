@@ -57,23 +57,11 @@ Extract from the JD:
 
 ## Step 2 — Generate the Cover Letter
 
-Always generate a cover letter. Even if the listing does not explicitly ask for one, include it as a separate page in the PDF.
+Always generate a cover letter unless the user says not to. Follow `modes/cover-letter.md` (structure by listing type, writing rules, checklist) and render it with `templates/cover-letter-template.html` as a **separate PDF** next to the CV:
 
-**Format:**
-- Addressed to the company by name (not "To Whom It May Concern")
-- 3 paragraphs, maximum 1 page
-- Paragraph 1: Why this company and this role specifically. Reference something concrete about the company (a known programme, product, or reputation — verified, not invented).
-- Paragraph 2: The 2–3 most relevant things from the user's background. One quantified achievement if available.
-- Paragraph 3: Clear close — what the user is asking for, and that they look forward to the conversation.
+`output/cl-{candidate}-{company}-{YYYY-MM-DD}.pdf`
 
-**Tone:** Direct and confident. The user is a qualified candidate making a considered choice, not someone begging for a chance. Avoid:
-- "I humbly apply for..."
-- "I would be honoured to..."
-- "I am writing to express my interest in..."
-
-**Better openers:**
-- "GTBank's Graduate Management Programme has trained some of Nigeria's strongest banking professionals — and I am writing to apply for the 2026 intake."
-- "I am applying for the Software Engineering position at Flutterwave because your engineering culture and the problems you are solving in African fintech align directly with the work I have been building toward."
+If the application takes the cover letter as a text box or email body instead of a file, give the plain-text version too.
 
 ---
 
@@ -91,8 +79,8 @@ Detect the correct paper format:
 1. Read `templates/cv-template.html`
 2. Replace all `{{PLACEHOLDER}}` tokens with tailored content
 3. Read `name` from `config/profile.yml` → normalise to kebab-case: e.g., "Emeka Okafor" → "emeka-okafor"
-4. Write the filled HTML to `/tmp/cv-{candidate}-{company}.html`
-5. Run: `node generate-pdf.mjs /tmp/cv-{candidate}-{company}.html output/cv-{candidate}-{company}-{YYYY-MM-DD}.pdf --format={a4|letter}`
+4. Write the filled HTML to `output/cv-{candidate}-{company}.html`
+5. Run: `node generate-pdf.mjs output/cv-{candidate}-{company}.html output/cv-{candidate}-{company}-{YYYY-MM-DD}.pdf --format={a4|letter}`
 6. Report: output path, number of pages, percentage of JD keywords covered
 
 **Never overwrite `cv.md`.** The tailored version is always a separate output file in `output/`.
@@ -126,7 +114,7 @@ After PDF is generated, confirm to the user:
 
 ```
 CV generated: output/cv-{candidate}-{company}-{YYYY-MM-DD}.pdf
-Cover letter: included (page 2)
+Cover letter: output/cl-{candidate}-{company}-{YYYY-MM-DD}.pdf
 Format: A4
 Keywords matched: {N}/{total} from JD
 

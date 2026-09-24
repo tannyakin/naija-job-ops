@@ -8,6 +8,8 @@ Process all pending job listing URLs in `data/pipeline.md`. Run a full evaluatio
 
 Read `data/pipeline.md`. Look for all items marked `- [ ]` in the Pending section.
 
+Line format (from `scan.mjs`): `- [ ] {url} | {company} | {title} | {location} | {posted} | {applicants} | {source} | rank {N}[ | 🔥]` — older lines may have only `url | company | title`. Process 🔥 items first, then by rank. Full scan data for each URL is in `data/scan-results.json`.
+
 If there are no pending items:
 > "Your pipeline is empty. Add URLs to data/pipeline.md under Pending, or run /naija-jobs scan to discover new listings."
 
@@ -38,7 +40,7 @@ For each pending item, in order:
 5. If nothing works → mark `- [!] {url} — Error: could not extract JD` and continue
 
 **Special cases:**
-- LinkedIn: often requires login → mark `[!]` with note "LinkedIn: paste JD text manually"
+- LinkedIn: logged-out job pages work. If Playwright hits a login wall, WebFetch `https://www.linkedin.com/jobs-guest/jobs/api/jobPosting/{jobId}` (numeric ID from the URL). Only if both fail → mark `[!]` with note "LinkedIn: paste JD text manually"
 - PDF URL: read with Read tool directly
 - Private or behind-login URL: mark `[!]` and note what is needed
 

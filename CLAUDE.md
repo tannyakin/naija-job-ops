@@ -39,7 +39,7 @@ Parse the JSON output:
 
 ## What is naija-job-ops
 
-AI-powered job search automation built on Claude Code: pipeline tracking, offer evaluation, CV generation, Nigerian portal scanning, batch processing. Specifically designed for Nigerian graduates, NYSC corps members, and entry-to-mid level job seekers.
+AI-powered job search automation built on Claude Code: fresh-job scanning (logged-out LinkedIn, Nigerian job boards, remote boards open to Nigeria, company career pages), profile matching, offer evaluation, CV building and tailoring, cover letters, form/survey answers, aptitude and interview practice, and application tracking. Designed for Nigerian students, graduates, NYSC corps members, and entry-to-mid level job seekers in any field.
 
 ### Main Files
 
@@ -51,8 +51,12 @@ AI-powered job search automation built on Claude Code: pipeline tracking, offer 
 | `data/applications.md` | Application tracker |
 | `data/pipeline.md` | Inbox of pending URLs to evaluate |
 | `data/scan-history.tsv` | Scanner dedup history |
-| `portals.yml` | Nigerian job board and company config |
+| `data/scan-results.json` | Full ranked results of the latest scan (read by `match`) |
+| `portals.yml` | Search defaults, LinkedIn, Nigerian boards, remote boards, company config |
+| `scan.mjs` + `sources/*.mjs` | Zero-token multi-source scanner (LinkedIn, boards, remote, ATS) + quick profile fit |
+| `tracker-lib.mjs` | Single source of truth for the 12-column tracker format |
 | `templates/cv-template.html` | HTML template for CV PDF generation |
+| `templates/cover-letter-template.html` | HTML template for cover letter PDF generation |
 | `generate-pdf.mjs` | Playwright: HTML to PDF |
 | `batch/batch-prompt.md` | System prompt for claude -p worker processes |
 | `reports/` | Evaluation reports (format: `{###}-{company-slug}-{YYYY-MM-DD}.md`) |
@@ -62,16 +66,25 @@ AI-powered job search automation built on Claude Code: pipeline tracking, offer 
 | Command | Mode |
 |---------|------|
 | `/naija-jobs` | Show command menu |
+| `/naija-jobs tutorial` | Guided 10-minute tour of the whole system |
 | `/naija-jobs {JD or URL}` | Auto-pipeline: evaluate + report + tracker |
 | `/naija-jobs eval` | Evaluate a single listing |
-| `/naija-jobs scan` | Scan Nigerian job portals for new listings |
+| `/naija-jobs scan {role}` | Scan LinkedIn + Nigerian boards + remote + company pages, newest first |
+| `/naija-jobs linkedin {role}` | LinkedIn only (logged-out), newest first, with applicant counts |
+| `/naija-jobs remote {role}` | Remote roles open to Nigeria-based candidates |
+| `/naija-jobs match` | Rank scan results against the user's full CV, ask what's missing |
 | `/naija-jobs pipeline` | Process pending URLs from data/pipeline.md |
 | `/naija-jobs batch` | Batch process multiple listings with parallel workers |
 | `/naija-jobs pdf` | Generate tailored CV and cover letter PDF |
+| `/naija-jobs cover-letter` | Cover letter as PDF, text-box answer, or email |
+| `/naija-jobs cv build` | Build a CV from scratch through a guided interview |
 | `/naija-jobs cv edit` | ATS audit and CV improvement |
 | `/naija-jobs cv tailor` | Tailor CV to a specific job listing |
 | `/naija-jobs tracker` | Application status overview |
-| `/naija-jobs apply` | Fill out application form answers |
+| `/naija-jobs apply` | Application form, screening question and survey answers |
+| `/naija-jobs interview` | Company-specific interview research (Nigerian formats) |
+| `/naija-jobs mock` | Live mock interview with feedback |
+| `/naija-jobs aptitude` | Aptitude / CBT / SJT practice and revision plan |
 | `/naija-jobs deep` | Deep research on a Nigerian company |
 | `/naija-jobs onboard` | Run onboarding or update your profile |
 
@@ -98,7 +111,7 @@ Every time the user sends a message that is NOT a recognised slash command, chec
 
 1. **Contains a URL** → navigate with Playwright, verify listing is active (title + description + apply button present), extract full JD, run full eval pipeline
 2. **Looks like a job description** — multi-line text with role, responsibilities, or requirements → parse as JD, run full eval pipeline
-3. **Looks like a role or skill description** — short phrase like "android developer", "graduate trainee finance", "kotlin java mobile" → treat as quick-start, run scan filtered to that role, show top results and append: "For more accurate results run /naija-jobs onboard so I can learn your full profile, qualifications, and preferences."
+3. **Looks like a role or skill description** — short phrase like "android developer", "graduate trainee finance", "kotlin java mobile" → treat as quick-start, run `node scan.mjs --keywords "{phrase}"` (see `modes/scan.md`), show top results and append: "For more accurate results run /naija-jobs onboard so I can learn your full profile, qualifications, and preferences."
 4. **Anything else** → respond normally as a conversation
 
 ## CV Source of Truth
@@ -124,9 +137,14 @@ Every time the user sends a message that is NOT a recognised slash command, chec
 | Pastes JD or URL | auto-pipeline (eval + report + tracker) |
 | Says /naija-jobs eval | `modes/eval.md` |
 | Says /naija-jobs compare | `modes/compare.md` |
-| Says /naija-jobs scan | `modes/scan.md` |
+| Says /naija-jobs tutorial or help | `modes/tutorial.md` |
+| Says /naija-jobs scan, linkedin, remote, boards | `modes/scan.md` |
+| Says /naija-jobs match | `modes/match.md` |
+| Says /naija-jobs cover-letter | `modes/cover-letter.md` |
+| Says /naija-jobs mock | `modes/mock-interview.md` |
+| Says /naija-jobs aptitude | `modes/aptitude.md` |
 | Says /naija-jobs pdf | `modes/pdf.md` |
-| Says /naija-jobs cv edit or cv tailor | `modes/cv.md` |
+| Says /naija-jobs cv build, cv edit or cv tailor | `modes/cv.md` |
 | Says /naija-jobs tracker | `modes/tracker.md` |
 | Says /naija-jobs apply | `modes/apply.md` |
 | Says /naija-jobs deep | `modes/deep.md` |
@@ -145,10 +163,21 @@ Every time the user sends a message that is NOT a recognised slash command, chec
 For all evaluation and action modes, load `modes/_shared.md` and `modes/_profile.md` first, then the specific mode file.
 
 Modes that require `_shared.md` + `_profile.md` + their mode file:
-- `eval`, `pdf`, `apply`, `pipeline`, `scan`, `batch`, auto-pipeline, `compare`
+- `eval`, `pdf`, `apply`, `pipeline`, `scan`, `match`, `cover-letter`, `batch`, auto-pipeline, `compare`
 
 Standalone modes (only their mode file):
-- `tracker`, `deep`, `onboard`, `cv`, `outreach`, `followup`, `interview-prep`, `patterns`, `training`, `project`
+- `tutorial`, `tracker`, `deep`, `onboard`, `cv`, `outreach`, `followup`, `interview-prep`, `mock-interview`, `aptitude`, `patterns`, `training`, `project`
+
+## Ask, Don't Guess
+
+When a fact needed for a good recommendation is missing (age for an age-limited scheme, class of degree, O'Level, years of experience, a vague CV detail), ask the user — at most 3 short questions at a time — and save the answer to `config/profile.yml` or `profile-skills.md` so it is never asked twice. Full protocol: `modes/_shared.md` → Clarifying Questions Protocol.
+
+## Job Sources and Scraping Etiquette
+
+- `node scan.mjs` is the first step of every scan. It is zero-token and polite (sequential LinkedIn requests with delays, stops on rate limits).
+- LinkedIn is read **logged-out only** (public guest job pages). Never log in to LinkedIn, never use the user's cookies or account.
+- Sources that block scripts are reported as "needs browser" — use Playwright for those, one session at a time.
+- Scanning is for the user's personal job search. Don't run scans in tight loops.
 
 ## Ethical Use — CRITICAL
 
@@ -158,6 +187,8 @@ Standalone modes (only their mode file):
 - **Strongly discourage low-fit applications.** If a score is below 3.5/5, recommend against applying. If below 3.0, recommend skipping with a clear explanation.
 - **Quality over speed.** Five well-targeted applications beat fifty generic ones.
 - **Respect recruiters' time.** Only send what is worth reading.
+- **Assessments are the user's own.** Help practise for aptitude, personality and SJT tests; never answer a live test for the user.
+- **Never misrepresent** age, grades, NYSC status, qualifications or experience — in CVs, forms or interviews.
 
 ## Stack and Conventions
 
@@ -208,7 +239,7 @@ Write one TSV file per evaluation to `batch/tracker-additions/{num}-{company-slu
 | # | Date Found | Company | Role | Location | Score | Deadline | Applicants | Status | PDF | Report | Notes |
 ```
 
-## Canonical Statuses
+## Canonical States (Statuses)
 
 | Status | When to use |
 |--------|-------------|

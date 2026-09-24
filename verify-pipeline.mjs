@@ -17,6 +17,7 @@
 import { readFileSync, readdirSync, existsSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
+import { parseTracker, parseAppLine } from './tracker-lib.mjs';
 
 const CAREER_OPS = dirname(fileURLToPath(import.meta.url));
 // Support both layouts: data/applications.md (boilerplate) and applications.md (original)
@@ -61,19 +62,7 @@ if (!existsSync(APPS_FILE)) {
 const content = readFileSync(APPS_FILE, 'utf-8');
 const lines = content.split('\n');
 
-const entries = [];
-for (const line of lines) {
-  if (!line.startsWith('|')) continue;
-  const parts = line.split('|').map(s => s.trim());
-  if (parts.length < 9) continue;
-  const num = parseInt(parts[1]);
-  if (isNaN(num)) continue;
-  entries.push({
-    num, date: parts[2], company: parts[3], role: parts[4],
-    score: parts[5], status: parts[6], pdf: parts[7], report: parts[8],
-    notes: parts[9] || '',
-  });
-}
+const entries = parseTracker(content);
 
 console.log(`\n📊 Checking ${entries.length} entries in applications.md\n`);
 
@@ -149,9 +138,13 @@ let badRows = 0;
 for (const line of lines) {
   if (!line.startsWith('|')) continue;
   if (line.includes('---') || line.includes('Empresa')) continue;
-  const parts = line.split('|');
-  if (parts.length < 9) {
-    error(`Row with <9 columns: ${line.substring(0, 80)}...`);
+  if (!/^\|\s*\d+\s*\|/.test(line)) continue;
+  const app = parseAppLine(line);
+  if (!app) {
+    error(`Malformed row: ${line.substring(0, 80)}...`);
+    badRows++;
+  } else if (app.legacy) {
+    warn(`#${app.num}: legacy 9-column row — add Location/Deadline/Applicants columns`);
     badRows++;
   }
 }

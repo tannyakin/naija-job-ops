@@ -76,17 +76,22 @@ Score each dimension 1–5:
 |-----------|--------|---------------|
 | Role-skill match | 25% | How well JD maps to user's skills from profile files |
 | Qualification eligibility | 20% | OND/HND/BSc/MSc required vs user's actual level — 0 if hard blocker |
-| NYSC eligibility | 15% | Required/preferred status vs user's current status — 0 if hard blocker |
-| Deadline urgency | 10% | ≤7 days = 5.0, 8–21 = 3.0, 22+ = 2.0, none = 2.5 |
-| Applicant competition | 10% | <100 = 5.0, 100–500 = 3.5, 500–1000 = 2.0, >1000 = 1.0 |
+| NYSC / age / O'Level | 15% | NYSC status, age limit, O'Level credits vs profile — 0 if hard blocker |
+| Freshness & competition | 15% | Posted <24h and <25 applicants = 5.0; <7 days and <100 = 4.0; 100–500 = 3.0; 500–1000 = 2.0; >1000 or 30+ days old = 1.0 |
+| Deadline urgency | 5% | ≤7 days = 5.0, 8–21 = 3.0, 22+ = 2.0, none = 2.5 |
 | Company legitimacy | 10% | Known Nigerian employer = high, unknown = lower, fee required = 0 |
-| Location fit | 5% | Matches preferred locations from profile.yml |
+| Location / remote fit | 5% | Matches preferred locations; remote open to Nigeria = high, remote restricted to other countries = 0 |
 | Growth potential | 5% | Named graduate programme or clear structured path = higher |
 
 Hard blockers (set dimension to 0 and flag regardless of global score):
 - Qualification required is higher than user's actual level and no exceptions stated
 - NYSC completion required and user has not completed and is not exempted
+- Age limit stated and user is over it (from `candidate.date_of_birth`)
+- Minimum class of degree above the user's, with no "or equivalent experience" clause
+- Remote role restricted to countries the user can't work from
 - Application fee of any kind requested
+
+If a needed fact (e.g. date of birth) is missing from the profile, you cannot ask in batch mode: score the dimension 2.5 and add "NEEDS INPUT: {fact}" to the report's Block 3 and the tracker notes.
 
 #### Block 1 — Role Summary
 
@@ -122,11 +127,11 @@ Score: X.X / 5.0
 Breakdown:
   Role-skill match:        X.X (25%)
   Qualification eligible:  X.X (20%)
-  NYSC eligible:           X.X (15%)
-  Deadline urgency:        X.X (10%)
-  Applicant competition:   X.X (10%)
+  NYSC / age / O'Level:    X.X (15%)
+  Freshness & competition: X.X (15%)
+  Deadline urgency:        X.X (5%)
   Company legitimacy:      X.X (10%)
-  Location fit:            X.X (5%)
+  Location / remote fit:   X.X (5%)
   Growth potential:        X.X (5%)
 
 Recommendation: Apply / Flag for review / Skip

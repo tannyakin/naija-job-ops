@@ -64,6 +64,58 @@ For each question, draft a tailored answer. Follow these principles:
 - State of origin: answer from `config/profile.yml`. Never confuse with preferred work location.
 - Religion field (some forms still include): if present, answer from profile or leave for user to fill in personally — do not assume.
 
+### Nigerian form-field library
+
+Fill from `config/profile.yml` / `profile-skills.md`. If a field is missing from the profile, ask once and offer to save it.
+
+| Field | Where it comes from | Notes |
+|-------|---------------------|-------|
+| Full name (as on certificates) | `candidate.full_name` | Must match degree and NYSC certificates exactly — ask if the user has a name change |
+| Date of birth / age | `candidate.date_of_birth` | Needed for age-limited schemes; never alter |
+| State of origin, LGA | `candidate.state_of_origin`, `candidate.lga` | Public sector only in most cases; never confuse with location |
+| NIN | — | Only on official government portals at final stage. Never store in files. |
+| O'Level (WAEC/NECO/NABTEB) | `education.olevel` | Number of sittings, credits in English & Maths, exam year |
+| JAMB/UTME reg. number | — | Rare; user fills personally |
+| Degree, class, CGPA | `education.*` | CGPA on a 5.0 or 4.0 scale — state the scale |
+| NYSC status, call-up / certificate no. | `nysc_status`, `nysc_*` | Certificate number only if asked; exemption letter if exempted |
+| Professional bodies | `certifications` | ICAN, ACCA, CIPM, NSE/COREN, CITN, NIM, CIBN — with membership status |
+| Years of experience | `experience.years_total` | Say whether NYSC/SIWES is counted if the form asks "post-NYSC experience" |
+| Current / expected salary | `compensation.*` | Monthly gross in ₦ unless the form says annual; for USD roles use the USD target |
+| Notice period | `availability.notice_period` | Fresh graduate: immediate; serving corps member: passing-out date |
+| Willing to relocate / be deployed anywhere | `preferred_locations`, `open_to_relocation` | Graduate schemes often deploy nationally |
+| Referees | `profile-skills.md` → Referees | Name, title, organisation, phone, email — confirm the referee agreed |
+| Guarantor | — | Acknowledge you can provide one; give details only after an offer |
+
+---
+
+## Screening Questionnaires, Surveys and Assessments
+
+Many applications include extra steps. Help the user prepare **and** answer honestly — this mode drafts, the user submits.
+
+**Knock-out / screening questions** ("Do you have 2+ years of SQL?", "Are you willing to work weekends?", "Do you have a valid driver's licence?"):
+- Answer truthfully from the profile. If the honest answer is "no", say so and tell the user whether it is likely to knock them out.
+- Never answer "yes" to a requirement the user doesn't meet.
+
+**Long-form essay prompts** ("Tell us about a time you failed", "What would you do in your first 90 days?"):
+- Use STAR for experience questions (see `interview-prep/story-bank.md` for existing stories).
+- Respect word/character limits exactly — show the count.
+
+**Employer surveys / "about you" questionnaires** (motivation, work preferences, diversity monitoring):
+- Motivation/preference questions: draft from the user's real priorities in `config/profile.yml`.
+- Diversity/equal-opportunity questions (gender, disability, etc.): these are the user's personal choice — list them for the user to fill, suggest "Prefer not to say" is always acceptable.
+
+**Personality and situational-judgement tests (SJTs)** — e.g. SHL OPQ, Hogan, Aon/cut-e, Workforce/Dragnet SJTs:
+- These must be taken by the user alone. Do **not** answer live test items.
+- Instead, explain the format, what the employer is looking for (customer focus, integrity, teamwork, safety for oil & gas), and run practice questions via `/naija-jobs aptitude`.
+- Advise: answer consistently and honestly — these tests check consistency, and "faking good" is often detected.
+
+**Timed aptitude tests (numerical, verbal, logical, CBT):**
+- Never solve live test questions for the user — it breaks the employer's rules and usually leads to disqualification at the retest/assessment centre.
+- Offer practice with `/naija-jobs aptitude {test type}` and a revision plan before the test date.
+
+**Video interviews (HireVue, Spark Hire, Willo):**
+- Offer to prep likely questions and practise out loud with `/naija-jobs mock`.
+
 ---
 
 ## Step 5 — Present Answers

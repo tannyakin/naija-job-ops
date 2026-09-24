@@ -1,17 +1,71 @@
 # naija-job-ops — Portal Scanner Configuration
-# Used by /naija-jobs scan to discover new job listings automatically.
+# Used by /naija-jobs scan (and `node scan.mjs`) to discover new job listings.
 #
 # HOW TO USE:
-#   1. Copy this file to portals.yml in the project root
-#   2. Edit title_filter.positive with YOUR target role keywords
-#   3. Add or remove companies in tracked_companies
-#   4. Adjust search_queries for your target boards and roles
-#   5. Set enabled: false on companies you do not care about
+#   1. Copy this file to portals.yml in the project root (onboarding does this for you)
+#   2. Set search.keywords to YOUR target roles — any field works
+#   3. Adjust title_filter, add/remove companies, enable/disable boards
 #
-# STRATEGY:
-#   Level 1: Playwright → careers_url of tracked companies (real-time, reliable)
-#   Level 2: WebSearch queries → broad discovery across Nigerian job boards
-#   Level 3: Direct Nigerian job board navigation (Jobberman, MyJobMag, etc.)
+# SOURCES (all additive, deduplicated, ranked by freshness + competition + fit):
+#   linkedin        Logged-out LinkedIn search — newest first, applicant counts. No account needed.
+#   boards          Nigerian job boards — Jobberman, MyJobMag, HotNigerianJobs, NgCareers, Jobgurus, Indeed NG
+#   remote          Remote boards filtered to roles open to Nigeria — Remotive, RemoteOK, Himalayas, Jobicy, WWR
+#   ats             tracked_companies on Greenhouse/Lever/Ashby/Workable/SmartRecruiters (API)
+#   browser         Anything that blocks scripts (Indeed, custom career sites) → Playwright via /naija-jobs scan
+#
+# Quick commands:
+#   node scan.mjs                                  # everything, keywords below
+#   node scan.mjs --source linkedin --since 1h     # LinkedIn, posted in the last hour
+#   node scan.mjs --keywords "nurse" --source boards
+#   node scan.mjs --source remote --since 3d
+
+# ── Search defaults ──────────────────────────────────────────────────────────
+search:
+  keywords:                  # [CUSTOMISE] 2–5 short phrases; overridden by --keywords
+    - "software engineer"
+    - "data analyst"
+    - "graduate trainee"
+  location: "Nigeria"        # or "Lagos, Nigeria", "Abuja, Nigeria"
+  since: "24h"               # 1h | 6h | 24h | 3d | 1w — how recent postings must be
+  experience: []             # LinkedIn levels: internship, entry, associate, mid, director
+  sources: [linkedin, boards, remote, ats]
+  max_per_source: 40
+  min_rank: 35               # only listings ranked ≥ this go to data/pipeline.md
+  min_fit: 40                # ...and with quick profile fit ≥ this
+
+# ── LinkedIn (logged-out, public job search) ─────────────────────────────────
+# Uses LinkedIn's public guest job pages — no login, no cookies, your account is never involved.
+# Requests are sequential with 1.5–3.5s delays. If rate-limited, wait 15–30 minutes.
+# Personal use only — respect LinkedIn's terms; don't run it in tight loops.
+linkedin:
+  enabled: true
+  details: 15                # fetch applicant count + description for the N freshest results
+  workplace: []              # onsite, remote, hybrid
+  # geo_id: 105365761        # optional LinkedIn geoId for Nigeria (location text works without it)
+
+# ── Nigerian job boards ──────────────────────────────────────────────────────
+# Built-in boards are defined in sources/boards.mjs. Override any by id, or add new ones.
+# Fields: id, name, search_url ({q} = keywords, {days} = window), latest_url, job_link (regex), enabled, needs_browser
+# If a board changes its site and shows up as "needs browser", fix its job_link/search_url here.
+job_boards:
+  - { id: jobberman, enabled: true }
+  - { id: myjobmag, enabled: true }
+  - { id: hotnigerianjobs, enabled: true }
+  - { id: ngcareers, enabled: true }
+  - { id: jobgurus, enabled: true }
+  - { id: indeed-ng, enabled: true }        # browser-only (Cloudflare)
+  # Example of adding your own board:
+  # - id: myboard
+  #   name: "My Board"
+  #   search_url: "https://example.ng/jobs?q={q}"
+  #   job_link: "^https://example\\.ng/job/[a-z0-9-]+"
+
+# ── Remote boards ────────────────────────────────────────────────────────────
+remote_boards:
+  enabled: true
+  sources: [remotive, remoteok, himalayas, jobicy, weworkremotely]
+  since: "7d"                # remote boards post less often — a wider window works better
+  include_restricted: false  # true = also show US/EU-only roles (you usually can't take them)
 
 # ── Title filter ──────────────────────────────────────────────────────────────
 # The scanner uses these keywords to decide if a title is relevant.
@@ -88,9 +142,9 @@ title_filter:
     - "Trainee"
     - "Associate"
 
-# ── Search queries ─────────────────────────────────────────────────────────────
-# Each query triggers a WebSearch. Results may be stale (Google caches for days).
-# Level 2 results are liveness-verified with Playwright before adding to pipeline.
+# ── Extra WebSearch queries (used by /naija-jobs scan in Claude, not by scan.mjs) ─
+# Good for sources no scraper covers: government portals, graduate schemes, niche boards.
+# Results may be stale — they are verified with Playwright before joining the pipeline.
 
 search_queries:
   - query: "Graduate Trainee 2026 site:jobberman.com"
@@ -103,7 +157,7 @@ search_queries:
     enabled: true
   - query: "Junior developer Nigeria Lagos 2026 site:hotnigerianjobs.com"
     enabled: true
-  - query: "Graduate Trainee Nigeria 2026 site:linkedin.com/jobs"
+  - query: "recruitment 2026 site:gov.ng"
     enabled: true
   - query: "Management Trainee banking Nigeria 2026"
     enabled: true
@@ -119,8 +173,9 @@ search_queries:
     enabled: false
 
 # ── Tracked companies ──────────────────────────────────────────────────────────
-# Direct Playwright scan of company careers pages (real-time, most reliable).
-# Each company MUST have careers_url. If not known, the scanner will find and save it.
+# careers_url on Greenhouse, Lever, Ashby, Workable (apply.workable.com/…) or
+# SmartRecruiters (careers.smartrecruiters.com/…) is read by scan.mjs via API — fast and free.
+# Custom career sites are checked with Playwright by /naija-jobs scan.
 
 tracked_companies:
 

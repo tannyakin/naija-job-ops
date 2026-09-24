@@ -6,7 +6,7 @@ Generate ATS-optimized CV using naija-job-ops pdf mode.
 
 $ARGUMENTS
 
-Load the career-ops skill:
+Load the naija-jobs skill:
 ```
-skill({ name: "career-ops" })
+skill({ name: "naija-jobs" })
 ```

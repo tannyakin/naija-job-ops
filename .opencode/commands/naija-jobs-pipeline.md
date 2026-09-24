@@ -4,7 +4,7 @@ description: Process pending URLs from pipeline inbox
 
 Process pending job URLs from data/pipeline.md using naija-job-ops pipeline mode.
 
-Load the career-ops skill:
+Load the naija-jobs skill:
 ```
-skill({ name: "career-ops" })
+skill({ name: "naija-jobs" })
 ```

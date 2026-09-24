@@ -11,6 +11,11 @@ candidate:
   linkedin: "linkedin.com/in/emekaokafor"
   github: "github.com/emekaokafor"      # optional
   portfolio_url: ""                      # optional — link to portfolio, GitHub Pages, etc.
+  # Eligibility details — used ONLY to check adverts' cut-offs (e.g. "not older than 26").
+  # Leave blank if you prefer; the system will ask when an advert needs it.
+  date_of_birth: ""                      # YYYY-MM-DD
+  state_of_origin: ""                    # only needed for some public-sector forms
+  lga: ""
 
 education:
   level: "BSc"                           # OND | HND | BSc | MSc | PhD
@@ -18,6 +23,17 @@ education:
   institution: "University of Lagos"
   class_of_degree: "Second Class Upper"  # First Class | Second Class Upper | Second Class Lower | Pass | HND Upper | HND Lower
   graduation_year: 2024
+  cgpa: ""                               # e.g. "4.12/5.0" — state the scale
+  olevel: "WAEC, one sitting, 7 credits incl. English and Mathematics"
+
+experience:
+  years_total: 1.5                       # full-time equivalent; say below whether NYSC/SIWES is included
+  includes_nysc_siwes: true
+  level: "entry"                         # internship | entry | associate | mid | senior
+
+availability:
+  notice_period: "Immediately"           # or "4 weeks", or NYSC passing-out date
+  open_to_relocation: true
 
 nysc_status: "completed"                 # yet-to-serve | currently-serving | completed | exempted
 # If currently-serving, uncomment the line below:
@@ -47,6 +63,28 @@ preferred_locations:
   - "Remote"
 
 work_mode_preference: "any"              # remote | hybrid | onsite | any
+
+remote:
+  open_to_international: true            # remote roles with foreign employers (USD/EUR/GBP)
+  salary_expectation_usd_monthly: 1200   # optional — for remote/international roles
+  contractor_ok: true                    # OK with contractor/EOR arrangements (no pension/HMO)?
+  overlap_hours_ok: "up to 9pm WAT"
+
+# What the scanner searches for and how it ranks results (scan.mjs + sources/fit.mjs)
+search:
+  keywords:                              # short search phrases — any field works
+    - "backend developer"
+    - "software engineer"
+    - "graduate trainee technology"
+  skills:                                # tools/skills to look for in job descriptions
+    - "Python"
+    - "Django"
+    - "SQL"
+    - "PostgreSQL"
+    - "Git"
+  exclude:                               # deal-breaker words in job titles
+    - "sales"
+    - "telemarketing"
 
 compensation:
   salary_expectation_ngn_monthly: 250000   # your target monthly gross salary in Naira

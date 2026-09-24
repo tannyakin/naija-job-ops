@@ -6,10 +6,10 @@ career-ops is an open source project maintained in limited time. Here's how to g
 
 | Question type | Where |
 |---|---|
-| **Bug** (something is broken) | [GitHub Issues](https://github.com/santifer/career-ops/issues) — use the Bug Report template |
-| **Feature idea** | [GitHub Issues](https://github.com/santifer/career-ops/issues) — use the Feature Request template |
-| **How do I...?** | [GitHub Discussions](https://github.com/santifer/career-ops/discussions) or [Discord](https://discord.gg/8pRpHETxa4) |
-| **Setup help** | Check [docs/SETUP.md](docs/SETUP.md) first, then ask in [Discord](https://discord.gg/8pRpHETxa4) |
+| **Bug** (something is broken) | [GitHub Issues](https://github.com/tannyakin/naija-job-ops/issues) — use the Bug Report template |
+| **Feature idea** | [GitHub Issues](https://github.com/tannyakin/naija-job-ops/issues) — use the Feature Request template |
+| **How do I...?** | [GitHub Issues](https://github.com/tannyakin/naija-job-ops/issues) |
+| **Setup help** | Check [docs/SETUP.md](docs/SETUP.md) first, then open an [issue](https://github.com/tannyakin/naija-job-ops/issues) |
 | **Security vulnerability** | Email hi@santifer.io — see [SECURITY.md](SECURITY.md) |
 
 ## Before opening an issue

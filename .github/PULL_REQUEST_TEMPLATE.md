@@ -22,4 +22,4 @@
 - [ ] My changes respect the [Data Contract](https://github.com/santifer/career-ops/blob/main/DATA_CONTRACT.md) (no modifications to user-layer files)
 
 ---
-Questions? [Join the Discord](https://discord.gg/8pRpHETxa4) for faster feedback.
+Questions? [Open an issue](https://github.com/tannyakin/naija-job-ops/issues).

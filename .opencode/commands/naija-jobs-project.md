@@ -6,7 +6,7 @@ Evaluate the following portfolio project using naija-job-ops project mode:
 
 $ARGUMENTS
 
-Load the career-ops skill:
+Load the naija-jobs skill:
 ```
-skill({ name: "career-ops" })
+skill({ name: "naija-jobs" })
 ```

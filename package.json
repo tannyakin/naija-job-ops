@@ -14,7 +14,12 @@
     "update": "node update-system.mjs apply",
     "rollback": "node update-system.mjs rollback",
     "liveness": "node check-liveness.mjs",
-    "scan": "node scan.mjs"
+    "scan": "node scan.mjs",
+    "scan:linkedin": "node scan.mjs --source linkedin --since 24h",
+    "scan:remote": "node scan.mjs --source remote --since 3d",
+    "scan:boards": "node scan.mjs --source boards",
+    "test": "node test-all.mjs --quick",
+    "test:sources": "node tests/test-sources.mjs"
   },
   "keywords": [
     "ai",
@@ -24,13 +29,16 @@
     "automation",
     "nigeria",
     "nysc",
-    "graduate-trainee"
+    "graduate-trainee",
+    "linkedin",
+    "jobberman",
+    "remote-jobs"
   ],
   "author": "buddingdevT",
-  "homepage": "https://github.com/buddingdevT/naija-job-ops",
+  "homepage": "https://github.com/tannyakin/naija-job-ops",
   "repository": {
     "type": "git",
-    "url": "https://github.com/buddingdevT/naija-job-ops"
+    "url": "https://github.com/tannyakin/naija-job-ops"
   },
   "license": "MIT",
   "dependencies": {

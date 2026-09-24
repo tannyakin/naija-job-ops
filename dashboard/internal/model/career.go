@@ -6,6 +6,9 @@ type CareerApplication struct {
 	Date         string
 	Company      string
 	Role         string
+	Location     string
+	Deadline     string
+	Applicants   string
 	Status       string
 	Score        float64
 	ScoreRaw     string

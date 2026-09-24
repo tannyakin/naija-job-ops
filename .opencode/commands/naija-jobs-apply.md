@@ -6,7 +6,7 @@ Application assistant using naija-job-ops apply mode. Form data/context:
 
 $ARGUMENTS
 
-Load the career-ops skill:
+Load the naija-jobs skill:
 ```
-skill({ name: "career-ops" })
+skill({ name: "naija-jobs" })
 ```

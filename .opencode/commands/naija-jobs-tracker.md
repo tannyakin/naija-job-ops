@@ -4,7 +4,7 @@ description: Application status overview
 
 Show application tracker status using naija-job-ops tracker mode.
 
-Load the career-ops skill:
+Load the naija-jobs skill:
 ```
-skill({ name: "career-ops" })
+skill({ name: "naija-jobs" })
 ```

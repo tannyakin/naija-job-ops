@@ -14,6 +14,10 @@ If the input is a **URL**:
 
 If the input is **pasted text** (JD already in context): use directly.
 
+If the listing came from a scan, read its entry in `data/scan-results.json` (match by URL) — it already has posting age, applicant count, source, and eligibility hints. Re-check them on the live page; the page wins if they differ.
+
+**LinkedIn URLs:** logged-out job pages work. If Playwright hits a login wall, WebFetch `https://www.linkedin.com/jobs-guest/jobs/api/jobPosting/{jobId}` (the numeric ID from the URL) — it returns the public JD, posting age and applicant count.
+
 **Verify the listing is active (mandatory for URLs):**
 - Active: job title + description + Apply button visible in the main content area
 - Closed: only navbar/footer visible, or page shows "no longer available", "position filled", "job expired"
@@ -31,7 +35,11 @@ Deadline:      {closing date or "not stated"}
 Applicants:    {count or "not stated"}
 Salary:        {range or "not stated"}
 Qualification: {OND / HND / BSc / MSc required, or "not stated"}
+Class/grade:   {2:1 minimum / 2:2 accepted / not stated}
 NYSC:          {required / preferred / not mentioned}
+Age limit:     {e.g. "not older than 26" or "not stated"}
+O'Level:       {e.g. "5 credits incl. English & Maths" or "not stated"}
+Experience:    {years required or "not stated"}
 Apply URL:     {direct link}
 ```
 
@@ -41,6 +49,8 @@ Apply URL:     {direct link}
 
 Read `profile-skills.md`. If `cv.md` exists, read it too and treat it as the richer source.
 Read `config/profile.yml` for NYSC status, qualification level, location preferences, and salary target.
+
+**Missing facts → ask, don't guess.** If the listing has a requirement you cannot check against the profile (e.g. an age limit but no `candidate.date_of_birth`; a 2:1 cutoff but no `class_of_degree`; "5 credits" but no `education.olevel`), ask the user before scoring — follow the Clarifying Questions protocol in `_shared.md`. Save the answer to `config/profile.yml` so you never ask twice.
 
 **Detect archetype** — classify the listing into one of the Nigerian market archetypes from `_shared.md`. If it is a hybrid, name both. This determines what to emphasise in the match analysis.
 
@@ -94,6 +104,14 @@ This is the most critical block. Be direct and unambiguous.
 - If "currently serving" and role requires "completed" — flag the timeline gap
 - If corps members are explicitly welcome: note this as a positive signal
 
+**Age limit verdict** (very common in Nigerian graduate trainee adverts — "not older than 26 by {date}"):
+- Compute the user's age on the date the advert specifies (or today) from `candidate.date_of_birth`
+- Over the limit → ❌ hard blocker. Never suggest misstating age.
+
+**Class of degree / O'Level verdict:**
+- "Minimum Second Class Upper" with user at 2:2 → ❌ unless the advert says "or equivalent experience"
+- O'Level credits requirement vs `education.olevel` → ✅ / ❌
+
 **Other eligibility requirements** (professional licences, certifications, citizenship):
 - Check for any and assess against user profile
 - Flag any hard blockers clearly
@@ -113,6 +131,12 @@ This is the most critical block. Be direct and unambiguous.
 - 500–1,000: Crowded. Only apply if match is strong.
 - 1,000+: Very high competition. Recommend only if score is 4.0+.
 - Not stated: Treat as moderate competition.
+
+**Posting freshness** (from the page or `data/scan-results.json`):
+- Posted in the last 24 hours: early-applicant window — recruiters often shortlist the first batch. Act today.
+- 1–7 days: still fresh.
+- 8–30 days: most shortlisting may be done; apply only if fit is strong.
+- 30+ days (and no deadline): may be a stale or evergreen posting — check legitimacy.
 
 **Deadline urgency:**
 - Closing ≤7 days: Act today if you want to apply.
@@ -157,14 +181,14 @@ After all 6 blocks, produce the final score:
 Score: X.X / 5.0
 
 Breakdown:
-  Role-skill match:        X.X (25%)
-  Qualification eligible:  X.X (20%)
-  NYSC eligible:           X.X (15%)
-  Deadline urgency:        X.X (10%)
-  Applicant competition:   X.X (10%)
-  Company legitimacy:      X.X (10%)
-  Location fit:            X.X (5%)
-  Growth potential:        X.X (5%)
+  Role-skill match:          X.X (25%)
+  Qualification eligible:    X.X (20%)
+  NYSC / age / O'Level:      X.X (15%)
+  Freshness & competition:   X.X (15%)
+  Deadline urgency:          X.X (5%)
+  Company legitimacy:        X.X (10%)
+  Location / remote fit:     X.X (5%)
+  Growth potential:          X.X (5%)
 
 Recommendation: {Apply / Flag for review / Skip}
 ```

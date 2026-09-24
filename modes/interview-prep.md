@@ -16,15 +16,41 @@ Run these WebSearch queries. Extract structured data, not summaries. Cite source
 
 | Query | What to extract |
 |-------|-----------------|
-| `"{company} {role} interview questions site:glassdoor.com"` | Actual questions asked, difficulty rating, experience rating, process timeline, number of rounds, offer/reject ratio |
-| `"{company} interview process site:teamblind.com"` | Candid process descriptions, recent data points, comp negotiation details, hiring bar |
-| `"{company} {role} interview site:leetcode.com/discuss"` | Specific coding/technical problems, system design topics, round structure |
-| `"{company} engineering blog"` | Tech stack, values, what they publish about, technical priorities |
-| `"{company} interview process {role}"` (general) | Fills gaps from above — blog posts, YouTube, prep guides, candidate write-ups |
+| `"{company}" interview questions site:glassdoor.com` | Questions asked, rounds, difficulty, timeline (Glassdoor has good coverage of Nigerian banks, FMCG, Big 4, telcos) |
+| `"{company}" graduate trainee aptitude test past questions` | Which test provider (SHL, Workforce/Dragnet, TestGorilla, Aon/cut-e, Kenexa, in-house CBT), sections, time limits, cut-off stories |
+| `"{company}" assessment centre experience Nigeria` | Group exercise, presentation, case study, panel format |
+| `"{company}" interview experience site:nairaland.com` | Candid Nigerian candidate accounts (verify — quality varies) |
+| `"{company}" interview site:linkedin.com/posts` | Recent candidate write-ups, hiring-manager posts |
+| `"{company}" {role} interview` (general) | Blogs, YouTube walk-throughs, prep guides (MyJobMag and Jobberman publish company test/interview guides) |
+| `"{company} engineering blog"` / `site:leetcode.com/discuss "{company}"` | Tech roles only: stack, coding rounds |
 
 If the company is small or obscure and yields few results, broaden: search for the role archetype at similar-stage companies, and note that intel is sparse.
 
 **Do NOT fabricate questions.** If a source says "they asked about distributed systems," report that. Do not invent a specific distributed systems question. When generating likely questions from JD analysis, label them clearly as `[inferred from JD]` not sourced from candidates.
+
+## Step 1b — Nigerian Interview Formats
+
+Most Nigerian employers follow one of these pipelines. If research is thin, use the matching pattern and say it's the typical pattern, not confirmed:
+
+| Employer type | Typical pipeline | What they're really testing |
+|---------------|------------------|-----------------------------|
+| Tier-1 banks (graduate schemes) | Online application → aptitude test (numerical, verbal, logical; often proctored) → assessment centre or panel interview → medicals → academy training | Speed and accuracy under time pressure, composure, communication, integrity |
+| FMCG (Nestlé, Unilever, NB, Guinness, P&G, PZ) | Online application → SJT/personality → numerical/logical → assessment centre (group case, presentation, interview) | Leadership examples, drive, consumer/commercial thinking, teamwork in the group exercise |
+| Big 4 / consulting | Online test (numerical/verbal, sometimes Excel) → case or technical interview → partner interview | Structured thinking, business awareness, polish |
+| Oil & gas / engineering | CBT (technical + aptitude) → technical interview → HSE-focused behavioural → medicals | Core engineering knowledge, safety mindset |
+| Telecoms | Aptitude → technical/role interview → HR | Technical basics, customer focus |
+| Tech startups / fintech | Recruiter call → take-home or live coding/case → team interview → founder/leadership | Practical skill, ownership, speed of learning |
+| Public sector | CBT → document verification → oral interview (often a panel) | Knowledge of the agency, current affairs, composure, integrity |
+| Remote / international | Recruiter screen → take-home → technical/culture interviews on video | Async communication, English clarity, time-zone reliability, portfolio proof |
+
+Also prepare the user for these Nigerian specifics:
+- **Panel interviews** with 3–6 people: address the person who asked, glance at others; don't panic at rapid switches.
+- **"Tell us about yourself"** is almost always first: 60–90 seconds, education → most relevant experience → why this role. No family history.
+- **Current affairs** questions (public sector, banks): recent CBN policy, naira exchange rate, inflation, the company's latest news.
+- **Salary question** ("What is your expectation?"): give a researched range for the role/sector, not "anything you offer".
+- **Document checks:** bring originals and copies — degree/statement of result, NYSC certificate or exemption, O'Level results, birth certificate/age declaration, passport photos, ID.
+- **Logistics:** confirm venue, dress code (corporate unless told), and arrive 30–45 minutes early — Lagos traffic is a real risk; for virtual interviews test power and data backup beforehand.
+- **Scam check:** a real interview never requires a payment, a "training fee", or travelling to a hotel to "buy forms".
 
 ## Step 2 — Process Overview
 
@@ -121,7 +147,7 @@ Save the full report to `interview-prep/{company-slug}-{role-slug}.md` with this
 
 **Report:** {link to evaluation report if exists, or "N/A"}
 **Researched:** {YYYY-MM-DD}
-**Sources:** {N} Glassdoor reviews, {N} Blind posts, {N} other
+**Sources:** {N} Glassdoor reviews, {N} candidate write-ups, {N} other
 ```
 
 ## Post-Research
@@ -131,6 +157,7 @@ After delivering the report:
 1. Ask the user if they want to draft stories for any gaps found in Step 5
 2. If they have a scheduled interview date, note it: "Your interview is in {X} days. Want me to set a reminder to review this prep?"
 3. Suggest running `deep` mode if the company research in Step 1 was thin — deep mode covers strategy, culture, and competitive landscape in more depth
+4. Offer practice: `/naija-jobs mock {company} {role}` for a live mock interview, `/naija-jobs aptitude` if there is an online test stage
 
 ## Rules
 

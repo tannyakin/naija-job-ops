@@ -23,11 +23,11 @@ For each listing, run the full 8-dimension scoring from `modes/_shared.md`:
 |-----------|--------|
 | Role-skill match | 25% |
 | Qualification eligibility | 20% |
-| NYSC eligibility | 15% |
-| Deadline urgency | 10% |
-| Applicant competition | 10% |
+| NYSC / age / O'Level | 15% |
+| Freshness & competition | 15% |
+| Deadline urgency | 5% |
 | Company legitimacy | 10% |
-| Location fit | 5% |
+| Location / remote fit | 5% |
 | Growth potential | 5% |
 
 Apply the same hard blockers: NYSC required but user hasn't completed = 0.0. Qualification too high = 0.0. Application fee = flag Suspicious.
@@ -53,13 +53,14 @@ Qualification req       | {OND/HND/BSc/MSc}  | ...                 | ...
 NYSC requirement        | {Yes/No/Preferred}  | ...                 | ...
 Salary range            | {₦X – ₦Y}          | ...                 | ...
 Application deadline    | {date or N/A}       | ...                 | ...
+Posted                  | {age}               | ...                 | ...
 Applicant count         | {N or unknown}      | ...                 | ...
 ─────────────────────────────────────────────────────────────────
 Role-skill match        | {X}/25              | {X}/25              | {X}/25
 Qualification elig.     | {X}/20              | {X}/20              | {X}/20
-NYSC eligibility        | {X}/15              | {X}/15              | {X}/15
-Deadline urgency        | {X}/10              | {X}/10              | {X}/10
-Applicant competition   | {X}/10              | {X}/10              | {X}/10
+NYSC / age / O'Level    | {X}/15              | {X}/15              | {X}/15
+Freshness & competition | {X}/15              | {X}/15              | {X}/15
+Deadline urgency        | {X}/5               | {X}/5               | {X}/5
 Company legitimacy      | {X}/10              | {X}/10              | {X}/10
 Location fit            | {X}/5               | {X}/5               | {X}/5
 Growth potential        | {X}/5               | {X}/5               | {X}/5

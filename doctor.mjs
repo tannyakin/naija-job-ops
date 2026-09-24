@@ -11,7 +11,7 @@
  *   1 — one or more errors found
  */
 
-import { existsSync, mkdirSync, readdirSync } from 'fs';
+import { existsSync, mkdirSync, readdirSync, readFileSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { execSync } from 'child_process';
@@ -124,7 +124,16 @@ function checkProfileYml() {
 }
 
 function checkPortalsYml() {
-  if (existsSync(join(root, 'portals.yml'))) {
+  const path = join(root, 'portals.yml');
+  if (existsSync(path)) {
+    const text = readFileSync(path, 'utf-8');
+    if (!/^search:/m.test(text) || !/^linkedin:/m.test(text)) {
+      return warn(
+        'portals.yml is from an older version (no search/linkedin sections)',
+        'Scanning still works with built-in defaults.',
+        'To get LinkedIn, board and remote settings: copy the search, linkedin, job_boards and remote_boards blocks from templates/portals.example.yml'
+      );
+    }
     return pass('portals.yml found');
   }
   return fail(
@@ -151,7 +160,7 @@ function checkCvMd() {
   }
   return warn(
     'cv.md not found (optional but recommended — improves evaluation accuracy)',
-    'Run: /naija-jobs cv edit to create or import your CV'
+    'Run: /naija-jobs cv build to create one, or /naija-jobs cv edit to import yours'
   );
 }
 
